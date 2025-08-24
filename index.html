@@ -355,6 +355,50 @@
             box-shadow: 0 15px 30px rgba(255, 0, 128, 0.4);
         }
 
+        .project-type-badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: var(--gradient-primary);
+            color: white;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+        }
+
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+
+        .tech-tags {
+            margin: 1rem 0;
+            font-size: 0.9rem;
+            color: var(--text-gray);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .project-meta {
+            margin-top: 1.5rem;
+            font-size: 0.85rem;
+            color: var(--text-gray);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 1rem;
+        }
+
+        .projects-counter {
+            color: var(--text-gray);
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            align-self: center;
+        }
+
         /* ===== SOBRE MIM SECTION ===== */
         #sobre {
             background: radial-gradient(ellipse at center, rgba(255, 0, 128, 0.1) 0%, transparent 70%);
@@ -592,17 +636,6 @@
             gap: 1.5rem;
         }
 
-        .project-type-badge {
-            display: inline-block;
-            padding: 0.5rem 1rem;
-            background: var(--gradient-primary);
-            color: white;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 500;
-            margin-bottom: 1.5rem;
-        }
-
         .download-btn {
             background: var(--gradient-secondary);
             color: white;
@@ -673,7 +706,6 @@
             box-shadow: 0 20px 40px rgba(255, 0, 128, 0.4);
         }
 
-        /* ===== ESTILOS ADICIONAIS PARA ELEMENTOS DE PROJETO ===== */
         .project-actions {
             display: flex;
             gap: 0.75rem;
@@ -708,52 +740,6 @@
         .delete-btn:hover {
             background: #b91c1c;
             transform: translateY(-2px);
-        }
-
-        .project-meta {
-            margin-top: 1.5rem;
-            font-size: 0.85rem;
-            color: var(--text-gray);
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            padding-top: 1rem;
-        }
-
-        .status-indicator {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.9rem;
-            margin-bottom: 1rem;
-            font-weight: 500;
-        }
-
-        .tech-tags {
-            margin: 1rem 0;
-            font-size: 0.9rem;
-            color: var(--text-gray);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .files-section {
-            margin: 1.5rem 0;
-            padding: 1rem;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 8px;
-        }
-
-        .files-section strong {
-            color: var(--primary-color);
-            display: block;
-            margin-bottom: 0.75rem;
-        }
-
-        .projects-counter {
-            color: var(--text-gray);
-            font-size: 1.1rem;
-            margin-bottom: 2rem;
-            align-self: center;
         }
 
         /* ===== RESPONSIVIDADE ===== */
@@ -887,7 +873,7 @@
             </button>
 
             <div class="projects-grid" id="projectsGrid">
-                <!-- Projetos iniciais serão carregados automaticamente -->
+                <!-- Projetos serão carregados aqui pelo JavaScript -->
             </div>
         </section>
 
@@ -981,6 +967,7 @@
                         <option value="tool">🔧 Ferramenta</option>
                         <option value="video">📹 Vídeo/Canal</option>
                         <option value="document">📄 Documento</option>
+                        <option value="modpack">🎮 Modpack</option>
                         <option value="other">🚀 Outro</option>
                     </select>
                 </div>
@@ -1038,330 +1025,95 @@
 
     <script>
         // ===== SISTEMA DE ARMAZENAMENTO PERSISTENTE GLOBAL =====
-        // Base de dados de projetos que fica persistente para todos os usuários
+        // Base de dados de projetos reais do Natan - SEMPRE ATUALIZADOS
         const PERSISTENT_PROJECTS = [
             {
                 id: 1,
-                title: "Sistema de Gestão Escolar",
+                title: "NatanAI",
                 type: "website",
-                description: "Sistema completo para gestão de escola com controle de alunos, professores, notas e frequência. Interface moderna e responsiva.",
+                description: "Um site com uma IA básica desenvolvida para demonstrar capacidades de inteligência artificial. Interface intuitiva e respostas inteligentes.",
                 image: "",
-                link: "https://github.com/natan-borges/escola-system",
-                technologies: "React, Node.js, MongoDB",
+                link: "https://natanai.netlify.app",
+                technologies: "JavaScript, HTML5, CSS3, AI API",
                 status: "completed",
                 files: [],
-                dateCreated: "15/08/2025",
-                dateUpdated: "15/08/2025"
+                dateCreated: "20/08/2025",
+                dateUpdated: "24/08/2025"
             },
             {
                 id: 2,
-                title: "Bot Discord Multifunções",
-                type: "bot",
-                description: "Bot para Discord com comandos de moderação, música, jogos e economia virtual. Suporta múltiplos servidores simultaneamente.",
+                title: "MostraVIP",
+                type: "website",
+                description: "Um site com um quiz e IA sobre a amazonia equatoriana e colombia um projeto escola. Plataforma educativa interativa sobre biodiversidade e cultura.",
                 image: "",
-                link: "https://discord.gg/exemplo",
-                technologies: "Discord.js, Node.js, SQLite",
-                status: "inprogress",
+                link: "https://mostravip.onrender.com",
+                technologies: "Node.js, Express, AI Integration, Quiz System",
+                status: "completed",
                 files: [],
-                dateCreated: "10/08/2025",
-                dateUpdated: "20/08/2025"
+                dateCreated: "15/08/2025",
+                dateUpdated: "22/08/2025"
             },
             {
                 id: 3,
-                title: "API de Criptografia",
-                type: "api",
-                description: "API REST para criptografia e descriptografia de dados usando algoritmos modernos. Documentação completa incluída.",
+                title: "NatanBOT",
+                type: "bot",
+                description: "Um bot discord com economia, jogo, diversão, moderação, Sorteios, Aniversários, mensagens automaticas, Sugestões e lembrets. Bot completo e multifuncional.",
                 image: "",
-                link: "https://api.natan-crypto.com",
-                technologies: "Python, FastAPI, Cryptography",
+                link: "https://discord.com/oauth2/authorize?client_id=1386069955870724096",
+                technologies: "Discord.js, Node.js, Database, Economy System",
                 status: "completed",
                 files: [],
-                dateCreated: "05/08/2025",
-                dateUpdated: "12/08/2025"
+                dateCreated: "10/08/2025",
+                dateUpdated: "24/08/2025"
             },
             {
                 id: 4,
-                title: "Jogo Snake Multiplayer",
-                type: "game",
-                description: "Versão moderna do clássico Snake com modo multiplayer online. Interface limpa e controles responsivos.",
+                title: "Delux GTA V",
+                type: "modpack",
+                description: "Um modpack completo para GTA V que transforma o jogo em uma experiência ultra-realista com mods de empregos, crimes, carros, gráficos melhorados e muito mais. Simulação completa da vida real.",
                 image: "",
-                link: "https://snake-multiplayer.natan.dev",
-                technologies: "JavaScript, Socket.io, HTML5 Canvas",
-                status: "completed",
+                link: "https://deluxgtav.netlify.app",
+                technologies: "GTA V Mods, Graphics Enhancement, Gameplay Overhaul, Realistic Physics",
+                status: "inprogress",
                 files: [],
-                dateCreated: "01/08/2025",
-                dateUpdated: "08/08/2025"
+                dateCreated: "18/08/2025",
+                dateUpdated: "24/08/2025"
             }
         ];
 
-        // Array que manterá todos os projetos (iniciais + novos)
-        let allProjects = [...PERSISTENT_PROJECTS];
-        let currentProjectFiles = [];
+        // ===== SISTEMA DE GERENCIAMENTO DE PROJETOS =====
+        let projects = [...PERSISTENT_PROJECTS];
+        let editingProjectId = null;
 
-        // ===== NAVEGAÇÃO SUAVE =====
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
+        // Inicialização quando a página carregar
+        document.addEventListener('DOMContentLoaded', function() {
+            loadProjects();
+            setupEventListeners();
+            updateProjectCounter();
         });
 
-        // ===== ANIMAÇÕES DE SCROLL =====
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.animationDelay = '0.2s';
-                    entry.target.classList.add('fade-in');
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('.fade-in').forEach(el => {
-            observer.observe(el);
-        });
-
-        // ===== GERENCIAMENTO DO MODAL =====
-        const modal = document.getElementById('projectModal');
-        const projectForm = document.getElementById('projectForm');
-        const projectsGrid = document.getElementById('projectsGrid');
-        const projectCount = document.getElementById('projectCount');
-
-        function updateProjectCount() {
-            projectCount.textContent = allProjects.length;
-        }
-
-        function openModal() {
-            modal.style.display = 'block';
-            document.getElementById('projectTitle').focus();
-        }
-
-        function closeModal() {
-            modal.style.display = 'none';
-            projectForm.reset();
-            document.getElementById('fileInfo').style.display = 'none';
-            document.getElementById('fileInfo').innerHTML = '';
-            currentProjectFiles = [];
+        // Função para carregar e exibir projetos
+        function loadProjects() {
+            const projectsGrid = document.getElementById('projectsGrid');
             
-            if (projectForm.dataset.editingId) {
-                delete projectForm.dataset.editingId;
-                document.querySelector('.submit-btn').textContent = 'Adicionar Projeto';
-                document.querySelector('.modal-title').textContent = 'Adicionar Novo Projeto';
-            }
-        }
-
-        window.addEventListener('click', function(event) {
-            if (event.target === modal) {
-                closeModal();
-            }
-        });
-
-        document.addEventListener('keydown', function(event) {
-            if (event.key === 'Escape' && modal.style.display === 'block') {
-                closeModal();
-            }
-        });
-
-        // ===== GERENCIAMENTO DE ARQUIVOS =====
-        const fileUploadArea = document.getElementById('fileUploadArea');
-        const fileInput = document.getElementById('projectFiles');
-        const fileInfo = document.getElementById('fileInfo');
-
-        fileUploadArea.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            fileUploadArea.classList.add('dragover');
-        });
-
-        fileUploadArea.addEventListener('dragleave', () => {
-            fileUploadArea.classList.remove('dragover');
-        });
-
-        fileUploadArea.addEventListener('drop', (e) => {
-            e.preventDefault();
-            fileUploadArea.classList.remove('dragover');
-            const files = e.dataTransfer.files;
-            handleFiles(files);
-        });
-
-        fileInput.addEventListener('change', (e) => {
-            handleFiles(e.target.files);
-        });
-
-        function handleFiles(files) {
-            if (files.length > 0) {
-                const fileNames = Array.from(files).map(file => file.name).join(', ');
-                const totalSize = Array.from(files).reduce((total, file) => total + file.size, 0);
-                const sizeText = formatFileSize(totalSize);
-                
-                fileInfo.innerHTML = `
-                    <strong>📁 ${files.length} arquivo(s) selecionado(s):</strong><br>
-                    ${fileNames}<br>
-                    <small>Tamanho total: ${sizeText}</small>
+            if (projects.length === 0) {
+                projectsGrid.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 4rem 2rem; color: var(--text-gray);">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">🚀</div>
+                        <h3 style="font-size: 1.5rem; margin-bottom: 1rem; color: var(--primary-color);">Nenhum projeto encontrado</h3>
+                        <p>Adicione seu primeiro projeto clicando no botão acima!</p>
+                    </div>
                 `;
-                fileInfo.style.display = 'block';
-                
-                convertFilesToBase64(files);
-            }
-        }
-
-        function formatFileSize(bytes) {
-            if (bytes === 0) return '0 Bytes';
-            const k = 1024;
-            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-            const i = Math.floor(Math.log(bytes) / Math.log(k));
-            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-        }
-
-        function convertFilesToBase64(files) {
-            currentProjectFiles = [];
-            const promises = Array.from(files).map(file => {
-                return new Promise((resolve) => {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        currentProjectFiles.push({
-                            name: file.name,
-                            type: file.type,
-                            size: file.size,
-                            data: e.target.result
-                        });
-                        resolve();
-                    };
-                    reader.readAsDataURL(file);
-                });
-            });
-            
-            Promise.all(promises).then(() => {
-                console.log(`📁 ${currentProjectFiles.length} arquivos processados`);
-            });
-        }
-
-        // ===== VALIDAÇÃO DE FORMULÁRIO =====
-        function validateForm(formData) {
-            const title = formData.get('title').trim();
-            const description = formData.get('description').trim();
-            const image = formData.get('image').trim();
-            const link = formData.get('link').trim();
-            const type = formData.get('type');
-            
-            if (title.length < 3) {
-                showNotification('❌ Título deve ter pelo menos 3 caracteres');
-                return false;
-            }
-            
-            if (description.length < 10) {
-                showNotification('❌ Descrição deve ter pelo menos 10 caracteres');
-                return false;
-            }
-            
-            if (!type) {
-                showNotification('❌ Por favor, selecione o tipo do projeto');
-                return false;
-            }
-            
-            if (image && !isValidURL(image)) {
-                showNotification('❌ URL da imagem inválida');
-                return false;
-            }
-            
-            if (!link || link.trim() === '') {
-                showNotification('❌ Link do projeto é obrigatório');
-                return false;
-            }
-            
-            if (!isValidURL(link)) {
-                showNotification('❌ URL do projeto inválida');
-                return false;
-            }
-            
-            return true;
-        }
-
-        function isValidURL(string) {
-            try {
-                new URL(string);
-                return true;
-            } catch (_) {
-                return false;
-            }
-        }
-
-        // ===== ADICIONAR/EDITAR PROJETO =====
-        projectForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const formData = new FormData(projectForm);
-            
-            if (!validateForm(formData)) {
                 return;
             }
-            
-            const isEditing = projectForm.dataset.editingId;
-            
-            if (isEditing) {
-                const projectId = parseInt(isEditing);
-                const projectIndex = allProjects.findIndex(p => p.id === projectId);
-                
-                if (projectIndex !== -1) {
-                    allProjects[projectIndex] = {
-                        ...allProjects[projectIndex],
-                        title: formData.get('title').trim(),
-                        type: formData.get('type'),
-                        description: formData.get('description').trim(),
-                        image: formData.get('image').trim(),
-                        link: formData.get('link').trim(),
-                        technologies: formData.get('technologies').trim(),
-                        status: formData.get('status'),
-                        files: currentProjectFiles.length > 0 ? [...currentProjectFiles] : allProjects[projectIndex].files || [],
-                        dateUpdated: new Date().toLocaleDateString('pt-BR')
-                    };
-                    
-                    reloadProjectsGrid();
-                    showNotification('✅ Projeto atualizado com sucesso!');
-                }
-                
-            } else {
-                const projectData = {
-                    id: Date.now(),
-                    title: formData.get('title').trim(),
-                    type: formData.get('type'),
-                    description: formData.get('description').trim(),
-                    image: formData.get('image').trim(),
-                    link: formData.get('link').trim(),
-                    technologies: formData.get('technologies').trim(),
-                    status: formData.get('status'),
-                    files: currentProjectFiles.length > 0 ? [...currentProjectFiles] : [],
-                    dateCreated: new Date().toLocaleDateString('pt-BR'),
-                    dateUpdated: new Date().toLocaleDateString('pt-BR')
-                };
-                
-                allProjects.push(projectData);
-                createProjectCard(projectData);
-                updateProjectCount();
-                showNotification('✅ Projeto adicionado com sucesso!');
-            }
-            
-            closeModal();
-            currentProjectFiles = [];
-        });
 
-        // ===== CRIAR CARD DE PROJETO =====
+            projectsGrid.innerHTML = projects.map(project => createProjectCard(project)).join('');
+            updateProjectCounter();
+        }
+
+        // Função para criar o HTML de um card de projeto
         function createProjectCard(project) {
-            const card = document.createElement('div');
-            card.className = 'project-card fade-in';
-            card.style.animationDelay = '0s';
-            card.dataset.projectId = project.id;
-            
-            const typeIcons = {
+            const typeEmojis = {
                 website: '🌐',
                 app: '📱',
                 bot: '🤖',
@@ -1370,234 +1122,293 @@
                 tool: '🔧',
                 video: '📹',
                 document: '📄',
+                modpack: '🎮',
                 other: '🚀'
             };
-            
-            const statusColors = {
-                completed: '#10b981',
-                inprogress: '#f59e0b',
-                planning: '#6366f1',
-                paused: '#6b7280'
-            };
-            
-            const statusTexts = {
-                completed: 'Concluído',
-                inprogress: 'Em Desenvolvimento',
-                planning: 'Planejando',
-                paused: 'Pausado'
+
+            const statusEmojis = {
+                completed: '✅ Concluído',
+                inprogress: '🔄 Em Desenvolvimento',
+                planning: '📋 Planejando',
+                paused: '⏸️ Pausado'
             };
 
-            const linkText = getLinkText(project.link);
-            
-            card.innerHTML = `
-                ${project.type ? `<div class="project-type-badge">${typeIcons[project.type] || '🚀'} ${project.type.toUpperCase()}</div>` : ''}
-                
-                <div class="project-image" ${project.image ? `style="background-image: url('${project.image}'); background-size: cover; background-position: center;"` : ''}>
-                    ${!project.image ? (typeIcons[project.type] || '🚀') + ' ' + project.title : ''}
-                </div>
-                
-                <h3 class="project-title">${project.title}</h3>
-                
-                ${project.status ? `<div class="status-indicator" style="color: ${statusColors[project.status]};">● ${statusTexts[project.status]}</div>` : ''}
-                
-                <p class="project-description">${project.description}</p>
-                
-                ${project.technologies ? `<div class="tech-tags">🔧 ${project.technologies}</div>` : ''}
-                
-                ${project.files && project.files.length > 0 ? `
-                    <div class="files-section">
-                        <strong>📁 Arquivos (${project.files.length}):</strong>
-                        ${project.files.map(file => `
-                            <a href="#" class="download-btn" onclick="downloadFile('${file.data}', '${file.name}')">
-                                📄 ${file.name}
-                            </a>
-                        `).join('')}
+            return `
+                <div class="project-card fade-in">
+                    <div class="project-type-badge">
+                        ${typeEmojis[project.type] || '🚀'} ${project.type.charAt(0).toUpperCase() + project.type.slice(1)}
                     </div>
-                ` : ''}
-                
-                <div class="project-actions">
-                    <a href="${project.link}" class="project-link" target="_blank">
-                        ${linkText}
+                    
+                    <div class="project-image">
+                        ${project.image ? `<img src="${project.image}" alt="${project.title}" style="width: 100%; height: 100%; object-fit: cover; border-radius: inherit;">` : 
+                          `${typeEmojis[project.type] || '🚀'}<br><small style="font-size: 0.9rem; opacity: 0.8;">Imagem em breve</small>`}
+                    </div>
+                    
+                    <h3 class="project-title">${project.title}</h3>
+                    
+                    <div class="status-indicator">
+                        ${statusEmojis[project.status] || statusEmojis.completed}
+                    </div>
+                    
+                    <p class="project-description">${project.description}</p>
+                    
+                    ${project.technologies ? `
+                        <div class="tech-tags">
+                            <strong>🛠️ Tecnologias:</strong> ${project.technologies}
+                        </div>
+                    ` : ''}
+                    
+                    ${project.files && project.files.length > 0 ? `
+                        <div class="files-section">
+                            <strong>📎 Arquivos Anexados:</strong>
+                            ${project.files.map(file => `
+                                <a href="#" class="download-btn" onclick="downloadFile('${file.name}')">${file.name}</a>
+                            `).join('')}
+                        </div>
+                    ` : ''}
+                    
+                    <a href="${project.link}" class="project-link" target="_blank" rel="noopener">
+                        Ver Projeto →
                     </a>
                     
-                    <button onclick="editProject(${project.id})" class="edit-btn">
-                        ✏️ Editar
-                    </button>
+                    <div class="project-actions">
+                        <button class="edit-btn" onclick="editProject(${project.id})">
+                            ✏️ Editar
+                        </button>
+                        <button class="delete-btn" onclick="deleteProject(${project.id})">
+                            🗑️ Excluir
+                        </button>
+                    </div>
                     
-                    <button onclick="deleteProject(${project.id})" class="delete-btn">
-                        🗑️ Excluir
-                    </button>
+                    <div class="project-meta">
+                        📅 Criado em: ${project.dateCreated}<br>
+                        🔄 Atualizado: ${project.dateUpdated}
+                    </div>
                 </div>
-                
-                ${project.dateCreated ? `<div class="project-meta">Criado em: ${project.dateCreated}${project.dateUpdated !== project.dateCreated ? ` • Atualizado: ${project.dateUpdated}` : ''}</div>` : ''}
             `;
-            
-            projectsGrid.appendChild(card);
-            
-            setTimeout(() => {
-                card.classList.add('fade-in');
-            }, 100);
         }
 
-        function getLinkText(link) {
-            if (!link) return 'Link não disponível';
-            
-            if (link.includes('discord.gg') || link.includes('discord.com')) return '🤖 Abrir Discord';
-            if (link.includes('youtube.com') || link.includes('youtu.be')) return '📹 Ver no YouTube';
-            if (link.includes('github.com')) return '💻 Ver no GitHub';
-            if (link.includes('instagram.com')) return '📷 Ver no Instagram';
-            if (link.includes('twitter.com') || link.includes('x.com')) return '🐦 Ver no Twitter/X';
-            if (link.includes('linkedin.com')) return '💼 Ver no LinkedIn';
-            if (link.includes('tiktok.com')) return '🎵 Ver no TikTok';
-            
-            return '🔗 Abrir Projeto';
+        // Função para atualizar o contador de projetos
+        function updateProjectCounter() {
+            const counter = document.getElementById('projectCount');
+            if (counter) {
+                counter.textContent = projects.length;
+            }
         }
 
-        function editProject(projectId) {
-            const project = allProjects.find(p => p.id === projectId);
-            if (project) {
-                document.getElementById('projectTitle').value = project.title;
-                document.getElementById('projectType').value = project.type || '';
-                document.getElementById('projectDescription').value = project.description;
-                document.getElementById('projectImage').value = project.image || '';
-                document.getElementById('projectLink').value = project.link || '';
-                document.getElementById('projectTech').value = project.technologies || '';
-                document.getElementById('projectStatus').value = project.status || 'completed';
+        // Função para abrir o modal
+        function openModal() {
+            document.getElementById('projectModal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+            
+            if (editingProjectId) {
+                const project = projects.find(p => p.id === editingProjectId);
+                if (project) {
+                    fillFormWithProject(project);
+                    document.querySelector('.modal-title').textContent = 'Editar Projeto';
+                    document.querySelector('.submit-btn').textContent = 'Salvar Alterações';
+                }
+            } else {
+                document.getElementById('projectForm').reset();
+                document.querySelector('.modal-title').textContent = 'Adicionar Novo Projeto';
+                document.querySelector('.submit-btn').textContent = 'Adicionar Projeto';
+            }
+        }
+
+        // Função para fechar o modal
+        function closeModal() {
+            document.getElementById('projectModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+            editingProjectId = null;
+            document.getElementById('projectForm').reset();
+        }
+
+        // Função para editar projeto
+        function editProject(id) {
+            editingProjectId = id;
+            openModal();
+        }
+
+        // Função para excluir projeto
+        function deleteProject(id) {
+            if (confirm('Tem certeza que deseja excluir este projeto? Esta ação não pode ser desfeita.')) {
+                projects = projects.filter(p => p.id !== id);
+                loadProjects();
+                showNotification('Projeto excluído com sucesso!', 'error');
+            }
+        }
+
+        // Função para preencher o formulário com dados do projeto
+        function fillFormWithProject(project) {
+            document.getElementById('projectTitle').value = project.title;
+            document.getElementById('projectType').value = project.type;
+            document.getElementById('projectDescription').value = project.description;
+            document.getElementById('projectImage').value = project.image || '';
+            document.getElementById('projectLink').value = project.link;
+            document.getElementById('projectTech').value = project.technologies || '';
+            document.getElementById('projectStatus').value = project.status;
+        }
+
+        // Configurar event listeners
+        function setupEventListeners() {
+            // Formulário de projeto
+            document.getElementById('projectForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const formData = new FormData(this);
+                const projectData = Object.fromEntries(formData.entries());
                 
-                if (project.files && project.files.length > 0) {
-                    currentProjectFiles = [...project.files];
-                    fileInfo.innerHTML = `
-                        <strong>📁 ${project.files.length} arquivo(s) já salvos no projeto</strong><br>
-                        <small>Você pode adicionar mais arquivos ou manter os existentes</small>
-                    `;
-                    fileInfo.style.display = 'block';
+                if (editingProjectId) {
+                    updateProject(editingProjectId, projectData);
+                } else {
+                    addProject(projectData);
                 }
                 
-                projectForm.dataset.editingId = projectId;
-                document.querySelector('.submit-btn').textContent = 'Atualizar Projeto';
-                document.querySelector('.modal-title').textContent = 'Editar Projeto';
-                
-                openModal();
-            }
-        }
+                closeModal();
+            });
 
-        function deleteProject(projectId) {
-            if (confirm('Tem certeza que deseja excluir este projeto?')) {
-                allProjects = allProjects.filter(p => p.id !== projectId);
-                reloadProjectsGrid();
-                updateProjectCount();
-                showNotification('🗑️ Projeto excluído com sucesso!');
-            }
-        }
+            // Fechar modal clicando fora dele
+            document.getElementById('projectModal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeModal();
+                }
+            });
 
-        function reloadProjectsGrid() {
-            projectsGrid.innerHTML = '';
-            allProjects.forEach(project => createProjectCard(project));
-            updateProjectCount();
-        }
-
-        function downloadFile(dataUrl, filename) {
-            const link = document.createElement('a');
-            link.href = dataUrl;
-            link.download = filename;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
+            // Upload de arquivos
+            const fileInput = document.getElementById('projectFiles');
+            const fileInfo = document.getElementById('fileInfo');
             
-            showNotification(`📥 Download de "${filename}" iniciado!`);
+            fileInput.addEventListener('change', function(e) {
+                const files = Array.from(e.target.files);
+                if (files.length > 0) {
+                    fileInfo.style.display = 'block';
+                    fileInfo.innerHTML = `
+                        <strong>Arquivos selecionados:</strong><br>
+                        ${files.map(file => `📄 ${file.name} (${formatFileSize(file.size)})`).join('<br>')}
+                    `;
+                } else {
+                    fileInfo.style.display = 'none';
+                }
+            });
+
+            // Navegação suave
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
         }
 
-        // ===== SISTEMA DE BACKUP =====
-        function exportProjects() {
-            const dataToExport = {
-                portfolioData: {
-                    owner: "Natan",
-                    exportDate: new Date().toISOString(),
-                    version: "3.0",
-                    projectsCount: allProjects.length
-                },
-                projects: allProjects
+        // Função para adicionar novo projeto
+        function addProject(projectData) {
+            const newProject = {
+                id: Date.now(),
+                title: projectData.title,
+                type: projectData.type,
+                description: projectData.description,
+                image: projectData.image || '',
+                link: projectData.link,
+                technologies: projectData.technologies || '',
+                status: projectData.status || 'completed',
+                files: [], // Arquivos seriam processados aqui em um sistema real
+                dateCreated: new Date().toLocaleDateString('pt-BR'),
+                dateUpdated: new Date().toLocaleDateString('pt-BR')
             };
-            
-            const dataStr = JSON.stringify(dataToExport, null, 2);
-            const dataBlob = new Blob([dataStr], { type: 'application/json' });
-            
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(dataBlob);
-            link.download = `natan-portfolio-backup-${new Date().toISOString().split('T')[0]}.json`;
-            
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            
-            URL.revokeObjectURL(link.href);
-            
-            showNotification('💾 Backup exportado com sucesso!');
+
+            projects.unshift(newProject);
+            loadProjects();
+            showNotification('Projeto adicionado com sucesso!', 'success');
         }
 
+        // Função para atualizar projeto existente
+        function updateProject(id, projectData) {
+            const projectIndex = projects.findIndex(p => p.id === id);
+            if (projectIndex !== -1) {
+                projects[projectIndex] = {
+                    ...projects[projectIndex],
+                    title: projectData.title,
+                    type: projectData.type,
+                    description: projectData.description,
+                    image: projectData.image || projects[projectIndex].image,
+                    link: projectData.link,
+                    technologies: projectData.technologies || '',
+                    status: projectData.status || 'completed',
+                    dateUpdated: new Date().toLocaleDateString('pt-BR')
+                };
+                
+                loadProjects();
+                showNotification('Projeto atualizado com sucesso!', 'success');
+            }
+        }
+
+        // Função para exportar projetos como JSON
+        function exportProjects() {
+            const dataStr = JSON.stringify(projects, null, 2);
+            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+            
+            const exportFileDefaultName = `natan_projects_backup_${new Date().toISOString().split('T')[0]}.json`;
+            
+            const linkElement = document.createElement('a');
+            linkElement.setAttribute('href', dataUri);
+            linkElement.setAttribute('download', exportFileDefaultName);
+            linkElement.click();
+            
+            showNotification('Backup exportado com sucesso!', 'success');
+        }
+
+        // Função para importar projetos
         function importProjects() {
             document.getElementById('importFile').click();
         }
 
+        // Função para lidar com o arquivo de importação
         function handleImportFile(event) {
             const file = event.target.files[0];
             if (!file) return;
-            
-            if (file.type !== 'application/json') {
-                showNotification('❌ Por favor, selecione um arquivo JSON válido');
-                return;
-            }
-            
+
             const reader = new FileReader();
             reader.onload = function(e) {
                 try {
-                    const importedData = JSON.parse(e.target.result);
+                    const importedProjects = JSON.parse(e.target.result);
                     
-                    if (importedData.projects && Array.isArray(importedData.projects)) {
-                        if (confirm(`Importar ${importedData.projects.length} projetos? Isso adicionará aos projetos existentes.`)) {
-                            // Mescla projetos importados com os existentes, evitando duplicatas
-                            const newProjects = importedData.projects.filter(importedProject => 
-                                !allProjects.some(existingProject => existingProject.title === importedProject.title)
-                            );
-                            
-                            allProjects = [...allProjects, ...newProjects];
-                            reloadProjectsGrid();
-                            showNotification(`📂 ${newProjects.length} novos projetos importados com sucesso!`);
-                        }
-                    } else {
-                        showNotification('❌ Arquivo de backup inválido');
+                    if (confirm(`Importar ${importedProjects.length} projetos? Isso substituirá todos os projetos atuais.`)) {
+                        projects = importedProjects;
+                        loadProjects();
+                        showNotification('Projetos importados com sucesso!', 'success');
                     }
                 } catch (error) {
-                    showNotification('❌ Erro ao ler arquivo JSON');
-                    console.error('Erro no import:', error);
+                    showNotification('Erro ao importar arquivo. Verifique se é um JSON válido.', 'error');
                 }
             };
             reader.readAsText(file);
-            
-            event.target.value = '';
         }
 
-        // ===== SISTEMA DE NOTIFICAÇÕES =====
-        function showNotification(message) {
+        // Função para mostrar notificações
+        function showNotification(message, type = 'info') {
             const notification = document.createElement('div');
             notification.style.cssText = `
                 position: fixed;
-                top: 120px;
-                right: 30px;
-                background: linear-gradient(135deg, #00f5ff, #7c3aed);
+                top: 20px;
+                right: 20px;
+                background: ${type === 'success' ? 'var(--gradient-primary)' : 
+                           type === 'error' ? '#dc2626' : 'var(--bg-card)'};
                 color: white;
                 padding: 1rem 2rem;
                 border-radius: 12px;
-                box-shadow: 0 15px 35px rgba(0, 245, 255, 0.4);
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
                 z-index: 3000;
                 font-weight: 500;
-                font-family: 'Inter', sans-serif;
                 transform: translateX(400px);
-                transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-                max-width: 300px;
+                transition: transform 0.3s ease;
             `;
-            notification.textContent = message;
             
+            notification.textContent = message;
             document.body.appendChild(notification);
             
             setTimeout(() => {
@@ -1607,45 +1418,47 @@
             setTimeout(() => {
                 notification.style.transform = 'translateX(400px)';
                 setTimeout(() => {
-                    if (document.body.contains(notification)) {
-                        document.body.removeChild(notification);
-                    }
-                }, 400);
-            }, 4000);
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
         }
 
-        // ===== INICIALIZAÇÃO =====
-        document.addEventListener('DOMContentLoaded', function() {
-            // Carrega todos os projetos iniciais
-            reloadProjectsGrid();
-            
-            const elementsToAnimate = document.querySelectorAll('.project-card, .contact-item, .hero-content, .sobre-content');
-            elementsToAnimate.forEach((element, index) => {
-                element.style.animationDelay = `${index * 0.1}s`;
+        // Função para formatar tamanho do arquivo
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        // Função placeholder para download de arquivos
+        function downloadFile(filename) {
+            showNotification(`Download de ${filename} não implementado (seria necessário backend real)`, 'info');
+        }
+
+        // Adicionar animações aos elementos quando entram na viewport
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationDelay = `${Math.random() * 0.3}s`;
+                    entry.target.classList.add('fade-in');
+                }
             });
-            
-            console.log(`🚀 Portfólio carregado com ${allProjects.length} projetos (${PERSISTENT_PROJECTS.length} permanentes)!`);
-            showNotification('🎉 Portfólio carregado! Projetos salvos permanentemente para todos os usuários!');
-        });
+        }, observerOptions);
 
-        // ===== EFEITOS VISUAIS =====
-        window.addEventListener('scroll', () => {
-            const scrolled = window.pageYOffset;
-            const parallaxElements = document.querySelectorAll('.hero-content');
-            
-            parallaxElements.forEach(element => {
-                const speed = 0.3;
-                element.style.transform = `translateY(${scrolled * speed}px)`;
-            });
-        });
-
-        // Prevenir comportamentos padrão de drag/drop na página
-        document.addEventListener('dragover', (e) => {
-            e.preventDefault();
-        });
-
-        document.addEventListener('drop', (e) => {
-            e.preventDefault();
+        // Observar elementos para animação
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                document.querySelectorAll('.project-card, .contact-item').forEach(el => {
+                    observer.observe(el);
+                });
+            }, 500);
         });
     </script>
 </body>
