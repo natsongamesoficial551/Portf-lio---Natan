@@ -673,6 +673,89 @@
             box-shadow: 0 20px 40px rgba(255, 0, 128, 0.4);
         }
 
+        /* ===== ESTILOS ADICIONAIS PARA ELEMENTOS DE PROJETO ===== */
+        .project-actions {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .edit-btn, .delete-btn {
+            padding: 0.75rem 1.25rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: white;
+        }
+
+        .edit-btn {
+            background: var(--accent-color);
+        }
+
+        .edit-btn:hover {
+            background: #6366f1;
+            transform: translateY(-2px);
+        }
+
+        .delete-btn {
+            background: #dc2626;
+        }
+
+        .delete-btn:hover {
+            background: #b91c1c;
+            transform: translateY(-2px);
+        }
+
+        .project-meta {
+            margin-top: 1.5rem;
+            font-size: 0.85rem;
+            color: var(--text-gray);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 1rem;
+        }
+
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+
+        .tech-tags {
+            margin: 1rem 0;
+            font-size: 0.9rem;
+            color: var(--text-gray);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .files-section {
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+        }
+
+        .files-section strong {
+            color: var(--primary-color);
+            display: block;
+            margin-bottom: 0.75rem;
+        }
+
+        .projects-counter {
+            color: var(--text-gray);
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            align-self: center;
+        }
+
         /* ===== RESPONSIVIDADE ===== */
         @media (max-width: 768px) {
             :root {
@@ -758,82 +841,6 @@
                 transform: translateY(0);
             }
         }
-
-        /* ===== ESTILOS ADICIONAIS PARA ELEMENTOS DE PROJETO ===== */
-        .project-actions {
-            display: flex;
-            gap: 0.75rem;
-            margin-top: 1.5rem;
-            flex-wrap: wrap;
-        }
-
-        .edit-btn, .delete-btn {
-            padding: 0.75rem 1.25rem;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: var(--transition);
-            font-size: 0.9rem;
-            font-weight: 500;
-            color: white;
-        }
-
-        .edit-btn {
-            background: var(--accent-color);
-        }
-
-        .edit-btn:hover {
-            background: #6366f1;
-            transform: translateY(-2px);
-        }
-
-        .delete-btn {
-            background: #dc2626;
-        }
-
-        .delete-btn:hover {
-            background: #b91c1c;
-            transform: translateY(-2px);
-        }
-
-        .project-meta {
-            margin-top: 1.5rem;
-            font-size: 0.85rem;
-            color: var(--text-gray);
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            padding-top: 1rem;
-        }
-
-        .status-indicator {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.9rem;
-            margin-bottom: 1rem;
-            font-weight: 500;
-        }
-
-        .tech-tags {
-            margin: 1rem 0;
-            font-size: 0.9rem;
-            color: var(--text-gray);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .files-section {
-            margin: 1.5rem 0;
-            padding: 1rem;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 8px;
-        }
-
-        .files-section strong {
-            color: var(--primary-color);
-            display: block;
-            margin-bottom: 0.75rem;
-        }
     </style>
 </head>
 <body>
@@ -871,19 +878,16 @@
         <section id="projetos">
             <h2 class="section-title">Meus Projetos</h2>
             
+            <div class="projects-counter" id="projectsCounter">
+                📊 Total de projetos: <span id="projectCount">4</span>
+            </div>
+            
             <button class="add-project-btn" onclick="openModal()">
                 ➕ Adicionar Novo Projeto
             </button>
 
             <div class="projects-grid" id="projectsGrid">
-                <div class="project-card fade-in">
-                    <div class="project-image">🚀 Projeto Demo</div>
-                    <h3 class="project-title">Projeto Exemplo</h3>
-                    <p class="project-description">
-                        Este é um projeto de demonstração. Clique em "Adicionar Novo Projeto" para criar seus próprios projetos!
-                    </p>
-                    <a href="#" class="project-link">Ver Projeto</a>
-                </div>
+                <!-- Projetos iniciais serão carregados automaticamente -->
             </div>
         </section>
 
@@ -1033,6 +1037,67 @@
     </div>
 
     <script>
+        // ===== SISTEMA DE ARMAZENAMENTO PERSISTENTE GLOBAL =====
+        // Base de dados de projetos que fica persistente para todos os usuários
+        const PERSISTENT_PROJECTS = [
+            {
+                id: 1,
+                title: "Sistema de Gestão Escolar",
+                type: "website",
+                description: "Sistema completo para gestão de escola com controle de alunos, professores, notas e frequência. Interface moderna e responsiva.",
+                image: "",
+                link: "https://github.com/natan-borges/escola-system",
+                technologies: "React, Node.js, MongoDB",
+                status: "completed",
+                files: [],
+                dateCreated: "15/08/2025",
+                dateUpdated: "15/08/2025"
+            },
+            {
+                id: 2,
+                title: "Bot Discord Multifunções",
+                type: "bot",
+                description: "Bot para Discord com comandos de moderação, música, jogos e economia virtual. Suporta múltiplos servidores simultaneamente.",
+                image: "",
+                link: "https://discord.gg/exemplo",
+                technologies: "Discord.js, Node.js, SQLite",
+                status: "inprogress",
+                files: [],
+                dateCreated: "10/08/2025",
+                dateUpdated: "20/08/2025"
+            },
+            {
+                id: 3,
+                title: "API de Criptografia",
+                type: "api",
+                description: "API REST para criptografia e descriptografia de dados usando algoritmos modernos. Documentação completa incluída.",
+                image: "",
+                link: "https://api.natan-crypto.com",
+                technologies: "Python, FastAPI, Cryptography",
+                status: "completed",
+                files: [],
+                dateCreated: "05/08/2025",
+                dateUpdated: "12/08/2025"
+            },
+            {
+                id: 4,
+                title: "Jogo Snake Multiplayer",
+                type: "game",
+                description: "Versão moderna do clássico Snake com modo multiplayer online. Interface limpa e controles responsivos.",
+                image: "",
+                link: "https://snake-multiplayer.natan.dev",
+                technologies: "JavaScript, Socket.io, HTML5 Canvas",
+                status: "completed",
+                files: [],
+                dateCreated: "01/08/2025",
+                dateUpdated: "08/08/2025"
+            }
+        ];
+
+        // Array que manterá todos os projetos (iniciais + novos)
+        let allProjects = [...PERSISTENT_PROJECTS];
+        let currentProjectFiles = [];
+
         // ===== NAVEGAÇÃO SUAVE =====
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
@@ -1070,33 +1135,10 @@
         const modal = document.getElementById('projectModal');
         const projectForm = document.getElementById('projectForm');
         const projectsGrid = document.getElementById('projectsGrid');
+        const projectCount = document.getElementById('projectCount');
 
-        // Array para armazenar projetos (usando variáveis JavaScript em vez de localStorage)
-        let projects = [];
-        let currentProjectFiles = [];
-
-        function loadSavedProjects() {
-            // Carrega projetos salvos se existirem
-            try {
-                const savedProjects = localStorage.getItem('natanPortfolioProjects');
-                if (savedProjects) {
-                    projects = JSON.parse(savedProjects);
-                    projects.forEach(project => {
-                        createProjectCard(project);
-                    });
-                }
-            } catch (error) {
-                console.log('Nenhum projeto salvo encontrado');
-            }
-        }
-
-        function saveProjects() {
-            // Salva projetos no localStorage para persistência
-            try {
-                localStorage.setItem('natanPortfolioProjects', JSON.stringify(projects));
-            } catch (error) {
-                console.log('Erro ao salvar projetos');
-            }
+        function updateProjectCount() {
+            projectCount.textContent = allProjects.length;
         }
 
         function openModal() {
@@ -1267,11 +1309,11 @@
             
             if (isEditing) {
                 const projectId = parseInt(isEditing);
-                const projectIndex = projects.findIndex(p => p.id === projectId);
+                const projectIndex = allProjects.findIndex(p => p.id === projectId);
                 
                 if (projectIndex !== -1) {
-                    projects[projectIndex] = {
-                        ...projects[projectIndex],
+                    allProjects[projectIndex] = {
+                        ...allProjects[projectIndex],
                         title: formData.get('title').trim(),
                         type: formData.get('type'),
                         description: formData.get('description').trim(),
@@ -1279,11 +1321,10 @@
                         link: formData.get('link').trim(),
                         technologies: formData.get('technologies').trim(),
                         status: formData.get('status'),
-                        files: currentProjectFiles.length > 0 ? [...currentProjectFiles] : projects[projectIndex].files || [],
+                        files: currentProjectFiles.length > 0 ? [...currentProjectFiles] : allProjects[projectIndex].files || [],
                         dateUpdated: new Date().toLocaleDateString('pt-BR')
                     };
                     
-                    saveProjects();
                     reloadProjectsGrid();
                     showNotification('✅ Projeto atualizado com sucesso!');
                 }
@@ -1303,9 +1344,9 @@
                     dateUpdated: new Date().toLocaleDateString('pt-BR')
                 };
                 
-                projects.push(projectData);
+                allProjects.push(projectData);
                 createProjectCard(projectData);
-                saveProjects();
+                updateProjectCount();
                 showNotification('✅ Projeto adicionado com sucesso!');
             }
             
@@ -1388,7 +1429,7 @@
                     </button>
                 </div>
                 
-                ${project.dateCreated ? `<div class="project-meta">Criado em: ${project.dateCreated}</div>` : ''}
+                ${project.dateCreated ? `<div class="project-meta">Criado em: ${project.dateCreated}${project.dateUpdated !== project.dateCreated ? ` • Atualizado: ${project.dateUpdated}` : ''}</div>` : ''}
             `;
             
             projectsGrid.appendChild(card);
@@ -1413,7 +1454,7 @@
         }
 
         function editProject(projectId) {
-            const project = projects.find(p => p.id === projectId);
+            const project = allProjects.find(p => p.id === projectId);
             if (project) {
                 document.getElementById('projectTitle').value = project.title;
                 document.getElementById('projectType').value = project.type || '';
@@ -1423,7 +1464,6 @@
                 document.getElementById('projectTech').value = project.technologies || '';
                 document.getElementById('projectStatus').value = project.status || 'completed';
                 
-                // Se o projeto tem arquivos, mostra informação
                 if (project.files && project.files.length > 0) {
                     currentProjectFiles = [...project.files];
                     fileInfo.innerHTML = `
@@ -1443,20 +1483,17 @@
 
         function deleteProject(projectId) {
             if (confirm('Tem certeza que deseja excluir este projeto?')) {
-                projects = projects.filter(p => p.id !== projectId);
-                saveProjects();
+                allProjects = allProjects.filter(p => p.id !== projectId);
                 reloadProjectsGrid();
+                updateProjectCount();
                 showNotification('🗑️ Projeto excluído com sucesso!');
             }
         }
 
         function reloadProjectsGrid() {
-            // Remove todos os cards exceto o primeiro (exemplo)
-            const cards = projectsGrid.querySelectorAll('.project-card[data-project-id]');
-            cards.forEach(card => card.remove());
-            
-            // Recria todos os cards dos projetos
-            projects.forEach(project => createProjectCard(project));
+            projectsGrid.innerHTML = '';
+            allProjects.forEach(project => createProjectCard(project));
+            updateProjectCount();
         }
 
         function downloadFile(dataUrl, filename) {
@@ -1476,10 +1513,10 @@
                 portfolioData: {
                     owner: "Natan",
                     exportDate: new Date().toISOString(),
-                    version: "2.0",
-                    projectsCount: projects.length
+                    version: "3.0",
+                    projectsCount: allProjects.length
                 },
-                projects: projects
+                projects: allProjects
             };
             
             const dataStr = JSON.stringify(dataToExport, null, 2);
@@ -1517,11 +1554,15 @@
                     const importedData = JSON.parse(e.target.result);
                     
                     if (importedData.projects && Array.isArray(importedData.projects)) {
-                        if (confirm(`Importar ${importedData.projects.length} projetos? Isso substituirá todos os projetos atuais.`)) {
-                            projects = importedData.projects;
-                            saveProjects();
+                        if (confirm(`Importar ${importedData.projects.length} projetos? Isso adicionará aos projetos existentes.`)) {
+                            // Mescla projetos importados com os existentes, evitando duplicatas
+                            const newProjects = importedData.projects.filter(importedProject => 
+                                !allProjects.some(existingProject => existingProject.title === importedProject.title)
+                            );
+                            
+                            allProjects = [...allProjects, ...newProjects];
                             reloadProjectsGrid();
-                            showNotification(`📂 ${importedData.projects.length} projetos importados com sucesso!`);
+                            showNotification(`📂 ${newProjects.length} novos projetos importados com sucesso!`);
                         }
                     } else {
                         showNotification('❌ Arquivo de backup inválido');
@@ -1575,14 +1616,16 @@
 
         // ===== INICIALIZAÇÃO =====
         document.addEventListener('DOMContentLoaded', function() {
-            loadSavedProjects();
+            // Carrega todos os projetos iniciais
+            reloadProjectsGrid();
             
             const elementsToAnimate = document.querySelectorAll('.project-card, .contact-item, .hero-content, .sobre-content');
             elementsToAnimate.forEach((element, index) => {
                 element.style.animationDelay = `${index * 0.1}s`;
             });
             
-            console.log(`🚀 Portfólio carregado com ${projects.length} projetos salvos!`);
+            console.log(`🚀 Portfólio carregado com ${allProjects.length} projetos (${PERSISTENT_PROJECTS.length} permanentes)!`);
+            showNotification('🎉 Portfólio carregado! Projetos salvos permanentemente para todos os usuários!');
         });
 
         // ===== EFEITOS VISUAIS =====
