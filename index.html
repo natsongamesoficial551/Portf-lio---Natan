@@ -1,0 +1,1609 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Natan - Desenvolvedor</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* ===== RESET E VARIÁVEIS ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Cores principais */
+            --primary-color: #00f5ff;
+            --secondary-color: #ff0080;
+            --accent-color: #7c3aed;
+            --bg-dark: #0a0a0f;
+            --bg-card: #1a1a2e;
+            --text-light: #e2e8f0;
+            --text-gray: #94a3b8;
+            --gradient-primary: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            --gradient-secondary: linear-gradient(135deg, var(--secondary-color), var(--accent-color));
+            
+            /* Tamanhos e espaçamentos */
+            --container-max: 1200px;
+            --border-radius: 16px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --section-padding: 5rem 2rem;
+            --element-spacing: 2rem;
+            --card-padding: 2rem;
+        }
+
+        /* ===== ESTILOS GLOBAIS ===== */
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-light);
+            line-height: 1.7;
+            overflow-x: hidden;
+            font-weight: 400;
+        }
+
+        /* Efeito de fundo animado */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 25% 25%, var(--primary-color)20 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, var(--secondary-color)20 0%, transparent 50%);
+            z-index: -1;
+            animation: backgroundPulse 8s ease-in-out infinite alternate;
+        }
+
+        @keyframes backgroundPulse {
+            0% { opacity: 0.1; }
+            100% { opacity: 0.3; }
+        }
+
+        /* ===== HEADER E NAVEGAÇÃO ===== */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(10, 10, 15, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 1000;
+            transition: var(--transition);
+        }
+
+        nav {
+            max-width: var(--container-max);
+            margin: 0 auto;
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.75rem;
+            font-weight: 700;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2.5rem;
+        }
+
+        .nav-menu a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: var(--transition);
+            position: relative;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient-primary);
+            transition: var(--transition);
+        }
+
+        .nav-menu a:hover::after {
+            width: 100%;
+        }
+
+        .nav-menu a:hover {
+            color: var(--primary-color);
+        }
+
+        /* ===== SEÇÕES PRINCIPAIS ===== */
+        main {
+            padding-top: 90px;
+        }
+
+        section {
+            min-height: 100vh;
+            padding: var(--section-padding);
+            max-width: var(--container-max);
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .section-content {
+            width: 100%;
+            text-align: center;
+        }
+
+        /* ===== HOME SECTION ===== */
+        #home {
+            background: radial-gradient(ellipse at center, rgba(124, 58, 237, 0.2) 0%, transparent 70%);
+            padding: 8rem 2rem 6rem;
+        }
+
+        .hero-content {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .avatar {
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            background: var(--gradient-primary);
+            margin: 0 auto 3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4.5rem;
+            animation: float 3s ease-in-out infinite;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .avatar::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(var(--primary-color), var(--secondary-color), var(--accent-color), var(--primary-color));
+            animation: rotate 4s linear infinite;
+            z-index: -1;
+        }
+
+        .avatar::after {
+            content: '';
+            position: absolute;
+            inset: 4px;
+            background: var(--bg-dark);
+            border-radius: 50%;
+            z-index: -1;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -1px;
+            line-height: 1.1;
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            color: var(--text-gray);
+            margin-bottom: 3rem;
+            line-height: 1.8;
+            font-weight: 400;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            margin-bottom: 3rem;
+        }
+
+        /* ===== PROJETOS SECTION ===== */
+        #projetos {
+            flex-direction: column;
+            align-items: flex-start;
+            padding: 6rem 2rem;
+        }
+
+        .section-title {
+            font-size: 3rem;
+            margin-bottom: 4rem;
+            background: var(--gradient-secondary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            align-self: center;
+            font-weight: 700;
+            letter-spacing: -1px;
+        }
+
+        .add-project-btn {
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            padding: 1.2rem 2.5rem;
+            border-radius: var(--border-radius);
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-bottom: 3rem;
+            align-self: center;
+            font-family: inherit;
+        }
+
+        .add-project-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 25px 50px rgba(0, 245, 255, 0.4);
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 2.5rem;
+            width: 100%;
+        }
+
+        .project-card {
+            background: var(--bg-card);
+            border-radius: var(--border-radius);
+            padding: var(--card-padding);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient-primary);
+            opacity: 0;
+            transition: var(--transition);
+            z-index: -1;
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 30px 60px rgba(0, 245, 255, 0.25);
+        }
+
+        .project-card:hover::before {
+            opacity: 0.1;
+        }
+
+        .project-image {
+            width: 100%;
+            height: 220px;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            object-fit: cover;
+            background: var(--gradient-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.3rem;
+            font-weight: 500;
+        }
+
+        .project-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+            line-height: 1.3;
+        }
+
+        .project-description {
+            color: var(--text-gray);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .project-link {
+            display: inline-block;
+            padding: 1rem 1.75rem;
+            background: var(--gradient-secondary);
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: var(--transition);
+            font-size: 0.95rem;
+        }
+
+        .project-link:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 30px rgba(255, 0, 128, 0.4);
+        }
+
+        /* ===== SOBRE MIM SECTION ===== */
+        #sobre {
+            background: radial-gradient(ellipse at center, rgba(255, 0, 128, 0.1) 0%, transparent 70%);
+            padding: 6rem 2rem;
+        }
+
+        .sobre-content {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .sobre-text {
+            font-size: 1.3rem;
+            line-height: 2;
+            color: var(--text-gray);
+            text-align: left;
+            font-weight: 400;
+        }
+
+        /* ===== CONTATO SECTION ===== */
+        #contato {
+            padding: 6rem 2rem;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2.5rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .contact-item {
+            background: var(--bg-card);
+            padding: 2.5rem 2rem;
+            border-radius: var(--border-radius);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: var(--transition);
+            text-align: center;
+        }
+
+        .contact-item:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(124, 58, 237, 0.25);
+        }
+
+        .contact-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .contact-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: var(--primary-color);
+        }
+
+        .contact-info {
+            color: var(--text-gray);
+            font-size: 1rem;
+        }
+
+        .contact-info a {
+            color: var(--text-gray);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .contact-info a:hover {
+            color: var(--primary-color);
+        }
+
+        /* ===== MODAL ===== */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 2000;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--bg-card);
+            padding: 2.5rem;
+            border-radius: var(--border-radius);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            width: 95%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { 
+                opacity: 0;
+                transform: translate(-50%, -60%);
+            }
+            to { 
+                opacity: 1;
+                transform: translate(-50%, -50%);
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .modal-title {
+            font-size: 1.75rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 600;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: var(--text-gray);
+            font-size: 1.75rem;
+            cursor: pointer;
+            transition: var(--transition);
+            padding: 0.5rem;
+        }
+
+        .close-btn:hover {
+            color: var(--primary-color);
+            transform: scale(1.1);
+        }
+
+        .form-group {
+            margin-bottom: 2rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.75rem;
+            color: var(--text-light);
+            font-weight: 500;
+            font-size: 1rem;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 1rem;
+            background: var(--bg-dark);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            color: var(--text-light);
+            font-size: 1rem;
+            transition: var(--transition);
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(0, 245, 255, 0.15);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+            line-height: 1.6;
+        }
+
+        .form-group select {
+            cursor: pointer;
+        }
+
+        .file-upload-area {
+            border: 2px dashed rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            padding: 2.5rem;
+            text-align: center;
+            transition: var(--transition);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .file-upload-area:hover,
+        .file-upload-area.dragover {
+            border-color: var(--primary-color);
+            background: rgba(0, 245, 255, 0.05);
+        }
+
+        .file-upload-area input[type="file"] {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .file-info {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background: rgba(0, 245, 255, 0.1);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            display: none;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .project-type-badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: var(--gradient-primary);
+            color: white;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+        }
+
+        .download-btn {
+            background: var(--gradient-secondary);
+            color: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: var(--transition);
+            margin: 0.25rem;
+            display: inline-block;
+            text-decoration: none;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(255, 0, 128, 0.3);
+        }
+
+        .backup-section {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            z-index: 1000;
+        }
+
+        .backup-btn {
+            padding: 1rem;
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 8px 25px rgba(0, 245, 255, 0.3);
+            font-size: 1.3rem;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .backup-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 245, 255, 0.5);
+        }
+
+        .submit-btn {
+            background: var(--gradient-secondary);
+            color: white;
+            border: none;
+            padding: 1.25rem 2.5rem;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            width: 100%;
+            font-family: inherit;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 40px rgba(255, 0, 128, 0.4);
+        }
+
+        /* ===== RESPONSIVIDADE ===== */
+        @media (max-width: 768px) {
+            :root {
+                --section-padding: 3rem 1rem;
+                --card-padding: 1.5rem;
+            }
+
+            .nav-menu {
+                display: none;
+            }
+
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .section-title {
+                font-size: 2.25rem;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .contact-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .avatar {
+                width: 180px;
+                height: 180px;
+                font-size: 3.5rem;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .modal-content {
+                padding: 2rem;
+                width: 95%;
+            }
+
+            nav {
+                padding: 1rem;
+            }
+
+            .logo {
+                font-size: 1.5rem;
+            }
+        }
+
+        /* ===== SCROLLBAR PERSONALIZADA ===== */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-dark);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--gradient-primary);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--gradient-secondary);
+        }
+
+        /* ===== ANIMAÇÕES DE ENTRADA ===== */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ===== ESTILOS ADICIONAIS PARA ELEMENTOS DE PROJETO ===== */
+        .project-actions {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .edit-btn, .delete-btn {
+            padding: 0.75rem 1.25rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: white;
+        }
+
+        .edit-btn {
+            background: var(--accent-color);
+        }
+
+        .edit-btn:hover {
+            background: #6366f1;
+            transform: translateY(-2px);
+        }
+
+        .delete-btn {
+            background: #dc2626;
+        }
+
+        .delete-btn:hover {
+            background: #b91c1c;
+            transform: translateY(-2px);
+        }
+
+        .project-meta {
+            margin-top: 1.5rem;
+            font-size: 0.85rem;
+            color: var(--text-gray);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 1rem;
+        }
+
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+
+        .tech-tags {
+            margin: 1rem 0;
+            font-size: 0.9rem;
+            color: var(--text-gray);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .files-section {
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+        }
+
+        .files-section strong {
+            color: var(--primary-color);
+            display: block;
+            margin-bottom: 0.75rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER COM NAVEGAÇÃO -->
+    <header>
+        <nav>
+            <div class="logo">Natan.dev</div>
+            <ul class="nav-menu">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#projetos">Projetos</a></li>
+                <li><a href="#sobre">Sobre Mim</a></li>
+                <li><a href="#contato">Contato</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main>
+        <!-- SEÇÃO HOME -->
+        <section id="home">
+            <div class="section-content">
+                <div class="hero-content fade-in">
+                    <div class="avatar">👨‍💻</div>
+                    <h1 class="hero-title">Olá, eu sou Natan</h1>
+                    <p class="hero-subtitle">
+                        Desenvolvedor apaixonado por tecnologia e inovação. 
+                        Transformo ideias em código e crio soluções digitais incríveis.
+                        Bem-vindo ao meu universo de programação!
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SEÇÃO PROJETOS -->
+        <section id="projetos">
+            <h2 class="section-title">Meus Projetos</h2>
+            
+            <button class="add-project-btn" onclick="openModal()">
+                ➕ Adicionar Novo Projeto
+            </button>
+
+            <div class="projects-grid" id="projectsGrid">
+                <div class="project-card fade-in">
+                    <div class="project-image">🚀 Projeto Demo</div>
+                    <h3 class="project-title">Projeto Exemplo</h3>
+                    <p class="project-description">
+                        Este é um projeto de demonstração. Clique em "Adicionar Novo Projeto" para criar seus próprios projetos!
+                    </p>
+                    <a href="#" class="project-link">Ver Projeto</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- SEÇÃO SOBRE MIM -->
+        <section id="sobre">
+            <div class="section-content">
+                <h2 class="section-title">Sobre Mim</h2>
+                <div class="sobre-content fade-in">
+                    <p class="sobre-text">
+                        Meu nome é <strong>Natan</strong>, tenho <strong>15 anos</strong> e faço programação em qualquer linguagem. 
+                        Sempre busco aprender novas tecnologias e me desafiar com projetos inovadores. 
+                        Tenho um auxílio de IA para me ajudar a desenvolver soluções mais eficientes e criativas.
+                        <br><br>
+                        Minha paixão pela programação começou cedo, e desde então venho explorando diferentes 
+                        linguagens e frameworks. Acredito que a tecnologia pode transformar o mundo e estou 
+                        sempre pronto para contribuir com essa transformação através do código.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SEÇÃO CONTATO -->
+        <section id="contato">
+            <div class="section-content">
+                <h2 class="section-title">Entre em Contato</h2>
+                <div class="contact-grid">
+                    <div class="contact-item fade-in">
+                        <div class="contact-icon">📧</div>
+                        <h3 class="contact-title">Email</h3>
+                        <div class="contact-info">
+                            <a href="mailto:borgesnatan09@gmail.com">borgesnatan09@gmail.com</a>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item fade-in">
+                        <div class="contact-icon">📱</div>
+                        <h3 class="contact-title">Telefone</h3>
+                        <div class="contact-info">
+                            <a href="tel:+5521992826074">+55 21 99282-6074</a>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item fade-in">
+                        <div class="contact-icon">📷</div>
+                        <h3 class="contact-title">Instagram</h3>
+                        <div class="contact-info">
+                            <a href="https://www.instagram.com/ntzinnn87/" target="_blank">@ntzinnn87</a>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item fade-in">
+                        <div class="contact-icon">💬</div>
+                        <h3 class="contact-title">Discord</h3>
+                        <div class="contact-info">Em breve...</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- BOTÕES DE BACKUP FLUTUANTES -->
+    <div class="backup-section">
+        <button class="backup-btn" onclick="exportProjects()" title="Baixar Backup (JSON)">💾</button>
+        <button class="backup-btn" onclick="importProjects()" title="Carregar Backup">📂</button>
+        <input type="file" id="importFile" accept=".json" style="display: none;" onchange="handleImportFile(event)">
+    </div>
+
+    <!-- MODAL PARA ADICIONAR PROJETO -->
+    <div class="modal" id="projectModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Adicionar Novo Projeto</h3>
+                <button class="close-btn" onclick="closeModal()">&times;</button>
+            </div>
+            
+            <form id="projectForm">
+                <div class="form-group">
+                    <label for="projectTitle">Título do Projeto</label>
+                    <input type="text" id="projectTitle" name="title" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="projectType">Tipo de Projeto</label>
+                    <select id="projectType" name="type" required>
+                        <option value="">Selecione o tipo</option>
+                        <option value="website">🌐 Website</option>
+                        <option value="app">📱 App Mobile</option>
+                        <option value="bot">🤖 Bot Discord</option>
+                        <option value="api">⚡ API</option>
+                        <option value="game">🎮 Jogo</option>
+                        <option value="tool">🔧 Ferramenta</option>
+                        <option value="video">📹 Vídeo/Canal</option>
+                        <option value="document">📄 Documento</option>
+                        <option value="other">🚀 Outro</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="projectDescription">Descrição</label>
+                    <textarea id="projectDescription" name="description" required placeholder="Descreva seu projeto detalhadamente..."></textarea>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="projectImage">URL da Imagem</label>
+                        <input type="url" id="projectImage" name="image" placeholder="https://exemplo.com/imagem.jpg">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="projectLink">Link do Projeto</label>
+                        <input type="url" id="projectLink" name="link" placeholder="https://exemplo.com" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Arquivos do Projeto (opcional)</label>
+                    <div class="file-upload-area" id="fileUploadArea">
+                        <input type="file" id="projectFiles" name="files" multiple accept="*/*">
+                        <div class="upload-text">
+                            📁 Clique aqui ou arraste arquivos<br>
+                            <small>Qualquer tipo de arquivo é aceito</small>
+                        </div>
+                        <div class="file-info" id="fileInfo"></div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="projectTech">Tecnologias Usadas</label>
+                        <input type="text" id="projectTech" name="technologies" placeholder="JavaScript, Python, React...">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="projectStatus">Status</label>
+                        <select id="projectStatus" name="status">
+                            <option value="completed">✅ Concluído</option>
+                            <option value="inprogress">🔄 Em Desenvolvimento</option>
+                            <option value="planning">📋 Planejando</option>
+                            <option value="paused">⏸️ Pausado</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <button type="submit" class="submit-btn">Adicionar Projeto</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // ===== NAVEGAÇÃO SUAVE =====
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // ===== ANIMAÇÕES DE SCROLL =====
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationDelay = '0.2s';
+                    entry.target.classList.add('fade-in');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // ===== GERENCIAMENTO DO MODAL =====
+        const modal = document.getElementById('projectModal');
+        const projectForm = document.getElementById('projectForm');
+        const projectsGrid = document.getElementById('projectsGrid');
+
+        // Array para armazenar projetos (usando variáveis JavaScript em vez de localStorage)
+        let projects = [];
+        let currentProjectFiles = [];
+
+        function loadSavedProjects() {
+            // Carrega projetos salvos se existirem
+            try {
+                const savedProjects = localStorage.getItem('natanPortfolioProjects');
+                if (savedProjects) {
+                    projects = JSON.parse(savedProjects);
+                    projects.forEach(project => {
+                        createProjectCard(project);
+                    });
+                }
+            } catch (error) {
+                console.log('Nenhum projeto salvo encontrado');
+            }
+        }
+
+        function saveProjects() {
+            // Salva projetos no localStorage para persistência
+            try {
+                localStorage.setItem('natanPortfolioProjects', JSON.stringify(projects));
+            } catch (error) {
+                console.log('Erro ao salvar projetos');
+            }
+        }
+
+        function openModal() {
+            modal.style.display = 'block';
+            document.getElementById('projectTitle').focus();
+        }
+
+        function closeModal() {
+            modal.style.display = 'none';
+            projectForm.reset();
+            document.getElementById('fileInfo').style.display = 'none';
+            document.getElementById('fileInfo').innerHTML = '';
+            currentProjectFiles = [];
+            
+            if (projectForm.dataset.editingId) {
+                delete projectForm.dataset.editingId;
+                document.querySelector('.submit-btn').textContent = 'Adicionar Projeto';
+                document.querySelector('.modal-title').textContent = 'Adicionar Novo Projeto';
+            }
+        }
+
+        window.addEventListener('click', function(event) {
+            if (event.target === modal) {
+                closeModal();
+            }
+        });
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape' && modal.style.display === 'block') {
+                closeModal();
+            }
+        });
+
+        // ===== GERENCIAMENTO DE ARQUIVOS =====
+        const fileUploadArea = document.getElementById('fileUploadArea');
+        const fileInput = document.getElementById('projectFiles');
+        const fileInfo = document.getElementById('fileInfo');
+
+        fileUploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            fileUploadArea.classList.add('dragover');
+        });
+
+        fileUploadArea.addEventListener('dragleave', () => {
+            fileUploadArea.classList.remove('dragover');
+        });
+
+        fileUploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            fileUploadArea.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            handleFiles(files);
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            handleFiles(e.target.files);
+        });
+
+        function handleFiles(files) {
+            if (files.length > 0) {
+                const fileNames = Array.from(files).map(file => file.name).join(', ');
+                const totalSize = Array.from(files).reduce((total, file) => total + file.size, 0);
+                const sizeText = formatFileSize(totalSize);
+                
+                fileInfo.innerHTML = `
+                    <strong>📁 ${files.length} arquivo(s) selecionado(s):</strong><br>
+                    ${fileNames}<br>
+                    <small>Tamanho total: ${sizeText}</small>
+                `;
+                fileInfo.style.display = 'block';
+                
+                convertFilesToBase64(files);
+            }
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        function convertFilesToBase64(files) {
+            currentProjectFiles = [];
+            const promises = Array.from(files).map(file => {
+                return new Promise((resolve) => {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        currentProjectFiles.push({
+                            name: file.name,
+                            type: file.type,
+                            size: file.size,
+                            data: e.target.result
+                        });
+                        resolve();
+                    };
+                    reader.readAsDataURL(file);
+                });
+            });
+            
+            Promise.all(promises).then(() => {
+                console.log(`📁 ${currentProjectFiles.length} arquivos processados`);
+            });
+        }
+
+        // ===== VALIDAÇÃO DE FORMULÁRIO =====
+        function validateForm(formData) {
+            const title = formData.get('title').trim();
+            const description = formData.get('description').trim();
+            const image = formData.get('image').trim();
+            const link = formData.get('link').trim();
+            const type = formData.get('type');
+            
+            if (title.length < 3) {
+                showNotification('❌ Título deve ter pelo menos 3 caracteres');
+                return false;
+            }
+            
+            if (description.length < 10) {
+                showNotification('❌ Descrição deve ter pelo menos 10 caracteres');
+                return false;
+            }
+            
+            if (!type) {
+                showNotification('❌ Por favor, selecione o tipo do projeto');
+                return false;
+            }
+            
+            if (image && !isValidURL(image)) {
+                showNotification('❌ URL da imagem inválida');
+                return false;
+            }
+            
+            if (!link || link.trim() === '') {
+                showNotification('❌ Link do projeto é obrigatório');
+                return false;
+            }
+            
+            if (!isValidURL(link)) {
+                showNotification('❌ URL do projeto inválida');
+                return false;
+            }
+            
+            return true;
+        }
+
+        function isValidURL(string) {
+            try {
+                new URL(string);
+                return true;
+            } catch (_) {
+                return false;
+            }
+        }
+
+        // ===== ADICIONAR/EDITAR PROJETO =====
+        projectForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(projectForm);
+            
+            if (!validateForm(formData)) {
+                return;
+            }
+            
+            const isEditing = projectForm.dataset.editingId;
+            
+            if (isEditing) {
+                const projectId = parseInt(isEditing);
+                const projectIndex = projects.findIndex(p => p.id === projectId);
+                
+                if (projectIndex !== -1) {
+                    projects[projectIndex] = {
+                        ...projects[projectIndex],
+                        title: formData.get('title').trim(),
+                        type: formData.get('type'),
+                        description: formData.get('description').trim(),
+                        image: formData.get('image').trim(),
+                        link: formData.get('link').trim(),
+                        technologies: formData.get('technologies').trim(),
+                        status: formData.get('status'),
+                        files: currentProjectFiles.length > 0 ? [...currentProjectFiles] : projects[projectIndex].files || [],
+                        dateUpdated: new Date().toLocaleDateString('pt-BR')
+                    };
+                    
+                    saveProjects();
+                    reloadProjectsGrid();
+                    showNotification('✅ Projeto atualizado com sucesso!');
+                }
+                
+            } else {
+                const projectData = {
+                    id: Date.now(),
+                    title: formData.get('title').trim(),
+                    type: formData.get('type'),
+                    description: formData.get('description').trim(),
+                    image: formData.get('image').trim(),
+                    link: formData.get('link').trim(),
+                    technologies: formData.get('technologies').trim(),
+                    status: formData.get('status'),
+                    files: currentProjectFiles.length > 0 ? [...currentProjectFiles] : [],
+                    dateCreated: new Date().toLocaleDateString('pt-BR'),
+                    dateUpdated: new Date().toLocaleDateString('pt-BR')
+                };
+                
+                projects.push(projectData);
+                createProjectCard(projectData);
+                saveProjects();
+                showNotification('✅ Projeto adicionado com sucesso!');
+            }
+            
+            closeModal();
+            currentProjectFiles = [];
+        });
+
+        // ===== CRIAR CARD DE PROJETO =====
+        function createProjectCard(project) {
+            const card = document.createElement('div');
+            card.className = 'project-card fade-in';
+            card.style.animationDelay = '0s';
+            card.dataset.projectId = project.id;
+            
+            const typeIcons = {
+                website: '🌐',
+                app: '📱',
+                bot: '🤖',
+                api: '⚡',
+                game: '🎮',
+                tool: '🔧',
+                video: '📹',
+                document: '📄',
+                other: '🚀'
+            };
+            
+            const statusColors = {
+                completed: '#10b981',
+                inprogress: '#f59e0b',
+                planning: '#6366f1',
+                paused: '#6b7280'
+            };
+            
+            const statusTexts = {
+                completed: 'Concluído',
+                inprogress: 'Em Desenvolvimento',
+                planning: 'Planejando',
+                paused: 'Pausado'
+            };
+
+            const linkText = getLinkText(project.link);
+            
+            card.innerHTML = `
+                ${project.type ? `<div class="project-type-badge">${typeIcons[project.type] || '🚀'} ${project.type.toUpperCase()}</div>` : ''}
+                
+                <div class="project-image" ${project.image ? `style="background-image: url('${project.image}'); background-size: cover; background-position: center;"` : ''}>
+                    ${!project.image ? (typeIcons[project.type] || '🚀') + ' ' + project.title : ''}
+                </div>
+                
+                <h3 class="project-title">${project.title}</h3>
+                
+                ${project.status ? `<div class="status-indicator" style="color: ${statusColors[project.status]};">● ${statusTexts[project.status]}</div>` : ''}
+                
+                <p class="project-description">${project.description}</p>
+                
+                ${project.technologies ? `<div class="tech-tags">🔧 ${project.technologies}</div>` : ''}
+                
+                ${project.files && project.files.length > 0 ? `
+                    <div class="files-section">
+                        <strong>📁 Arquivos (${project.files.length}):</strong>
+                        ${project.files.map(file => `
+                            <a href="#" class="download-btn" onclick="downloadFile('${file.data}', '${file.name}')">
+                                📄 ${file.name}
+                            </a>
+                        `).join('')}
+                    </div>
+                ` : ''}
+                
+                <div class="project-actions">
+                    <a href="${project.link}" class="project-link" target="_blank">
+                        ${linkText}
+                    </a>
+                    
+                    <button onclick="editProject(${project.id})" class="edit-btn">
+                        ✏️ Editar
+                    </button>
+                    
+                    <button onclick="deleteProject(${project.id})" class="delete-btn">
+                        🗑️ Excluir
+                    </button>
+                </div>
+                
+                ${project.dateCreated ? `<div class="project-meta">Criado em: ${project.dateCreated}</div>` : ''}
+            `;
+            
+            projectsGrid.appendChild(card);
+            
+            setTimeout(() => {
+                card.classList.add('fade-in');
+            }, 100);
+        }
+
+        function getLinkText(link) {
+            if (!link) return 'Link não disponível';
+            
+            if (link.includes('discord.gg') || link.includes('discord.com')) return '🤖 Abrir Discord';
+            if (link.includes('youtube.com') || link.includes('youtu.be')) return '📹 Ver no YouTube';
+            if (link.includes('github.com')) return '💻 Ver no GitHub';
+            if (link.includes('instagram.com')) return '📷 Ver no Instagram';
+            if (link.includes('twitter.com') || link.includes('x.com')) return '🐦 Ver no Twitter/X';
+            if (link.includes('linkedin.com')) return '💼 Ver no LinkedIn';
+            if (link.includes('tiktok.com')) return '🎵 Ver no TikTok';
+            
+            return '🔗 Abrir Projeto';
+        }
+
+        function editProject(projectId) {
+            const project = projects.find(p => p.id === projectId);
+            if (project) {
+                document.getElementById('projectTitle').value = project.title;
+                document.getElementById('projectType').value = project.type || '';
+                document.getElementById('projectDescription').value = project.description;
+                document.getElementById('projectImage').value = project.image || '';
+                document.getElementById('projectLink').value = project.link || '';
+                document.getElementById('projectTech').value = project.technologies || '';
+                document.getElementById('projectStatus').value = project.status || 'completed';
+                
+                // Se o projeto tem arquivos, mostra informação
+                if (project.files && project.files.length > 0) {
+                    currentProjectFiles = [...project.files];
+                    fileInfo.innerHTML = `
+                        <strong>📁 ${project.files.length} arquivo(s) já salvos no projeto</strong><br>
+                        <small>Você pode adicionar mais arquivos ou manter os existentes</small>
+                    `;
+                    fileInfo.style.display = 'block';
+                }
+                
+                projectForm.dataset.editingId = projectId;
+                document.querySelector('.submit-btn').textContent = 'Atualizar Projeto';
+                document.querySelector('.modal-title').textContent = 'Editar Projeto';
+                
+                openModal();
+            }
+        }
+
+        function deleteProject(projectId) {
+            if (confirm('Tem certeza que deseja excluir este projeto?')) {
+                projects = projects.filter(p => p.id !== projectId);
+                saveProjects();
+                reloadProjectsGrid();
+                showNotification('🗑️ Projeto excluído com sucesso!');
+            }
+        }
+
+        function reloadProjectsGrid() {
+            // Remove todos os cards exceto o primeiro (exemplo)
+            const cards = projectsGrid.querySelectorAll('.project-card[data-project-id]');
+            cards.forEach(card => card.remove());
+            
+            // Recria todos os cards dos projetos
+            projects.forEach(project => createProjectCard(project));
+        }
+
+        function downloadFile(dataUrl, filename) {
+            const link = document.createElement('a');
+            link.href = dataUrl;
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            showNotification(`📥 Download de "${filename}" iniciado!`);
+        }
+
+        // ===== SISTEMA DE BACKUP =====
+        function exportProjects() {
+            const dataToExport = {
+                portfolioData: {
+                    owner: "Natan",
+                    exportDate: new Date().toISOString(),
+                    version: "2.0",
+                    projectsCount: projects.length
+                },
+                projects: projects
+            };
+            
+            const dataStr = JSON.stringify(dataToExport, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(dataBlob);
+            link.download = `natan-portfolio-backup-${new Date().toISOString().split('T')[0]}.json`;
+            
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            URL.revokeObjectURL(link.href);
+            
+            showNotification('💾 Backup exportado com sucesso!');
+        }
+
+        function importProjects() {
+            document.getElementById('importFile').click();
+        }
+
+        function handleImportFile(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            if (file.type !== 'application/json') {
+                showNotification('❌ Por favor, selecione um arquivo JSON válido');
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const importedData = JSON.parse(e.target.result);
+                    
+                    if (importedData.projects && Array.isArray(importedData.projects)) {
+                        if (confirm(`Importar ${importedData.projects.length} projetos? Isso substituirá todos os projetos atuais.`)) {
+                            projects = importedData.projects;
+                            saveProjects();
+                            reloadProjectsGrid();
+                            showNotification(`📂 ${importedData.projects.length} projetos importados com sucesso!`);
+                        }
+                    } else {
+                        showNotification('❌ Arquivo de backup inválido');
+                    }
+                } catch (error) {
+                    showNotification('❌ Erro ao ler arquivo JSON');
+                    console.error('Erro no import:', error);
+                }
+            };
+            reader.readAsText(file);
+            
+            event.target.value = '';
+        }
+
+        // ===== SISTEMA DE NOTIFICAÇÕES =====
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 120px;
+                right: 30px;
+                background: linear-gradient(135deg, #00f5ff, #7c3aed);
+                color: white;
+                padding: 1rem 2rem;
+                border-radius: 12px;
+                box-shadow: 0 15px 35px rgba(0, 245, 255, 0.4);
+                z-index: 3000;
+                font-weight: 500;
+                font-family: 'Inter', sans-serif;
+                transform: translateX(400px);
+                transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                max-width: 300px;
+            `;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.transform = 'translateX(0)';
+            }, 100);
+            
+            setTimeout(() => {
+                notification.style.transform = 'translateX(400px)';
+                setTimeout(() => {
+                    if (document.body.contains(notification)) {
+                        document.body.removeChild(notification);
+                    }
+                }, 400);
+            }, 4000);
+        }
+
+        // ===== INICIALIZAÇÃO =====
+        document.addEventListener('DOMContentLoaded', function() {
+            loadSavedProjects();
+            
+            const elementsToAnimate = document.querySelectorAll('.project-card, .contact-item, .hero-content, .sobre-content');
+            elementsToAnimate.forEach((element, index) => {
+                element.style.animationDelay = `${index * 0.1}s`;
+            });
+            
+            console.log(`🚀 Portfólio carregado com ${projects.length} projetos salvos!`);
+        });
+
+        // ===== EFEITOS VISUAIS =====
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const parallaxElements = document.querySelectorAll('.hero-content');
+            
+            parallaxElements.forEach(element => {
+                const speed = 0.3;
+                element.style.transform = `translateY(${scrolled * speed}px)`;
+            });
+        });
+
+        // Prevenir comportamentos padrão de drag/drop na página
+        document.addEventListener('dragover', (e) => {
+            e.preventDefault();
+        });
+
+        document.addEventListener('drop', (e) => {
+            e.preventDefault();
+        });
+    </script>
+</body>
+</html>
