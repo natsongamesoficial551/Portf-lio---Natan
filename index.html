@@ -92,6 +92,12 @@
             cursor: pointer;
             font-weight: 500;
             transition: transform 0.3s ease;
+            display: flex;
+            align-items: center;
+            max-width: 200px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
 
         .auth-btn:hover {
@@ -696,37 +702,64 @@
         <i class="fas fa-plus"></i>
     </button>
 
-    <!-- Firebase SDKs -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/10.7.1/firebase-app-compat.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/10.7.1/firebase-auth-compat.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/10.7.1/firebase-firestore-compat.min.js"></script>
-
     <!-- Google Sign-In -->
     <script src="https://accounts.google.com/gsi/client" async defer></script>
 
     <script>
-        // Firebase Configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyAFTm1jREhmW9ugkMroQEILSYBziI4dMYU",
-            authDomain: "portfolio-natandev.firebaseapp.com",
-            projectId: "portfolio-natandev",
-            storageBucket: "portfolio-natandev.firebasestorage.app",
-            messagingSenderId: "336415131312",
-            appId: "1:336415131312:web:fcc70ca38b4cd73dab5d75",
-            measurementId: "G-R1Z5NWFLMB"
-        };
-
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        const db = firebase.firestore();
-
         // Google OAuth Configuration
         const GOOGLE_CLIENT_ID = "1088181975050-ki1pknaemctiac1gc80s8bt2nu5gub10.apps.googleusercontent.com";
         const ADMIN_EMAIL = "borgesnatan09@gmail.com";
 
         let currentUser = null;
         let isAdmin = false;
+
+        // LocalStorage Management
+        class LocalStorageManager {
+            static getCurrentUser() {
+                const userData = localStorage.getItem('currentUser');
+                return userData ? JSON.parse(userData) : null;
+            }
+
+            static setCurrentUser(user) {
+                localStorage.setItem('currentUser', JSON.stringify(user));
+            }
+
+            static clearCurrentUser() {
+                localStorage.removeItem('currentUser');
+            }
+
+            static getUserProjects(email) {
+                const projects = localStorage.getItem(`projects_${email}`);
+                return projects ? JSON.parse(projects) : [];
+            }
+
+            static saveUserProjects(email, projects) {
+                localStorage.setItem(`projects_${email}`, JSON.stringify(projects));
+            }
+
+            static addProject(email, project) {
+                const projects = this.getUserProjects(email);
+                project.id = Date.now().toString();
+                project.createdAt = new Date().toISOString();
+                projects.unshift(project);
+                this.saveUserProjects(email, projects);
+                return project;
+            }
+
+            static getUserProfile(email) {
+                const profile = localStorage.getItem(`profile_${email}`);
+                return profile ? JSON.parse(profile) : null;
+            }
+
+            static saveUserProfile(email, profile) {
+                localStorage.setItem(`profile_${email}`, JSON.stringify(profile));
+            }
+
+            static getAllProjects() {
+                // For public view, show admin's projects
+                return this.getUserProjects(ADMIN_EMAIL);
+            }
+        }
 
         // Initialize Google Sign-In
         function initializeGoogleSignIn() {
@@ -738,19 +771,40 @@
 
         // Handle Google Sign-In Response
         function handleCredentialResponse(response) {
-            const credential = firebase.auth.GoogleAuthProvider.credential(response.credential);
-            
-            auth.signInWithCredential(credential)
-                .then((result) => {
-                    currentUser = result.user;
-                    isAdmin = currentUser.email === ADMIN_EMAIL;
-                    updateAuthUI();
-                    showMessage('Login realizado com sucesso!', 'success');
-                })
-                .catch((error) => {
-                    console.error('Erro no login:', error);
-                    showMessage('Erro no login. Tente novamente.', 'error');
-                });
+            try {
+                const payload = JSON.parse(atob(response.credential.split('.')[1]));
+                
+                const userData = {
+                    email: payload.email,
+                    name: payload.name,
+                    picture: payload.picture,
+                    sub: payload.sub
+                };
+
+                currentUser = userData;
+                isAdmin = currentUser.email === ADMIN_EMAIL;
+                
+                // Save user session
+                LocalStorageManager.setCurrentUser(userData);
+                
+                // Create user profile if doesn't exist
+                if (!LocalStorageManager.getUserProfile(userData.email)) {
+                    LocalStorageManager.saveUserProfile(userData.email, {
+                        name: userData.name,
+                        picture: userData.picture,
+                        bio: '',
+                        skills: [],
+                        joinedAt: new Date().toISOString()
+                    });
+                }
+                
+                updateAuthUI();
+                showMessage('Login realizado com sucesso!', 'success');
+                loadProjects();
+            } catch (error) {
+                console.error('Erro no login:', error);
+                showMessage('Erro no login. Tente novamente.', 'error');
+            }
         }
 
         // Auth State Management
@@ -759,7 +813,7 @@
             const adminButton = document.getElementById('adminButton');
             
             if (currentUser) {
-                authBtn.textContent = 'Logout';
+                authBtn.innerHTML = `<img src="${currentUser.picture}" style="width: 24px; height: 24px; border-radius: 50%; margin-right: 0.5rem;">${currentUser.name}`;
                 authBtn.onclick = logout;
                 
                 if (isAdmin) {
@@ -777,47 +831,57 @@
         }
 
         function logout() {
-            auth.signOut().then(() => {
-                currentUser = null;
-                isAdmin = false;
-                updateAuthUI();
-                showMessage('Logout realizado com sucesso!', 'success');
-            });
+            currentUser = null;
+            isAdmin = false;
+            LocalStorageManager.clearCurrentUser();
+            updateAuthUI();
+            showMessage('Logout realizado com sucesso!', 'success');
+            loadProjects(); // Reload to show public projects
         }
 
         // Project Management
         function loadProjects() {
             const projectsGrid = document.getElementById('projectsGrid');
             
-            db.collection('projects').orderBy('createdAt', 'desc').get()
-                .then((querySnapshot) => {
-                    projectsGrid.innerHTML = '';
-                    
-                    if (querySnapshot.empty) {
-                        projectsGrid.innerHTML = `
-                            <div style="grid-column: 1/-1; text-align: center; padding: 3rem;">
-                                <h3>Projetos em breve...</h3>
-                                <p>Estou trabalhando em projetos incríveis que estarão aqui em breve!</p>
-                            </div>
-                        `;
-                        return;
-                    }
-                    
-                    querySnapshot.forEach((doc) => {
-                        const project = doc.data();
-                        const projectCard = createProjectCard(project);
-                        projectsGrid.appendChild(projectCard);
-                    });
-                })
-                .catch((error) => {
-                    console.error('Erro ao carregar projetos:', error);
+            try {
+                // Always show admin's projects for public view
+                const projects = LocalStorageManager.getAllProjects();
+                
+                projectsGrid.innerHTML = '';
+                
+                if (projects.length === 0) {
                     projectsGrid.innerHTML = `
                         <div style="grid-column: 1/-1; text-align: center; padding: 3rem;">
-                            <h3>Erro ao carregar projetos</h3>
-                            <p>Tente recarregar a página.</p>
+                            <h3>Projetos em breve...</h3>
+                            <p>Estou trabalhando em projetos incríveis que estarão aqui em breve!</p>
                         </div>
                     `;
+                    return;
+                }
+                
+                projects.forEach((project) => {
+                    const projectCard = createProjectCard(project);
+                    projectsGrid.appendChild(projectCard);
                 });
+                
+                // Animate cards
+                setTimeout(() => {
+                    document.querySelectorAll('.project-card').forEach((card, index) => {
+                        setTimeout(() => {
+                            card.classList.add('visible');
+                        }, index * 100);
+                    });
+                }, 100);
+                
+            } catch (error) {
+                console.error('Erro ao carregar projetos:', error);
+                projectsGrid.innerHTML = `
+                    <div style="grid-column: 1/-1; text-align: center; padding: 3rem;">
+                        <h3>Erro ao carregar projetos</h3>
+                        <p>Tente recarregar a página.</p>
+                    </div>
+                `;
+            }
         }
 
         function createProjectCard(project) {
@@ -870,26 +934,50 @@
             submitBtn.innerHTML = '<span class="loading"></span> Adicionando...';
             submitBtn.disabled = true;
             
-            db.collection('projects').add({
-                ...projectData,
-                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                createdBy: currentUser.uid
-            })
-            .then(() => {
+            try {
+                const project = LocalStorageManager.addProject(currentUser.email, {
+                    ...projectData,
+                    createdBy: currentUser.email
+                });
+                
                 showMessage('Projeto adicionado com sucesso!', 'success');
                 loadProjects();
+                
                 setTimeout(() => {
                     closeAdminPanel();
                 }, 1500);
-            })
-            .catch((error) => {
+                
+            } catch (error) {
                 console.error('Erro ao adicionar projeto:', error);
                 showMessage('Erro ao adicionar projeto. Tente novamente.', 'error');
-            })
-            .finally(() => {
+            } finally {
                 submitBtn.innerHTML = 'Adicionar Projeto';
                 submitBtn.disabled = false;
-            });
+            }
+        }
+
+        // Initialize app and check for saved session
+        function initializeApp() {
+            // Check for saved user session
+            const savedUser = LocalStorageManager.getCurrentUser();
+            if (savedUser) {
+                currentUser = savedUser;
+                isAdmin = currentUser.email === ADMIN_EMAIL;
+                updateAuthUI();
+            }
+            
+            // Initialize Google Sign-In
+            if (typeof google !== 'undefined') {
+                initializeGoogleSignIn();
+            }
+            
+            // Load projects
+            loadProjects();
+            
+            // Add sample projects for admin if none exist
+            if (isAdmin && LocalStorageManager.getUserProjects(ADMIN_EMAIL).length === 0) {
+                addSampleProjects();
+            }
         }
 
         // Utility Functions
@@ -914,13 +1002,8 @@
 
         // Event Listeners
         document.addEventListener('DOMContentLoaded', function() {
-            // Initialize Google Sign-In
-            if (typeof google !== 'undefined') {
-                initializeGoogleSignIn();
-            }
-            
-            // Load projects on page load
-            loadProjects();
+            // Initialize the app
+            initializeApp();
             
             // Smooth scrolling for navigation links
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -949,7 +1032,7 @@
                 e.preventDefault();
                 
                 if (!isAdmin) {
-                    showMessage('Acesso negado.', 'error');
+                    showMessage('Acesso negado. Apenas o administrador pode adicionar projetos.', 'error');
                     return;
                 }
                 
@@ -970,18 +1053,46 @@
                 
                 addProject(projectData);
             });
-            
-            // Auth state observer
-            auth.onAuthStateChanged((user) => {
-                currentUser = user;
-                if (user) {
-                    isAdmin = user.email === ADMIN_EMAIL;
-                } else {
-                    isAdmin = false;
-                }
-                updateAuthUI();
-            });
         });
+
+        // Add some sample projects for demonstration
+        function addSampleProjects() {
+            const sampleProjects = [
+                {
+                    name: "Portfolio Pessoal",
+                    language: "HTML/CSS/JS",
+                    url: "#",
+                    github: "#",
+                    description: "Meu primeiro portfólio criado com HTML, CSS e JavaScript puro. Design responsivo e moderno.",
+                    features: "Responsivo, Animações CSS, Firebase Auth"
+                },
+                {
+                    name: "Landing Page Empresa",
+                    language: "HTML/CSS",
+                    url: "#",
+                    description: "Landing page profissional para empresa local com design moderno e otimizada para conversões.",
+                    features: "SEO Otimizado, Mobile First, Formulário de Contato"
+                }
+            ];
+
+            // Only add sample projects if none exist
+            db.collection('projects').get().then((snapshot) => {
+                if (snapshot.empty) {
+                    sampleProjects.forEach(project => {
+                        db.collection('projects').add({
+                            ...project,
+                            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                            createdBy: 'system'
+                        });
+                    });
+                }
+            });
+        }
+
+        // Call this after a delay to ensure Firebase is ready
+        setTimeout(() => {
+            addSampleProjects();
+        }, 2000);
 
         // Intersection Observer for animations
         const observerOptions = {
