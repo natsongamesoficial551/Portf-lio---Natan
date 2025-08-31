@@ -7,24 +7,26 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
+
     <!-- Google OAuth -->
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     
     <!-- Firebase v9 Modular SDK -->
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { initializeApp } from "firebase/app";
+        import { getAnalytics } from "firebase/analytics";
         import { getAuth, signInWithCredential, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc, serverTimestamp, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, getDocs, getDoc, doc, updateDoc, deleteDoc, serverTimestamp, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
         // Firebase Configuration
         const firebaseConfig = {
-            apiKey: "AIzaSyBkVhSyQ3mZN8iXPjO_L7VKw2oH1sC5lPI",
-            authDomain: "portfolio-natan.firebaseapp.com",
-            projectId: "portfolio-natan",
-            storageBucket: "portfolio-natan.appspot.com",
-            messagingSenderId: "1088181975050",
-            appId: "1:1088181975050:web:abc123def456ghi789"
+            apiKey: "AIzaSyAFTm1jREhmW9ugkMroQEILSYBziI4dMYU",
+            authDomain: "portfolio-natandev.firebaseapp.com",
+            projectId: "portfolio-natandev",
+            storageBucket: "portfolio-natandev.firebasestorage.app",
+            messagingSenderId: "336415131312",
+            appId: "1:336415131312:web:fcc70ca38b4cd73dab5d75",
+            measurementId: "G-R1Z5NWFLMB"
         };
 
         // Initialize Firebase
