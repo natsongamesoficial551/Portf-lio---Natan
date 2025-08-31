@@ -3,288 +3,770 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Natan - Desenvolvedor</title>
+    <title>Natan Borges - Desenvolvedor Web & Integração IA</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    
+    <!-- Google OAuth -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    
     <style>
-        /* ===== RESET E VARIÁVEIS ===== */
+        /* ===== RESET & BASE STYLES ===== */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
+        /* ===== MODERN COLOR SYSTEM ===== */
         :root {
-            /* Cores principais */
-            --primary-color: #00f5ff;
-            --secondary-color: #ff0080;
-            --accent-color: #7c3aed;
-            --bg-dark: #0a0a0f;
-            --bg-card: #1a1a2e;
-            --text-light: #e2e8f0;
-            --text-gray: #94a3b8;
-            --gradient-primary: linear-gradient(135deg, var(--primary-color), var(--accent-color));
-            --gradient-secondary: linear-gradient(135deg, var(--secondary-color), var(--accent-color));
+            /* Primary Colors - Deep Purple */
+            --primary-50: #F8FAFC;
+            --primary-100: #F1F5F9;
+            --primary-200: #E2E8F0;
+            --primary-300: #CBD5E1;
+            --primary-400: #94A3B8;
+            --primary-500: #6366F1;
+            --primary-600: #4F46E5;
+            --primary-700: #4338CA;
+            --primary-800: #3730A3;
+            --primary-900: #312E81;
             
-            /* Tamanhos e espaçamentos */
-            --container-max: 1200px;
-            --border-radius: 16px;
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            --section-padding: 5rem 2rem;
-            --element-spacing: 2rem;
-            --card-padding: 2rem;
+            /* Secondary Colors - Electric Blue */
+            --secondary-50: #ECFEFF;
+            --secondary-100: #CFFAFE;
+            --secondary-200: #A5F3FC;
+            --secondary-300: #67E8F9;
+            --secondary-400: #22D3EE;
+            --secondary-500: #06B6D4;
+            --secondary-600: #0891B2;
+            --secondary-700: #0E7490;
+            --secondary-800: #155E75;
+            --secondary-900: #164E63;
+            
+            /* Accent Colors - Emerald */
+            --accent-50: #ECFDF5;
+            --accent-100: #D1FAE5;
+            --accent-200: #A7F3D0;
+            --accent-300: #6EE7B7;
+            --accent-400: #34D399;
+            --accent-500: #10B981;
+            --accent-600: #059669;
+            --accent-700: #047857;
+            --accent-800: #065F46;
+            --accent-900: #064E3B;
+            
+            /* Warning - Sunset Orange */
+            --warning-500: #F59E0B;
+            --warning-600: #D97706;
+            
+            /* Error */
+            --error-500: #EF4444;
+            --error-600: #DC2626;
+            
+            /* Success */
+            --success-500: #10B981;
+            --success-600: #059669;
+            
+            /* Neutrals - Refined Gray Scale */
+            --neutral-0: #FFFFFF;
+            --neutral-50: #FAFBFC;
+            --neutral-100: #F4F6F8;
+            --neutral-200: #E5E9ED;
+            --neutral-300: #D2D8DE;
+            --neutral-400: #9EAAB4;
+            --neutral-500: #6B7785;
+            --neutral-600: #525866;
+            --neutral-700: #3A404A;
+            --neutral-800: #252A33;
+            --neutral-900: #161A20;
+            
+            /* Modern Shadow System */
+            --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.02);
+            --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.06), 0 1px 2px 0 rgba(0, 0, 0, 0.03);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.03);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+            
+            /* Gradients */
+            --gradient-primary: linear-gradient(135deg, var(--primary-500) 0%, var(--secondary-500) 100%);
+            --gradient-hero: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            --gradient-card: linear-gradient(145deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.7) 100%);
+            
+            /* Spacing System (8px base) */
+            --space-1: 0.25rem; /* 4px */
+            --space-2: 0.5rem;  /* 8px */
+            --space-3: 0.75rem; /* 12px */
+            --space-4: 1rem;    /* 16px */
+            --space-5: 1.25rem; /* 20px */
+            --space-6: 1.5rem;  /* 24px */
+            --space-8: 2rem;    /* 32px */
+            --space-10: 2.5rem; /* 40px */
+            --space-12: 3rem;   /* 48px */
+            --space-16: 4rem;   /* 64px */
+            --space-20: 5rem;   /* 80px */
+            --space-24: 6rem;   /* 96px */
+            --space-32: 8rem;   /* 128px */
+            
+            /* Border Radius */
+            --radius-sm: 0.375rem;  /* 6px */
+            --radius-md: 0.5rem;    /* 8px */
+            --radius-lg: 0.75rem;   /* 12px */
+            --radius-xl: 1rem;      /* 16px */
+            --radius-2xl: 1.5rem;   /* 24px */
+            --radius-full: 9999px;
+            
+            /* Typography Scale */
+            --text-xs: 0.75rem;    /* 12px */
+            --text-sm: 0.875rem;   /* 14px */
+            --text-base: 1rem;     /* 16px */
+            --text-lg: 1.125rem;   /* 18px */
+            --text-xl: 1.25rem;    /* 20px */
+            --text-2xl: 1.5rem;    /* 24px */
+            --text-3xl: 1.875rem;  /* 30px */
+            --text-4xl: 2.25rem;   /* 36px */
+            --text-5xl: 3rem;      /* 48px */
+            --text-6xl: 3.75rem;   /* 60px */
+            --text-7xl: 4.5rem;    /* 72px */
+            
+            /* Transitions */
+            --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* ===== ESTILOS GLOBAIS ===== */
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-            background: var(--bg-dark);
-            color: var(--text-light);
-            line-height: 1.7;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--neutral-700);
             overflow-x: hidden;
-            font-weight: 400;
+            background: var(--neutral-0);
+            font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+            scroll-behavior: smooth;
         }
 
-        /* Efeito de fundo animado */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                radial-gradient(circle at 25% 25%, var(--primary-color)20 0%, transparent 50%),
-                radial-gradient(circle at 75% 75%, var(--secondary-color)20 0%, transparent 50%);
-            z-index: -1;
-            animation: backgroundPulse 8s ease-in-out infinite alternate;
-        }
-
-        @keyframes backgroundPulse {
-            0% { opacity: 0.1; }
-            100% { opacity: 0.3; }
-        }
-
-        /* ===== HEADER E NAVEGAÇÃO ===== */
-        header {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background: rgba(10, 10, 15, 0.95);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            z-index: 1000;
-            transition: var(--transition);
-        }
-
-        nav {
-            max-width: var(--container-max);
+        /* ===== UTILITY CLASSES ===== */
+        .container {
+            max-width: 1280px;
             margin: 0 auto;
-            padding: 1.5rem 2rem;
-            display: flex;
-            justify-content: space-between;
+            padding: 0 var(--space-6);
+        }
+
+        .btn {
+            display: inline-flex;
             align-items: center;
-        }
-
-        .logo {
-            font-size: 1.75rem;
-            font-weight: 700;
-            background: var(--gradient-primary);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: -0.5px;
-        }
-
-        .nav-menu {
-            display: flex;
-            list-style: none;
-            gap: 2.5rem;
-        }
-
-        .nav-menu a {
-            color: var(--text-light);
+            justify-content: center;
+            gap: var(--space-2);
+            padding: var(--space-3) var(--space-6);
+            border: none;
+            border-radius: var(--radius-lg);
+            font-weight: 600;
+            font-size: var(--text-base);
+            cursor: pointer;
+            transition: all var(--transition-normal);
             text-decoration: none;
-            font-weight: 500;
-            font-size: 0.95rem;
-            transition: var(--transition);
             position: relative;
-            letter-spacing: 0.5px;
+            overflow: hidden;
+            min-height: 48px;
         }
 
-        .nav-menu a::after {
+        .btn::before {
             content: '';
             position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--gradient-primary);
-            transition: var(--transition);
-        }
-
-        .nav-menu a:hover::after {
+            top: 0;
+            left: -100%;
             width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left var(--transition-slow);
         }
 
-        .nav-menu a:hover {
-            color: var(--primary-color);
+        .btn:hover::before {
+            left: 100%;
         }
 
-        /* ===== SEÇÕES PRINCIPAIS ===== */
-        main {
-            padding-top: 90px;
-        }
-
-        section {
-            min-height: 100vh;
-            padding: var(--section-padding);
-            max-width: var(--container-max);
-            margin: 0 auto;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .section-content {
-            width: 100%;
-            text-align: center;
-        }
-
-        /* ===== HOME SECTION ===== */
-        #home {
-            background: radial-gradient(ellipse at center, rgba(124, 58, 237, 0.2) 0%, transparent 70%);
-            padding: 8rem 2rem 6rem;
-        }
-
-        .hero-content {
-            max-width: 700px;
-            margin: 0 auto;
-        }
-
-        .avatar {
-            width: 220px;
-            height: 220px;
-            border-radius: 50%;
+        .btn-primary {
             background: var(--gradient-primary);
-            margin: 0 auto 3rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 4.5rem;
-            animation: float 3s ease-in-out infinite;
+            color: var(--neutral-0);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .btn-secondary {
+            background: var(--neutral-0);
+            color: var(--neutral-700);
+            border: 2px solid var(--neutral-200);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-secondary:hover {
+            background: var(--neutral-50);
+            border-color: var(--primary-300);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-ghost {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--neutral-0);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-ghost:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .card {
+            background: var(--gradient-card);
+            backdrop-filter: blur(20px);
+            border-radius: var(--radius-2xl);
+            padding: var(--space-8);
+            box-shadow: var(--shadow-lg);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all var(--transition-normal);
             position: relative;
             overflow: hidden;
         }
 
-        .avatar::before {
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+        }
+
+        .card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: var(--shadow-2xl);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* ===== HEADER & NAVIGATION ===== */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+            z-index: 1000;
+            padding: var(--space-4) 0;
+            transition: all var(--transition-normal);
+        }
+
+        .header.scrolled {
+            background: rgba(255, 255, 255, 0.95);
+            border-bottom-color: rgba(0, 0, 0, 0.1);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
+
+        .logo {
+            font-size: var(--text-2xl);
+            font-weight: 800;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.025em;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: var(--space-8);
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--neutral-600);
+            font-weight: 500;
+            font-size: var(--text-base);
+            transition: all var(--transition-normal);
+            position: relative;
+            padding: var(--space-2) var(--space-4);
+            border-radius: var(--radius-md);
+        }
+
+        .nav-links a::before {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--gradient-primary);
+            transition: all var(--transition-normal);
+            border-radius: 1px;
+            transform: translateX(-50%);
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-600);
+            background: var(--primary-50);
+        }
+
+        .nav-links a:hover::before {
+            width: 80%;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: var(--space-4);
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-full);
+            border: 2px solid var(--primary-500);
+            object-fit: cover;
+            transition: all var(--transition-normal);
+        }
+
+        .user-avatar:hover {
+            border-color: var(--primary-600);
+            transform: scale(1.05);
+        }
+
+        /* ===== MOBILE MENU ===== */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: var(--space-2);
+            border-radius: var(--radius-md);
+            transition: all var(--transition-normal);
+            position: relative;
+            width: 44px;
+            height: 44px;
+        }
+
+        .mobile-menu-btn:hover {
+            background: var(--primary-50);
+        }
+
+        .hamburger {
+            position: relative;
+            width: 24px;
+            height: 2px;
+            background: var(--neutral-700);
+            transition: all var(--transition-normal);
+            margin: 0 auto;
+        }
+
+        .hamburger::before,
+        .hamburger::after {
+            content: '';
+            position: absolute;
+            width: 24px;
+            height: 2px;
+            background: var(--neutral-700);
+            transition: all var(--transition-normal);
+        }
+
+        .hamburger::before {
+            top: -8px;
+        }
+
+        .hamburger::after {
+            bottom: -8px;
+        }
+
+        .mobile-menu-btn.active .hamburger {
+            background: transparent;
+        }
+
+        .mobile-menu-btn.active .hamburger::before {
+            transform: rotate(45deg);
+            top: 0;
+        }
+
+        .mobile-menu-btn.active .hamburger::after {
+            transform: rotate(-45deg);
+            bottom: 0;
+        }
+
+        .mobile-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(22, 26, 32, 0.95);
+            backdrop-filter: blur(20px);
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all var(--transition-normal);
+        }
+
+        .mobile-nav.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .mobile-nav-links {
+            list-style: none;
+            text-align: center;
+        }
+
+        .mobile-nav-links li {
+            margin-bottom: var(--space-6);
+        }
+
+        .mobile-nav-links a {
+            color: var(--neutral-0);
+            text-decoration: none;
+            font-size: var(--text-2xl);
+            font-weight: 600;
+            transition: all var(--transition-normal);
+            display: block;
+            padding: var(--space-4);
+            border-radius: var(--radius-lg);
+        }
+
+        .mobile-nav-links a:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--primary-300);
+            transform: translateX(8px);
+        }
+
+        /* ===== HERO SECTION ===== */
+        .hero {
+            min-height: 100vh;
+            background: var(--gradient-hero);
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(255,255,255,0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255,255,255,0.1) 0%, transparent 50%);
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60"><defs><pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse"><path d="M 60 0 L 0 0 0 60" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="1"/></pattern></defs><rect width="60" height="60" fill="url(%23grid)"/></svg>');
+            opacity: 0.4;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            color: var(--neutral-0);
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: var(--text-6xl);
+            font-weight: 800;
+            margin-bottom: var(--space-6);
+            line-height: 1.1;
+            background: linear-gradient(135deg, #ffffff 0%, #e0e7ff 50%, #c7d2fe 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.02em;
+        }
+
+        .hero-subtitle {
+            font-size: var(--text-xl);
+            margin-bottom: var(--space-8);
+            opacity: 0.9;
+            line-height: 1.7;
+            font-weight: 400;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: var(--space-4);
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: var(--space-8);
+        }
+
+        /* ===== FLOATING ELEMENTS ===== */
+        .floating-shapes {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .shape {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-full);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .shape:nth-child(1) {
+            width: 80px;
+            height: 80px;
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .shape:nth-child(2) {
+            width: 120px;
+            height: 120px;
+            top: 60%;
+            right: 10%;
+            animation-delay: -2s;
+        }
+
+        .shape:nth-child(3) {
+            width: 60px;
+            height: 60px;
+            bottom: 20%;
+            left: 20%;
+            animation-delay: -4s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        /* ===== SECTIONS ===== */
+        .section {
+            padding: var(--space-20) 0;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: var(--text-4xl);
+            font-weight: 800;
+            margin-bottom: var(--space-4);
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.025em;
+            line-height: 1.2;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--neutral-500);
+            margin-bottom: var(--space-16);
+            font-size: var(--text-lg);
+            max-width: 640px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+        }
+
+        /* ===== ABOUT SECTION ===== */
+        .about {
+            background: 
+                linear-gradient(135deg, var(--primary-50) 0%, var(--secondary-50) 100%),
+                url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="rgba(99,102,241,0.1)"/><circle cx="80" cy="80" r="2" fill="rgba(6,182,212,0.1)"/></svg>');
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-16);
+            align-items: center;
+        }
+
+        .about-text h3 {
+            font-size: var(--text-2xl);
+            font-weight: 700;
+            margin-bottom: var(--space-6);
+            color: var(--neutral-800);
+            line-height: 1.3;
+        }
+
+        .about-text p {
+            margin-bottom: var(--space-6);
+            color: var(--neutral-600);
+            line-height: 1.8;
+            font-size: var(--text-base);
+        }
+
+        .about-image {
+            text-align: center;
+            position: relative;
+        }
+
+        .about-avatar {
+            width: 320px;
+            height: 320px;
+            border-radius: var(--radius-full);
+            background: var(--gradient-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 128px;
+            color: var(--neutral-0);
+            margin: 0 auto;
+            box-shadow: var(--shadow-2xl);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .about-avatar::before {
             content: '';
             position: absolute;
             top: -50%;
             left: -50%;
             width: 200%;
             height: 200%;
-            background: conic-gradient(var(--primary-color), var(--secondary-color), var(--accent-color), var(--primary-color));
-            animation: rotate 4s linear infinite;
-            z-index: -1;
+            background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
+            animation: shimmer 3s infinite;
         }
 
-        .avatar::after {
-            content: '';
-            position: absolute;
-            inset: 4px;
-            background: var(--bg-dark);
-            border-radius: 50%;
-            z-index: -1;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
-        @keyframes rotate {
+        @keyframes shimmer {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
 
-        .hero-title {
-            font-size: 3.5rem;
-            font-weight: 800;
-            margin-bottom: 1.5rem;
+        /* ===== SERVICES SECTION ===== */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: var(--space-8);
+        }
+
+        .service-card {
+            text-align: center;
+            position: relative;
+        }
+
+        .service-icon {
+            width: 88px;
+            height: 88px;
+            margin: 0 auto var(--space-6);
             background: var(--gradient-primary);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: -1px;
-            line-height: 1.1;
+            border-radius: var(--radius-2xl);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            color: var(--neutral-0);
+            box-shadow: var(--shadow-lg);
+            transition: all var(--transition-normal);
+            position: relative;
+            overflow: hidden;
         }
 
-        .hero-subtitle {
-            font-size: 1.3rem;
-            color: var(--text-gray);
-            margin-bottom: 3rem;
-            line-height: 1.8;
-            font-weight: 400;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-            margin-bottom: 3rem;
+        .service-icon::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.2), transparent);
+            transform: rotate(45deg);
+            transition: all var(--transition-slow);
         }
 
-        /* ===== PROJETOS SECTION ===== */
-        #projetos {
-            flex-direction: column;
-            align-items: flex-start;
-            padding: 6rem 2rem;
+        .service-card:hover .service-icon {
+            transform: translateY(-4px) scale(1.1);
+            box-shadow: var(--shadow-xl);
         }
 
-        .section-title {
-            font-size: 3rem;
-            margin-bottom: 4rem;
-            background: var(--gradient-secondary);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            align-self: center;
+        .service-card:hover .service-icon::before {
+            animation: shine 0.8s ease-in-out;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        .service-card h3 {
+            font-size: var(--text-xl);
             font-weight: 700;
-            letter-spacing: -1px;
+            margin-bottom: var(--space-4);
+            color: var(--neutral-800);
+            line-height: 1.3;
         }
 
-        .add-project-btn {
-            background: var(--gradient-primary);
-            color: white;
-            border: none;
-            padding: 1.2rem 2.5rem;
-            border-radius: var(--border-radius);
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-            margin-bottom: 3rem;
-            align-self: center;
-            font-family: inherit;
+        .service-card p {
+            color: var(--neutral-600);
+            line-height: 1.7;
+            font-size: var(--text-base);
         }
 
-        .add-project-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 25px 50px rgba(0, 245, 255, 0.4);
+        /* ===== PROJECTS SECTION ===== */
+        .projects {
+            background: 
+                linear-gradient(135deg, var(--neutral-50) 0%, var(--primary-50) 100%),
+                url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><defs><pattern id="dots" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="10" cy="10" r="1" fill="rgba(99,102,241,0.1)"/></pattern></defs><rect width="200" height="200" fill="url(%23dots)"/></svg>');
         }
 
         .projects-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
-            gap: 2.5rem;
-            width: 100%;
+            gap: var(--space-8);
         }
 
         .project-card {
-            background: var(--bg-card);
-            border-radius: var(--border-radius);
-            padding: var(--card-padding);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: var(--transition);
-            position: relative;
+            background: var(--neutral-0);
+            border-radius: var(--radius-2xl);
             overflow: hidden;
+            box-shadow: var(--shadow-md);
+            transition: all var(--transition-normal);
+            border: 1px solid var(--neutral-200);
+            position: relative;
         }
 
         .project-card::before {
@@ -292,1007 +774,1224 @@
             position: absolute;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
+            right: 0;
+            height: 4px;
             background: var(--gradient-primary);
-            opacity: 0;
-            transition: var(--transition);
-            z-index: -1;
+            transform: scaleX(0);
+            transition: transform var(--transition-normal);
         }
 
         .project-card:hover {
-            transform: translateY(-10px) scale(1.02);
-            box-shadow: 0 30px 60px rgba(0, 245, 255, 0.25);
+            transform: translateY(-12px);
+            box-shadow: var(--shadow-2xl);
+            border-color: var(--primary-200);
         }
 
         .project-card:hover::before {
-            opacity: 0.1;
+            transform: scaleX(1);
         }
 
         .project-image {
-            width: 100%;
-            height: 220px;
-            border-radius: 12px;
-            margin-bottom: 1.5rem;
-            object-fit: cover;
-            background: var(--gradient-secondary);
+            height: 200px;
+            background: var(--gradient-primary);
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
-            font-size: 1.3rem;
-            font-weight: 500;
+            color: var(--neutral-0);
+            font-size: 56px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
+            transform: translateX(-100%);
+            transition: transform var(--transition-slow);
+        }
+
+        .project-card:hover .project-image::before {
+            transform: translateX(100%);
+        }
+
+        .project-content {
+            padding: var(--space-6);
         }
 
         .project-title {
-            font-size: 1.4rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            color: var(--primary-color);
+            font-size: var(--text-xl);
+            font-weight: 700;
+            margin-bottom: var(--space-2);
+            color: var(--neutral-800);
             line-height: 1.3;
         }
 
+        .project-tech {
+            display: inline-block;
+            background: var(--gradient-primary);
+            color: var(--neutral-0);
+            padding: var(--space-1) var(--space-3);
+            border-radius: var(--radius-full);
+            font-size: var(--text-sm);
+            font-weight: 600;
+            margin-bottom: var(--space-4);
+        }
+
         .project-description {
-            color: var(--text-gray);
-            margin-bottom: 1.5rem;
-            line-height: 1.6;
+            color: var(--neutral-600);
+            margin-bottom: var(--space-5);
+            line-height: 1.7;
+            font-size: var(--text-base);
         }
 
         .project-link {
-            display: inline-block;
-            padding: 1rem 1.75rem;
-            background: var(--gradient-secondary);
-            color: white;
+            color: var(--primary-600);
             text-decoration: none;
-            border-radius: 10px;
             font-weight: 600;
-            transition: var(--transition);
-            font-size: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-2);
+            transition: all var(--transition-normal);
+            padding: var(--space-2) var(--space-4);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--primary-200);
+            background: var(--primary-50);
         }
 
         .project-link:hover {
-            transform: scale(1.05);
-            box-shadow: 0 15px 30px rgba(255, 0, 128, 0.4);
+            background: var(--primary-600);
+            color: var(--neutral-0);
+            transform: translateX(4px);
+            box-shadow: var(--shadow-md);
         }
 
-        .project-type-badge {
-            display: inline-block;
-            padding: 0.5rem 1rem;
-            background: var(--gradient-primary);
-            color: white;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 500;
-            margin-bottom: 1.5rem;
+        /* ===== CONTACT SECTION ===== */
+        .contact {
+            background: linear-gradient(135deg, var(--neutral-900) 0%, var(--neutral-800) 50%, var(--primary-900) 100%);
+            color: var(--neutral-0);
+            position: relative;
+            overflow: hidden;
         }
 
-        .status-indicator {
+        .contact::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 30% 70%, rgba(99,102,241,0.2) 0%, transparent 50%),
+                radial-gradient(circle at 70% 30%, rgba(6,182,212,0.2) 0%, transparent 50%);
+        }
+
+        .contact-content {
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .contact .section-title {
+            color: var(--neutral-0);
+            background: linear-gradient(135deg, var(--primary-300) 0%, var(--secondary-300) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .contact .section-subtitle {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .contact-buttons {
+            display: flex;
+            gap: var(--space-6);
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: var(--space-8);
+        }
+
+        .whatsapp-btn {
+            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+            color: var(--neutral-0);
+            padding: var(--space-4) var(--space-8);
+            border-radius: var(--radius-xl);
+            text-decoration: none;
+            font-weight: 700;
             display: inline-flex;
             align-items: center;
-            gap: 0.5rem;
-            font-size: 0.9rem;
-            margin-bottom: 1rem;
-            font-weight: 500;
+            gap: var(--space-3);
+            transition: all var(--transition-normal);
+            font-size: var(--text-lg);
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            overflow: hidden;
         }
 
-        .tech-tags {
-            margin: 1rem 0;
-            font-size: 0.9rem;
-            color: var(--text-gray);
+        .whatsapp-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left var(--transition-slow);
+        }
+
+        .whatsapp-btn:hover::before {
+            left: 100%;
+        }
+
+        .whatsapp-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: var(--shadow-2xl);
+        }
+
+        /* ===== ADMIN PANEL ===== */
+        .admin-panel {
+            position: fixed;
+            top: 80px;
+            right: var(--space-6);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: var(--radius-2xl);
+            padding: var(--space-6);
+            box-shadow: var(--shadow-2xl);
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            min-width: 320px;
+            max-width: 400px;
+            display: none;
+            z-index: 1001;
+            transform: translateY(-10px);
+            opacity: 0;
+            transition: all var(--transition-normal);
+        }
+
+        .admin-panel.show {
+            display: block;
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .admin-title {
+            font-size: var(--text-xl);
+            font-weight: 700;
+            margin-bottom: var(--space-6);
+            color: var(--neutral-800);
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            justify-content: space-between;
         }
 
-        .project-meta {
-            margin-top: 1.5rem;
-            font-size: 0.85rem;
-            color: var(--text-gray);
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            padding-top: 1rem;
+        .form-group {
+            margin-bottom: var(--space-5);
         }
 
-        .projects-counter {
-            color: var(--text-gray);
-            font-size: 1.1rem;
-            margin-bottom: 2rem;
-            align-self: center;
-        }
-
-        /* ===== SOBRE MIM SECTION ===== */
-        #sobre {
-            background: radial-gradient(ellipse at center, rgba(255, 0, 128, 0.1) 0%, transparent 70%);
-            padding: 6rem 2rem;
-        }
-
-        .sobre-content {
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
-        .sobre-text {
-            font-size: 1.3rem;
-            line-height: 2;
-            color: var(--text-gray);
-            text-align: left;
-            font-weight: 400;
-        }
-
-        /* ===== CONTATO SECTION ===== */
-        #contato {
-            padding: 6rem 2rem;
-        }
-
-        .contact-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2.5rem;
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
-        .contact-item {
-            background: var(--bg-card);
-            padding: 2.5rem 2rem;
-            border-radius: var(--border-radius);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: var(--transition);
-            text-align: center;
-        }
-
-        .contact-item:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 40px rgba(124, 58, 237, 0.25);
-        }
-
-        .contact-icon {
-            font-size: 2.5rem;
-            margin-bottom: 1.5rem;
-            background: var(--gradient-primary);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .contact-title {
-            font-size: 1.3rem;
+        .form-label {
+            display: block;
+            margin-bottom: var(--space-2);
             font-weight: 600;
-            margin-bottom: 0.75rem;
-            color: var(--primary-color);
+            color: var(--neutral-700);
+            font-size: var(--text-sm);
         }
 
-        .contact-info {
-            color: var(--text-gray);
-            font-size: 1rem;
+        .form-input, .form-textarea {
+            width: 100%;
+            padding: var(--space-3) var(--space-4);
+            border: 2px solid var(--neutral-200);
+            border-radius: var(--radius-lg);
+            font-size: var(--text-base);
+            transition: all var(--transition-normal);
+            background: var(--neutral-0);
+            font-family: inherit;
         }
 
-        .contact-info a {
-            color: var(--text-gray);
-            text-decoration: none;
-            transition: var(--transition);
+        .form-input:focus, .form-textarea:focus {
+            outline: none;
+            border-color: var(--primary-500);
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+            background: var(--primary-50);
         }
 
-        .contact-info a:hover {
-            color: var(--primary-color);
+        .form-textarea {
+            resize: vertical;
+            min-height: 120px;
+            line-height: 1.6;
         }
 
-        /* ===== MODAL ===== */
+        /* ===== MODAL SYSTEM ===== */
         .modal {
-            display: none;
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(10px);
+            right: 0;
+            bottom: 0;
+            background: rgba(22, 26, 32, 0.7);
+            backdrop-filter: blur(8px);
+            display: none;
+            align-items: center;
+            justify-content: center;
             z-index: 2000;
-            animation: fadeIn 0.3s ease;
+            opacity: 0;
+            transition: all var(--transition-normal);
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        .modal.show {
+            display: flex;
+            opacity: 1;
         }
 
         .modal-content {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: var(--bg-card);
-            padding: 2.5rem;
-            border-radius: var(--border-radius);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            width: 95%;
-            max-width: 600px;
+            background: var(--neutral-0);
+            border-radius: var(--radius-2xl);
+            padding: var(--space-8);
+            max-width: 540px;
+            width: 90%;
             max-height: 90vh;
             overflow-y: auto;
-            animation: slideIn 0.3s ease;
+            box-shadow: var(--shadow-2xl);
+            transform: scale(0.9);
+            transition: all var(--transition-normal);
+            border: 1px solid var(--neutral-200);
         }
 
-        @keyframes slideIn {
-            from { 
-                opacity: 0;
-                transform: translate(-50%, -60%);
-            }
-            to { 
-                opacity: 1;
-                transform: translate(-50%, -50%);
-            }
+        .modal.show .modal-content {
+            transform: scale(1);
         }
 
         .modal-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 2.5rem;
+            margin-bottom: var(--space-6);
+            padding-bottom: var(--space-4);
+            border-bottom: 1px solid var(--neutral-200);
         }
 
         .modal-title {
-            font-size: 1.75rem;
-            background: var(--gradient-primary);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-weight: 600;
+            font-size: var(--text-2xl);
+            font-weight: 700;
+            color: var(--neutral-800);
         }
 
         .close-btn {
-            background: none;
+            background: var(--neutral-100);
             border: none;
-            color: var(--text-gray);
-            font-size: 1.75rem;
+            font-size: var(--text-xl);
             cursor: pointer;
-            transition: var(--transition);
-            padding: 0.5rem;
-        }
-
-        .close-btn:hover {
-            color: var(--primary-color);
-            transform: scale(1.1);
-        }
-
-        .form-group {
-            margin-bottom: 2rem;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.75rem;
-            color: var(--text-light);
-            font-weight: 500;
-            font-size: 1rem;
-        }
-
-        .form-group input,
-        .form-group textarea,
-        .form-group select {
-            width: 100%;
-            padding: 1rem;
-            background: var(--bg-dark);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 10px;
-            color: var(--text-light);
-            font-size: 1rem;
-            transition: var(--transition);
-            font-family: inherit;
-        }
-
-        .form-group input:focus,
-        .form-group textarea:focus,
-        .form-group select:focus {
-            outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(0, 245, 255, 0.15);
-        }
-
-        .form-group textarea {
-            resize: vertical;
-            min-height: 120px;
-            line-height: 1.6;
-        }
-
-        .form-group select {
-            cursor: pointer;
-        }
-
-        .file-upload-area {
-            border: 2px dashed rgba(255, 255, 255, 0.3);
-            border-radius: 12px;
-            padding: 2.5rem;
-            text-align: center;
-            transition: var(--transition);
-            cursor: pointer;
-            position: relative;
-        }
-
-        .file-upload-area:hover,
-        .file-upload-area.dragover {
-            border-color: var(--primary-color);
-            background: rgba(0, 245, 255, 0.05);
-        }
-
-        .file-upload-area input[type="file"] {
-            position: absolute;
-            opacity: 0;
-            width: 100%;
-            height: 100%;
-            cursor: pointer;
-        }
-
-        .file-info {
-            margin-top: 1.5rem;
-            padding: 1rem;
-            background: rgba(0, 245, 255, 0.1);
-            border-radius: 8px;
-            font-size: 0.95rem;
-            display: none;
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
-        }
-
-        .download-btn {
-            background: var(--gradient-secondary);
-            color: white;
-            border: none;
-            padding: 0.6rem 1.2rem;
-            border-radius: 8px;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: var(--transition);
-            margin: 0.25rem;
-            display: inline-block;
-            text-decoration: none;
-        }
-
-        .download-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(255, 0, 128, 0.3);
-        }
-
-        .backup-section {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            z-index: 1000;
-        }
-
-        .backup-btn {
-            padding: 1rem;
-            background: var(--gradient-primary);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            cursor: pointer;
-            transition: var(--transition);
-            box-shadow: 0 8px 25px rgba(0, 245, 255, 0.3);
-            font-size: 1.3rem;
-            width: 60px;
-            height: 60px;
+            color: var(--neutral-500);
+            padding: var(--space-2);
+            border-radius: var(--radius-md);
+            transition: all var(--transition-normal);
+            width: 40px;
+            height: 40px;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
-        .backup-btn:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 35px rgba(0, 245, 255, 0.5);
+        .close-btn:hover {
+            background: var(--neutral-200);
+            color: var(--neutral-700);
+            transform: scale(1.1);
         }
 
-        .submit-btn {
-            background: var(--gradient-secondary);
-            color: white;
-            border: none;
-            padding: 1.25rem 2.5rem;
-            border-radius: 12px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-            width: 100%;
-            font-family: inherit;
+        /* ===== LOADING ANIMATION ===== */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: var(--radius-full);
+            border-top-color: var(--neutral-0);
+            animation: spin 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
         }
 
-        .submit-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 20px 40px rgba(255, 0, 128, 0.4);
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
 
-        .project-actions {
-            display: flex;
-            gap: 0.75rem;
-            margin-top: 1.5rem;
-            flex-wrap: wrap;
-        }
-
-        .edit-btn, .delete-btn {
-            padding: 0.75rem 1.25rem;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: var(--transition);
-            font-size: 0.9rem;
-            font-weight: 500;
-            color: white;
-        }
-
-        .edit-btn {
-            background: var(--accent-color);
-        }
-
-        .edit-btn:hover {
-            background: #6366f1;
-            transform: translateY(-2px);
-        }
-
-        .delete-btn {
-            background: #dc2626;
-        }
-
-        .delete-btn:hover {
-            background: #b91c1c;
-            transform: translateY(-2px);
-        }
-
-        /* ===== RESPONSIVIDADE ===== */
-        @media (max-width: 768px) {
-            :root {
-                --section-padding: 3rem 1rem;
-                --card-padding: 1.5rem;
-            }
-
-            .nav-menu {
-                display: none;
-            }
-
-            .hero-title {
-                font-size: 2.5rem;
-            }
-
-            .section-title {
-                font-size: 2.25rem;
-            }
-
-            .projects-grid {
-                grid-template-columns: 1fr;
-                gap: 2rem;
-            }
-
-            .contact-grid {
-                grid-template-columns: 1fr;
-                gap: 2rem;
-            }
-
-            .avatar {
-                width: 180px;
-                height: 180px;
-                font-size: 3.5rem;
-            }
-
-            .form-row {
-                grid-template-columns: 1fr;
-                gap: 1rem;
-            }
-
-            .modal-content {
-                padding: 2rem;
-                width: 95%;
-            }
-
-            nav {
-                padding: 1rem;
-            }
-
-            .logo {
-                font-size: 1.5rem;
-            }
-        }
-
-        /* ===== SCROLLBAR PERSONALIZADA ===== */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: var(--bg-dark);
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: var(--gradient-primary);
-            border-radius: 4px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--gradient-secondary);
-        }
-
-        /* ===== ANIMAÇÕES DE ENTRADA ===== */
-        .fade-in {
-            opacity: 0;
-            transform: translateY(30px);
-            animation: fadeInUp 0.8s ease forwards;
-        }
-
+        /* ===== ENHANCED ANIMATIONS ===== */
         @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
             to {
                 opacity: 1;
                 transform: translateY(0);
             }
         }
+
+        @keyframes fadeInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .fade-in-up {
+            animation: fadeInUp 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .fade-in-left {
+            animation: fadeInLeft 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .fade-in-right {
+            animation: fadeInRight 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        /* ===== SCROLLBAR STYLING ===== */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--neutral-100);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--gradient-primary);
+            border-radius: var(--radius-md);
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, var(--primary-600) 0%, var(--secondary-600) 100%);
+        }
+
+        /* ===== UTILITY CLASSES ===== */
+        .hidden {
+            display: none !important;
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        /* ===== RESPONSIVE DESIGN ===== */
+        @media (max-width: 1024px) {
+            .container {
+                padding: 0 var(--space-5);
+            }
+            
+            .about-content {
+                grid-template-columns: 1fr;
+                gap: var(--space-12);
+                text-align: center;
+            }
+            
+            .about-avatar {
+                width: 280px;
+                height: 280px;
+                font-size: 112px;
+            }
+            
+            .projects-grid {
+                grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            }
+            
+            .services-grid {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            /* Mobile Navigation */
+            .nav-links {
+                display: none;
+            }
+            
+            .mobile-menu-btn {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            
+            /* Typography Adjustments */
+            .hero h1 {
+                font-size: var(--text-4xl);
+                line-height: 1.2;
+            }
+            
+            .hero-subtitle {
+                font-size: var(--text-lg);
+            }
+            
+            .section {
+                padding: var(--space-16) 0;
+            }
+            
+            .section-title {
+                font-size: var(--text-3xl);
+            }
+            
+            .section-subtitle {
+                font-size: var(--text-base);
+            }
+            
+            /* Layout Adjustments */
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+                gap: var(--space-4);
+            }
+            
+            .hero-buttons .btn {
+                width: 100%;
+                max-width: 280px;
+            }
+            
+            .about-avatar {
+                width: 240px;
+                height: 240px;
+                font-size: 96px;
+            }
+            
+            .projects-grid {
+                grid-template-columns: 1fr;
+                gap: var(--space-6);
+            }
+            
+            .services-grid {
+                grid-template-columns: 1fr;
+                gap: var(--space-6);
+            }
+            
+            .contact-buttons {
+                flex-direction: column;
+                align-items: center;
+                gap: var(--space-4);
+            }
+            
+            .whatsapp-btn {
+                width: 100%;
+                max-width: 280px;
+                justify-content: center;
+            }
+            
+            /* Admin Panel Mobile */
+            .admin-panel {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                border-radius: 0;
+                max-width: none;
+                width: 100%;
+                padding: var(--space-6);
+                background: var(--neutral-0);
+            }
+            
+            .modal-content {
+                width: 95%;
+                padding: var(--space-6);
+                border-radius: var(--radius-xl);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 var(--space-4);
+            }
+            
+            .hero h1 {
+                font-size: var(--text-3xl);
+            }
+            
+            .hero-subtitle {
+                font-size: var(--text-base);
+            }
+            
+            .about-avatar {
+                width: 200px;
+                height: 200px;
+                font-size: 80px;
+            }
+            
+            .service-icon {
+                width: 72px;
+                height: 72px;
+                font-size: 28px;
+            }
+            
+            .section-title {
+                font-size: var(--text-2xl);
+            }
+        }
+
+        /* ===== FOCUS MANAGEMENT ===== */
+        .btn:focus,
+        .form-input:focus,
+        .form-textarea:focus {
+            outline: 2px solid var(--primary-500);
+            outline-offset: 2px;
+        }
+
+        /* ===== IMPROVED MICRO-INTERACTIONS ===== */
+        .btn:active {
+            transform: translateY(0) scale(0.98);
+        }
+
+        .card:active {
+            transform: translateY(-4px) scale(1.01);
+        }
+
+        /* ===== ENHANCED HOVER STATES ===== */
+        @media (hover: hover) {
+            .nav-links a:hover {
+                background: var(--primary-50);
+                color: var(--primary-700);
+            }
+            
+            .service-card:hover {
+                transform: translateY(-4px);
+            }
+            
+            .project-card:hover {
+                transform: translateY(-8px);
+            }
+        }
+
+        /* ===== PRINT STYLES ===== */
+        @media print {
+            .header,
+            .admin-panel,
+            .modal,
+            .mobile-nav,
+            .floating-shapes {
+                display: none !important;
+            }
+            
+            .hero {
+                min-height: auto;
+                padding: var(--space-12) 0;
+            }
+            
+            .section {
+                padding: var(--space-8) 0;
+                break-inside: avoid;
+            }
+            
+            .card {
+                break-inside: avoid;
+                box-shadow: none;
+                border: 1px solid var(--neutral-300);
+            }
+        }
+
+        /* ===== ACCESSIBILITY IMPROVEMENTS ===== */
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        @media (prefers-color-scheme: dark) {
+            /* Dark mode support can be added here if needed */
+        }
     </style>
 </head>
 <body>
-    <!-- HEADER COM NAVEGAÇÃO -->
-    <header>
-        <nav>
-            <div class="logo">Natan.dev</div>
-            <ul class="nav-menu">
-                <li><a href="#home">Home</a></li>
-                <li><a href="#projetos">Projetos</a></li>
-                <li><a href="#sobre">Sobre Mim</a></li>
-                <li><a href="#contato">Contato</a></li>
-            </ul>
-        </nav>
+    <!-- Header -->
+    <header class="header" id="header">
+        <div class="container">
+            <nav class="nav">
+                <div class="logo">Natan Borges</div>
+                <ul class="nav-links">
+                    <li><a href="#home">Início</a></li>
+                    <li><a href="#about">Sobre</a></li>
+                    <li><a href="#services">Serviços</a></li>
+                    <li><a href="#projects">Projetos</a></li>
+                    <li><a href="#contact">Contato</a></li>
+                </ul>
+                <div class="user-menu">
+                    <div id="loginBtn" class="btn btn-primary">
+                        <span>🔐</span>
+                        Login
+                    </div>
+                    <div id="userInfo" class="hidden">
+                        <img id="userAvatar" class="user-avatar" alt="Avatar do usuário">
+                        <button id="logoutBtn" class="btn btn-secondary">Sair</button>
+                    </div>
+                    <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu de navegação">
+                        <div class="hamburger"></div>
+                    </button>
+                </div>
+            </nav>
+        </div>
     </header>
 
-    <!-- CONTEÚDO PRINCIPAL -->
-    <main>
-        <!-- SEÇÃO HOME -->
-        <section id="home">
-            <div class="section-content">
-                <div class="hero-content fade-in">
-                    <div class="avatar">👨‍💻</div>
-                    <h1 class="hero-title">Olá, eu sou Natan</h1>
-                    <p class="hero-subtitle">
-                        Desenvolvedor apaixonado por tecnologia e inovação. 
-                        Transformo ideias em código e crio soluções digitais incríveis.
-                        Bem-vindo ao meu universo de programação!
-                    </p>
-                </div>
-            </div>
-        </section>
+    <!-- Mobile Navigation -->
+    <nav class="mobile-nav" id="mobileNav">
+        <ul class="mobile-nav-links">
+            <li><a href="#home" onclick="closeMobileNav()">Início</a></li>
+            <li><a href="#about" onclick="closeMobileNav()">Sobre</a></li>
+            <li><a href="#services" onclick="closeMobileNav()">Serviços</a></li>
+            <li><a href="#projects" onclick="closeMobileNav()">Projetos</a></li>
+            <li><a href="#contact" onclick="closeMobileNav()">Contato</a></li>
+        </ul>
+    </nav>
 
-        <!-- SEÇÃO PROJETOS -->
-        <section id="projetos">
-            <h2 class="section-title">Meus Projetos</h2>
-            
-            <div class="projects-counter" id="projectsCounter">
-                📊 Total de projetos: <span id="projectCount">4</span>
-            </div>
-            
-            <button class="add-project-btn" onclick="openModal()">
-                ➕ Adicionar Novo Projeto
+    <!-- Admin Panel -->
+    <div id="adminPanel" class="admin-panel">
+        <div class="admin-title">
+            <span>⚙️ Painel Administrativo</span>
+            <button id="closeAdminBtn" class="close-btn" aria-label="Fechar painel">×</button>
+        </div>
+        
+        <div class="form-group">
+            <button id="addProjectBtn" class="btn btn-primary" style="width: 100%;">
+                ➕ Adicionar Projeto
             </button>
-
-            <div class="projects-grid" id="projectsGrid">
-                <!-- Projetos serão carregados aqui pelo JavaScript -->
-            </div>
-        </section>
-
-        <!-- SEÇÃO SOBRE MIM -->
-        <section id="sobre">
-            <div class="section-content">
-                <h2 class="section-title">Sobre Mim</h2>
-                <div class="sobre-content fade-in">
-                    <p class="sobre-text">
-                        Meu nome é <strong>Natan</strong>, tenho <strong>15 anos</strong> e faço programação em qualquer linguagem. 
-                        Sempre busco aprender novas tecnologias e me desafiar com projetos inovadores. 
-                        Tenho um auxílio de IA para me ajudar a desenvolver soluções mais eficientes e criativas.
-                        <br><br>
-                        Minha paixão pela programação começou cedo, e desde então venho explorando diferentes 
-                        linguagens e frameworks. Acredito que a tecnologia pode transformar o mundo e estou 
-                        sempre pronto para contribuir com essa transformação através do código.
-                    </p>
-                </div>
-            </div>
-        </section>
-
-        <!-- SEÇÃO CONTATO -->
-        <section id="contato">
-            <div class="section-content">
-                <h2 class="section-title">Entre em Contato</h2>
-                <div class="contact-grid">
-                    <div class="contact-item fade-in">
-                        <div class="contact-icon">📧</div>
-                        <h3 class="contact-title">Email</h3>
-                        <div class="contact-info">
-                            <a href="mailto:borgesnatan09@gmail.com">borgesnatan09@gmail.com</a>
-                        </div>
-                    </div>
-                    
-                    <div class="contact-item fade-in">
-                        <div class="contact-icon">📱</div>
-                        <h3 class="contact-title">Telefone</h3>
-                        <div class="contact-info">
-                            <a href="tel:+5521992826074">+55 21 99282-6074</a>
-                        </div>
-                    </div>
-                    
-                    <div class="contact-item fade-in">
-                        <div class="contact-icon">📷</div>
-                        <h3 class="contact-title">Instagram</h3>
-                        <div class="contact-info">
-                            <a href="https://www.instagram.com/ntzinnn87/" target="_blank">@ntzinnn87</a>
-                        </div>
-                    </div>
-                    
-                    <div class="contact-item fade-in">
-                        <div class="contact-icon">💬</div>
-                        <h3 class="contact-title">Discord</h3>
-                        <div class="contact-info">Em breve...</div>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- BOTÕES DE BACKUP FLUTUANTES -->
-    <div class="backup-section">
-        <button class="backup-btn" onclick="exportProjects()" title="Baixar Backup (JSON)">💾</button>
-        <button class="backup-btn" onclick="importProjects()" title="Carregar Backup">📂</button>
-        <input type="file" id="importFile" accept=".json" style="display: none;" onchange="handleImportFile(event)">
+        </div>
+        
+        <div id="projectsList">
+            <!-- Projects will be loaded here -->
+        </div>
     </div>
 
-    <!-- MODAL PARA ADICIONAR PROJETO -->
-    <div class="modal" id="projectModal">
+    <!-- Add/Edit Project Modal -->
+    <div id="projectModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 class="modal-title">Adicionar Novo Projeto</h3>
-                <button class="close-btn" onclick="closeModal()">&times;</button>
+                <h3 class="modal-title" id="modalTitle">Adicionar Projeto</h3>
+                <button class="close-btn" onclick="closeProjectModal()" aria-label="Fechar modal">×</button>
             </div>
-            
             <form id="projectForm">
                 <div class="form-group">
-                    <label for="projectTitle">Título do Projeto</label>
-                    <input type="text" id="projectTitle" name="title" required>
+                    <label class="form-label" for="projectName">Nome do Projeto</label>
+                    <input type="text" id="projectName" class="form-input" required>
                 </div>
-                
                 <div class="form-group">
-                    <label for="projectType">Tipo de Projeto</label>
-                    <select id="projectType" name="type" required>
-                        <option value="">Selecione o tipo</option>
-                        <option value="website">🌐 Website</option>
-                        <option value="app">📱 App Mobile</option>
-                        <option value="bot">🤖 Bot Discord</option>
-                        <option value="api">⚡ API</option>
-                        <option value="game">🎮 Jogo</option>
-                        <option value="tool">🔧 Ferramenta</option>
-                        <option value="video">📹 Vídeo/Canal</option>
-                        <option value="document">📄 Documento</option>
-                        <option value="modpack">🎮 Modpack</option>
-                        <option value="other">🚀 Outro</option>
-                    </select>
+                    <label class="form-label" for="projectTech">Linguagem de Programação</label>
+                    <input type="text" id="projectTech" class="form-input" required>
                 </div>
-                
                 <div class="form-group">
-                    <label for="projectDescription">Descrição</label>
-                    <textarea id="projectDescription" name="description" required placeholder="Descreva seu projeto detalhadamente..."></textarea>
+                    <label class="form-label" for="projectLink">Link do Site/Arquivo</label>
+                    <input type="url" id="projectLink" class="form-input" required>
                 </div>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="projectImage">URL da Imagem</label>
-                        <input type="url" id="projectImage" name="image" placeholder="https://exemplo.com/imagem.jpg">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="projectLink">Link do Projeto</label>
-                        <input type="url" id="projectLink" name="link" placeholder="https://exemplo.com" required>
-                    </div>
-                </div>
-
                 <div class="form-group">
-                    <label>Arquivos do Projeto (opcional)</label>
-                    <div class="file-upload-area" id="fileUploadArea">
-                        <input type="file" id="projectFiles" name="files" multiple accept="*/*">
-                        <div class="upload-text">
-                            📁 Clique aqui ou arraste arquivos<br>
-                            <small>Qualquer tipo de arquivo é aceito</small>
-                        </div>
-                        <div class="file-info" id="fileInfo"></div>
-                    </div>
+                    <label class="form-label" for="projectDescription">Descrição</label>
+                    <textarea id="projectDescription" class="form-textarea" required></textarea>
                 </div>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="projectTech">Tecnologias Usadas</label>
-                        <input type="text" id="projectTech" name="technologies" placeholder="JavaScript, Python, React...">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="projectStatus">Status</label>
-                        <select id="projectStatus" name="status">
-                            <option value="completed">✅ Concluído</option>
-                            <option value="inprogress">🔄 Em Desenvolvimento</option>
-                            <option value="planning">📋 Planejando</option>
-                            <option value="paused">⏸️ Pausado</option>
-                        </select>
-                    </div>
+                <div class="form-group">
+                    <label class="form-label" for="projectCategory">Categoria</label>
+                    <input type="text" id="projectCategory" class="form-input" placeholder="Ex: Website, API, Mobile App">
                 </div>
-                
-                <button type="submit" class="submit-btn">Adicionar Projeto</button>
+                <div style="display: flex; gap: var(--space-4); justify-content: flex-end; margin-top: var(--space-6);">
+                    <button type="button" class="btn btn-secondary" onclick="closeProjectModal()">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">
+                        <span id="submitBtnText">Salvar Projeto</span>
+                        <div id="submitLoading" class="loading hidden"></div>
+                    </button>
+                </div>
             </form>
         </div>
     </div>
 
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="floating-shapes">
+            <div class="shape"></div>
+            <div class="shape"></div>
+            <div class="shape"></div>
+        </div>
+        <div class="container">
+            <div class="hero-content fade-in-up">
+                <h1>Desenvolvedor Web & Especialista em IA</h1>
+                <p class="hero-subtitle">Criando experiências digitais inovadoras com tecnologias modernas e integração inteligente de APIs de IA</p>
+                <div class="hero-buttons">
+                    <a href="#projects" class="btn btn-primary">Ver Projetos</a>
+                    <a href="#contact" class="btn btn-ghost">Entre em Contato</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="section about">
+        <div class="container">
+            <h2 class="section-title">Sobre Mim</h2>
+            <p class="section-subtitle">Conheça minha jornada no mundo da programação</p>
+            
+            <div class="about-content">
+                <div class="about-text fade-in-left">
+                    <h3>Entusiasta de Programação aos 15 Anos</h3>
+                    <p>
+                        Olá! Sou Natan Borges, um jovem desenvolvedor apaixonado por tecnologia. Aos 15 anos, 
+                        embarquei em uma jornada fascinante no mundo da programação, aproveitando o poder da 
+                        inteligência artificial para acelerar meu aprendizado e desenvolvimento.
+                    </p>
+                    <p>
+                        Utilizo ferramentas de IA como assistentes no meu processo de criação, permitindo-me 
+                        construir projetos complexos e profissionais enquanto continuo aprendendo os fundamentos 
+                        da programação. Esta abordagem moderna me permite entregar soluções de alta qualidade 
+                        e estar sempre atualizado com as últimas tecnologias.
+                    </p>
+                    <p>
+                        Meu foco está em desenvolvimento web moderno e integração de APIs de IA, criando 
+                        experiências digitais que combinam funcionalidade, design e inovação.
+                    </p>
+                </div>
+                <div class="about-image fade-in-right">
+                    <div class="about-avatar">👨‍💻</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="section">
+        <div class="container">
+            <h2 class="section-title">Serviços</h2>
+            <p class="section-subtitle">Especializado em desenvolvimento web moderno e integração de tecnologias de IA</p>
+            
+            <div class="services-grid">
+                <div class="service-card card">
+                    <div class="service-icon">🌐</div>
+                    <h3>Desenvolvimento de Sites</h3>
+                    <p>
+                        Criação de sites modernos, responsivos e otimizados. Utilizo as melhores práticas 
+                        de desenvolvimento front-end com HTML5, CSS3, JavaScript e frameworks modernos 
+                        para entregar experiências web excepcionais.
+                    </p>
+                </div>
+                
+                <div class="service-card card">
+                    <div class="service-icon">🤖</div>
+                    <h3>Integração de APIs de IA</h3>
+                    <p>
+                        Implementação e integração de APIs de inteligência artificial em projetos web. 
+                        Especializado em conectar serviços como OpenAI, Google AI, e outras plataformas 
+                        para adicionar funcionalidades inteligentes aos seus projetos.
+                    </p>
+                </div>
+                
+                <div class="service-card card">
+                    <div class="service-icon">⚡</div>
+                    <h3>Otimização e Performance</h3>
+                    <p>
+                        Melhoria de performance de sites existentes, implementação de melhores práticas 
+                        de SEO, acessibilidade e experiência do usuário. Garantindo que seu projeto 
+                        seja rápido, eficiente e bem posicionado nos mecanismos de busca.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="section projects">
+        <div class="container">
+            <h2 class="section-title">Projetos</h2>
+            <p class="section-subtitle">Alguns dos meus trabalhos recentes e projetos em destaque</p>
+            
+            <div id="projectsContainer" class="projects-grid">
+                <!-- Projects will be loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section contact">
+        <div class="container">
+            <div class="contact-content">
+                <h2 class="section-title">Vamos Trabalhar Juntos</h2>
+                <p class="section-subtitle">
+                    Pronto para transformar suas ideias em realidade digital? Entre em contato comigo!
+                </p>
+                
+                <div class="contact-buttons">
+                    <a href="https://wa.me/5521992826074?text=Olá%20Natan,%20Quero%20fazer%20meu%20site" 
+                       target="_blank" 
+                       class="whatsapp-btn"
+                       aria-label="Entrar em contato via WhatsApp">
+                        📱 WhatsApp
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <script>
-        // ===== SISTEMA DE ARMAZENAMENTO PERSISTENTE GLOBAL =====
-        // Base de dados de projetos reais do Natan - SEMPRE ATUALIZADOS
-        const PERSISTENT_PROJECTS = [
-            {
-                id: 1,
-                title: "NatanAI",
-                type: "website",
-                description: "Um site com uma IA básica desenvolvida para demonstrar capacidades de inteligência artificial. Interface intuitiva e respostas inteligentes.",
-                image: "",
-                link: "https://natanai.netlify.app",
-                technologies: "JavaScript, HTML5, CSS3, AI API",
-                status: "completed",
-                files: [],
-                dateCreated: "20/08/2025",
-                dateUpdated: "24/08/2025"
-            },
-            {
-                id: 2,
-                title: "MostraVIP",
-                type: "website",
-                description: "Um site com um quiz e IA sobre a amazonia equatoriana e colombia um projeto escola. Plataforma educativa interativa sobre biodiversidade e cultura.",
-                image: "",
-                link: "https://mostravip.onrender.com",
-                technologies: "Node.js, Express, AI Integration, Quiz System",
-                status: "completed",
-                files: [],
-                dateCreated: "15/08/2025",
-                dateUpdated: "22/08/2025"
-            },
-            {
-                id: 3,
-                title: "NatanBOT",
-                type: "bot",
-                description: "Um bot discord com economia, jogo, diversão, moderação, Sorteios, Aniversários, mensagens automaticas, Sugestões e lembrets. Bot completo e multifuncional.",
-                image: "",
-                link: "https://discord.com/oauth2/authorize?client_id=1386069955870724096",
-                technologies: "Discord.js, Node.js, Database, Economy System",
-                status: "completed",
-                files: [],
-                dateCreated: "10/08/2025",
-                dateUpdated: "24/08/2025"
-            },
-            {
-                id: 4,
-                title: "Delux GTA V",
-                type: "modpack",
-                description: "Um modpack completo para GTA V que transforma o jogo em uma experiência ultra-realista com mods de empregos, crimes, carros, gráficos melhorados e muito mais. Simulação completa da vida real.",
-                image: "",
-                link: "https://deluxgtav.netlify.app",
-                technologies: "GTA V Mods, Graphics Enhancement, Gameplay Overhaul, Realistic Physics",
-                status: "inprogress",
-                files: [],
-                dateCreated: "18/08/2025",
-                dateUpdated: "24/08/2025"
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBkVhSyQ3mZN8iXPjO_L7VKw2oH1sC5lPI",
+            authDomain: "portfolio-natan.firebaseapp.com",
+            projectId: "portfolio-natan",
+            storageBucket: "portfolio-natan.appspot.com",
+            messagingSenderId: "1088181975050",
+            appId: "1:1088181975050:web:abc123def456ghi789"
+        };
+
+        // Initialize Firebase with error handling
+        try {
+            firebase.initializeApp(firebaseConfig);
+            console.log('Firebase initialized successfully');
+        } catch (error) {
+            console.error('Firebase initialization error:', error);
+        }
+        
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+        
+        // Enable offline persistence to handle connection issues
+        db.enablePersistence({ synchronizeTabs: true }).catch((err) => {
+            if (err.code == 'failed-precondition') {
+                console.log('Multiple tabs open, persistence can only be enabled in one tab at a time.');
+            } else if (err.code == 'unimplemented') {
+                console.log('The current browser does not support all of the features required to enable persistence');
             }
-        ];
-
-        // ===== SISTEMA DE GERENCIAMENTO DE PROJETOS =====
-        let projects = [...PERSISTENT_PROJECTS];
-        let editingProjectId = null;
-
-        // Inicialização quando a página carregar
-        document.addEventListener('DOMContentLoaded', function() {
-            loadProjects();
-            setupEventListeners();
-            updateProjectCounter();
         });
 
-        // Função para carregar e exibir projetos
-        function loadProjects() {
-            const projectsGrid = document.getElementById('projectsGrid');
+        // Google OAuth Configuration
+        const googleClientId = '1088181975050-ki1pknaemctiac1gc80s8bt2nu5gub10.apps.googleusercontent.com';
+        
+        // Admin email
+        const adminEmail = 'borgesnatan09@gmail.com';
+        
+        // Current user and edit mode
+        let currentUser = null;
+        let editingProject = null;
+
+        // DOM Elements
+        const loginBtn = document.getElementById('loginBtn');
+        const userInfo = document.getElementById('userInfo');
+        const userAvatar = document.getElementById('userAvatar');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const adminPanel = document.getElementById('adminPanel');
+        const projectModal = document.getElementById('projectModal');
+        const projectForm = document.getElementById('projectForm');
+        const projectsContainer = document.getElementById('projectsContainer');
+        const addProjectBtn = document.getElementById('addProjectBtn');
+        const closeAdminBtn = document.getElementById('closeAdminBtn');
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileNav = document.getElementById('mobileNav');
+        const header = document.getElementById('header');
+
+        // Initialize Google OAuth
+        function initGoogleAuth() {
+            google.accounts.id.initialize({
+                client_id: googleClientId,
+                callback: handleCredentialResponse
+            });
+        }
+
+        // Handle Google OAuth response
+        function handleCredentialResponse(response) {
+            const credential = firebase.auth.GoogleAuthProvider.credential(response.credential);
             
+            auth.signInWithCredential(credential)
+                .then((result) => {
+                    console.log('Login successful');
+                })
+                .catch((error) => {
+                    console.error('Login error:', error);
+                    alert('Erro no login. Tente novamente.');
+                });
+        }
+
+        // Auth state listener
+        auth.onAuthStateChanged((user) => {
+            currentUser = user;
+            updateUI();
+            
+            if (user && user.email === adminEmail) {
+                loadProjects();
+            }
+        });
+
+        // Update UI based on auth state
+        function updateUI() {
+            if (currentUser) {
+                loginBtn.classList.add('hidden');
+                userInfo.classList.remove('hidden');
+                userAvatar.src = currentUser.photoURL || 'https://via.placeholder.com/40x40?text=👤';
+                
+                if (currentUser.email === adminEmail) {
+                    // Show admin button
+                    if (!document.getElementById('adminBtn')) {
+                        const adminBtn = document.createElement('button');
+                        adminBtn.id = 'adminBtn';
+                        adminBtn.className = 'btn btn-primary';
+                        adminBtn.innerHTML = '⚙️ Admin';
+                        adminBtn.onclick = toggleAdminPanel;
+                        userInfo.insertBefore(adminBtn, logoutBtn);
+                    }
+                }
+            } else {
+                loginBtn.classList.remove('hidden');
+                userInfo.classList.add('hidden');
+                adminPanel.classList.remove('show');
+                
+                const adminBtn = document.getElementById('adminBtn');
+                if (adminBtn) {
+                    adminBtn.remove();
+                }
+            }
+        }
+
+        // Mobile Navigation Functions
+        function toggleMobileNav() {
+            mobileNav.classList.toggle('show');
+            mobileMenuBtn.classList.toggle('active');
+            document.body.style.overflow = mobileNav.classList.contains('show') ? 'hidden' : '';
+        }
+
+        function closeMobileNav() {
+            mobileNav.classList.remove('show');
+            mobileMenuBtn.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Login function
+        function login() {
+            google.accounts.id.prompt();
+        }
+
+        // Logout function
+        function logout() {
+            auth.signOut().then(() => {
+                console.log('Logout successful');
+            }).catch((error) => {
+                console.error('Logout error:', error);
+            });
+        }
+
+        // Toggle admin panel
+        function toggleAdminPanel() {
+            adminPanel.classList.toggle('show');
+        }
+
+        // Close admin panel
+        function closeAdminPanel() {
+            adminPanel.classList.remove('show');
+        }
+
+        // Load projects from Firebase
+        async function loadProjects() {
+            try {
+                const snapshot = await db.collection('projects').get();
+                const projects = [];
+                
+                snapshot.forEach((doc) => {
+                    projects.push({ id: doc.id, ...doc.data() });
+                });
+                
+                displayProjects(projects);
+                
+                if (currentUser && currentUser.email === adminEmail) {
+                    displayAdminProjects(projects);
+                }
+            } catch (error) {
+                console.error('Error loading projects:', error);
+                projectsContainer.innerHTML = `
+                    <div class="card" style="grid-column: 1 / -1; text-align: center;">
+                        <h3>Projetos temporariamente indisponíveis</h3>
+                        <p style="color: var(--neutral-500); margin-top: var(--space-2);">Conectando ao banco de dados...</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Display projects in the public section
+        function displayProjects(projects) {
             if (projects.length === 0) {
-                projectsGrid.innerHTML = `
-                    <div style="grid-column: 1 / -1; text-align: center; padding: 4rem 2rem; color: var(--text-gray);">
-                        <div style="font-size: 3rem; margin-bottom: 1rem;">🚀</div>
-                        <h3 style="font-size: 1.5rem; margin-bottom: 1rem; color: var(--primary-color);">Nenhum projeto encontrado</h3>
-                        <p>Adicione seu primeiro projeto clicando no botão acima!</p>
+                projectsContainer.innerHTML = `
+                    <div class="card" style="grid-column: 1 / -1; text-align: center;">
+                        <div style="font-size: 64px; margin-bottom: var(--space-4);">🚧</div>
+                        <h3>Projetos em Breve</h3>
+                        <p style="color: var(--neutral-500); margin-top: var(--space-2);">Novos projetos incríveis estão sendo desenvolvidos!</p>
                     </div>
                 `;
                 return;
             }
 
-            projectsGrid.innerHTML = projects.map(project => createProjectCard(project)).join('');
-            updateProjectCounter();
+            projectsContainer.innerHTML = projects.map(project => `
+                <div class="project-card">
+                    <div class="project-image">🚀</div>
+                    <div class="project-content">
+                        <h3 class="project-title">${escapeHtml(project.name)}</h3>
+                        <span class="project-tech">${escapeHtml(project.tech)}</span>
+                        <p class="project-description">${escapeHtml(project.description)}</p>
+                        <a href="${escapeHtml(project.link)}" target="_blank" class="project-link">
+                            Ver Projeto →
+                        </a>
+                    </div>
+                </div>
+            `).join('');
         }
 
-        // Função para criar o HTML de um card de projeto
-        function createProjectCard(project) {
-            const typeEmojis = {
-                website: '🌐',
-                app: '📱',
-                bot: '🤖',
-                api: '⚡',
-                game: '🎮',
-                tool: '🔧',
-                video: '📹',
-                document: '📄',
-                modpack: '🎮',
-                other: '🚀'
-            };
+        // Display projects in admin panel
+        function displayAdminProjects(projects) {
+            const projectsList = document.getElementById('projectsList');
+            
+            if (projects.length === 0) {
+                projectsList.innerHTML = '<p style="text-align: center; color: var(--neutral-500); padding: var(--space-4);">Nenhum projeto adicionado ainda</p>';
+                return;
+            }
 
-            const statusEmojis = {
-                completed: '✅ Concluído',
-                inprogress: '🔄 Em Desenvolvimento',
-                planning: '📋 Planejando',
-                paused: '⏸️ Pausado'
-            };
-
-            return `
-                <div class="project-card fade-in">
-                    <div class="project-type-badge">
-                        ${typeEmojis[project.type] || '🚀'} ${project.type.charAt(0).toUpperCase() + project.type.slice(1)}
-                    </div>
-                    
-                    <div class="project-image">
-                        ${project.image ? `<img src="${project.image}" alt="${project.title}" style="width: 100%; height: 100%; object-fit: cover; border-radius: inherit;">` : 
-                          `${typeEmojis[project.type] || '🚀'}<br><small style="font-size: 0.9rem; opacity: 0.8;">Imagem em breve</small>`}
-                    </div>
-                    
-                    <h3 class="project-title">${project.title}</h3>
-                    
-                    <div class="status-indicator">
-                        ${statusEmojis[project.status] || statusEmojis.completed}
-                    </div>
-                    
-                    <p class="project-description">${project.description}</p>
-                    
-                    ${project.technologies ? `
-                        <div class="tech-tags">
-                            <strong>🛠️ Tecnologias:</strong> ${project.technologies}
-                        </div>
-                    ` : ''}
-                    
-                    ${project.files && project.files.length > 0 ? `
-                        <div class="files-section">
-                            <strong>📎 Arquivos Anexados:</strong>
-                            ${project.files.map(file => `
-                                <a href="#" class="download-btn" onclick="downloadFile('${file.name}')">${file.name}</a>
-                            `).join('')}
-                        </div>
-                    ` : ''}
-                    
-                    <a href="${project.link}" class="project-link" target="_blank" rel="noopener">
-                        Ver Projeto →
-                    </a>
-                    
-                    <div class="project-actions">
-                        <button class="edit-btn" onclick="editProject(${project.id})">
+            projectsList.innerHTML = projects.map(project => `
+                <div class="card" style="margin-bottom: var(--space-4); padding: var(--space-4);">
+                    <h4 style="margin-bottom: var(--space-2); font-weight: 600;">${escapeHtml(project.name)}</h4>
+                    <p style="color: var(--neutral-500); font-size: var(--text-sm); margin-bottom: var(--space-3);">
+                        ${escapeHtml(project.tech)} | ${escapeHtml(project.category || 'Sem categoria')}
+                    </p>
+                    <div style="display: flex; gap: var(--space-2);">
+                        <button class="btn btn-secondary" style="padding: var(--space-2) var(--space-4); font-size: var(--text-sm);" 
+                                onclick="editProject('${project.id}')">
                             ✏️ Editar
                         </button>
-                        <button class="delete-btn" onclick="deleteProject(${project.id})">
+                        <button class="btn" style="background: var(--error-500); color: var(--neutral-0); padding: var(--space-2) var(--space-4); font-size: var(--text-sm);" 
+                                onclick="deleteProject('${project.id}')">
                             🗑️ Excluir
                         </button>
                     </div>
-                    
-                    <div class="project-meta">
-                        📅 Criado em: ${project.dateCreated}<br>
-                        🔄 Atualizado: ${project.dateUpdated}
-                    </div>
                 </div>
-            `;
+            `).join('');
         }
 
-        // Função para atualizar o contador de projetos
-        function updateProjectCounter() {
-            const counter = document.getElementById('projectCount');
-            if (counter) {
-                counter.textContent = projects.length;
-            }
-        }
-
-        // Função para abrir o modal
-        function openModal() {
-            document.getElementById('projectModal').style.display = 'block';
+        // Open project modal for adding
+        function openAddProjectModal() {
+            editingProject = null;
+            document.getElementById('modalTitle').textContent = 'Adicionar Projeto';
+            document.getElementById('submitBtnText').textContent = 'Salvar Projeto';
+            clearProjectForm();
+            projectModal.classList.add('show');
             document.body.style.overflow = 'hidden';
-            
-            if (editingProjectId) {
-                const project = projects.find(p => p.id === editingProjectId);
-                if (project) {
-                    fillFormWithProject(project);
-                    document.querySelector('.modal-title').textContent = 'Editar Projeto';
-                    document.querySelector('.submit-btn').textContent = 'Salvar Alterações';
+        }
+
+        // Open project modal for editing
+        async function editProject(projectId) {
+            try {
+                const doc = await db.collection('projects').doc(projectId).get();
+                if (doc.exists) {
+                    const project = doc.data();
+                    editingProject = projectId;
+                    
+                    document.getElementById('modalTitle').textContent = 'Editar Projeto';
+                    document.getElementById('submitBtnText').textContent = 'Atualizar Projeto';
+                    
+                    document.getElementById('projectName').value = project.name || '';
+                    document.getElementById('projectTech').value = project.tech || '';
+                    document.getElementById('projectLink').value = project.link || '';
+                    document.getElementById('projectDescription').value = project.description || '';
+                    document.getElementById('projectCategory').value = project.category || '';
+                    
+                    projectModal.classList.add('show');
+                    document.body.style.overflow = 'hidden';
                 }
-            } else {
-                document.getElementById('projectForm').reset();
-                document.querySelector('.modal-title').textContent = 'Adicionar Novo Projeto';
-                document.querySelector('.submit-btn').textContent = 'Adicionar Projeto';
+            } catch (error) {
+                console.error('Error loading project:', error);
+                alert('Erro ao carregar projeto');
             }
         }
 
-        // Função para fechar o modal
-        function closeModal() {
-            document.getElementById('projectModal').style.display = 'none';
-            document.body.style.overflow = 'auto';
-            editingProjectId = null;
-            document.getElementById('projectForm').reset();
+        // Close project modal
+        function closeProjectModal() {
+            projectModal.classList.remove('show');
+            clearProjectForm();
+            editingProject = null;
+            document.body.style.overflow = '';
         }
 
-        // Função para editar projeto
-        function editProject(id) {
-            editingProjectId = id;
-            openModal();
+        // Clear project form
+        function clearProjectForm() {
+            projectForm.reset();
         }
 
-        // Função para excluir projeto
-        function deleteProject(id) {
-            if (confirm('Tem certeza que deseja excluir este projeto? Esta ação não pode ser desfeita.')) {
-                projects = projects.filter(p => p.id !== id);
+        // Save project
+        async function saveProject(projectData) {
+            try {
+                if (editingProject) {
+                    await db.collection('projects').doc(editingProject).update({
+                        ...projectData,
+                        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                } else {
+                    await db.collection('projects').add({
+                        ...projectData,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                }
+                
+                closeProjectModal();
                 loadProjects();
-                showNotification('Projeto excluído com sucesso!', 'error');
+                alert(editingProject ? 'Projeto atualizado com sucesso!' : 'Projeto adicionado com sucesso!');
+            } catch (error) {
+                console.error('Error saving project:', error);
+                alert('Erro ao salvar projeto');
             }
         }
 
-        // Função para preencher o formulário com dados do projeto
-        function fillFormWithProject(project) {
-            document.getElementById('projectTitle').value = project.title;
-            document.getElementById('projectType').value = project.type;
-            document.getElementById('projectDescription').value = project.description;
-            document.getElementById('projectImage').value = project.image || '';
-            document.getElementById('projectLink').value = project.link;
-            document.getElementById('projectTech').value = project.technologies || '';
-            document.getElementById('projectStatus').value = project.status;
+        // Delete project
+        async function deleteProject(projectId) {
+            if (!confirm('Tem certeza que deseja excluir este projeto?')) {
+                return;
+            }
+
+            try {
+                await db.collection('projects').doc(projectId).delete();
+                loadProjects();
+                alert('Projeto excluído com sucesso!');
+            } catch (error) {
+                console.error('Error deleting project:', error);
+                alert('Erro ao excluir projeto');
+            }
         }
 
-        // Configurar event listeners
-        function setupEventListeners() {
-            // Formulário de projeto
-            document.getElementById('projectForm').addEventListener('submit', function(e) {
-                e.preventDefault();
-                const formData = new FormData(this);
-                const projectData = Object.fromEntries(formData.entries());
-                
-                if (editingProjectId) {
-                    updateProject(editingProjectId, projectData);
-                } else {
-                    addProject(projectData);
-                }
-                
-                closeModal();
-            });
+        // Escape HTML to prevent XSS
+        function escapeHtml(text) {
+            const map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            };
+            return text ? text.replace(/[&<>"']/g, m => map[m]) : '';
+        }
 
-            // Fechar modal clicando fora dele
-            document.getElementById('projectModal').addEventListener('click', function(e) {
-                if (e.target === this) {
-                    closeModal();
-                }
-            });
-
-            // Upload de arquivos
-            const fileInput = document.getElementById('projectFiles');
-            const fileInfo = document.getElementById('fileInfo');
-            
-            fileInput.addEventListener('change', function(e) {
-                const files = Array.from(e.target.files);
-                if (files.length > 0) {
-                    fileInfo.style.display = 'block';
-                    fileInfo.innerHTML = `
-                        <strong>Arquivos selecionados:</strong><br>
-                        ${files.map(file => `📄 ${file.name} (${formatFileSize(file.size)})`).join('<br>')}
-                    `;
-                } else {
-                    fileInfo.style.display = 'none';
-                }
-            });
-
-            // Navegação suave
+        // Smooth scrolling for navigation links
+        function initSmoothScrolling() {
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function(e) {
+                anchor.addEventListener('click', function (e) {
                     e.preventDefault();
                     const target = document.querySelector(this.getAttribute('href'));
                     if (target) {
@@ -1300,166 +1999,155 @@
                             behavior: 'smooth',
                             block: 'start'
                         });
+                        closeMobileNav(); // Close mobile nav if open
                     }
                 });
             });
         }
 
-        // Função para adicionar novo projeto
-        function addProject(projectData) {
-            const newProject = {
-                id: Date.now(),
-                title: projectData.title,
-                type: projectData.type,
-                description: projectData.description,
-                image: projectData.image || '',
-                link: projectData.link,
-                technologies: projectData.technologies || '',
-                status: projectData.status || 'completed',
-                files: [], // Arquivos seriam processados aqui em um sistema real
-                dateCreated: new Date().toLocaleDateString('pt-BR'),
-                dateUpdated: new Date().toLocaleDateString('pt-BR')
-            };
+        // Enhanced Intersection Observer for animations
+        function initAnimations() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.animationDelay = '0s';
+                        if (entry.target.classList.contains('fade-in-left')) {
+                            entry.target.classList.add('fade-in-left');
+                        } else if (entry.target.classList.contains('fade-in-right')) {
+                            entry.target.classList.add('fade-in-right');
+                        } else {
+                            entry.target.classList.add('fade-in-up');
+                        }
+                    }
+                });
+            }, { 
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            });
 
-            projects.unshift(newProject);
-            loadProjects();
-            showNotification('Projeto adicionado com sucesso!', 'success');
+            // Observe cards with staggered delays
+            document.querySelectorAll('.card, .service-card').forEach((el, index) => {
+                el.style.animationDelay = `${index * 0.1}s`;
+                observer.observe(el);
+            });
         }
 
-        // Função para atualizar projeto existente
-        function updateProject(id, projectData) {
-            const projectIndex = projects.findIndex(p => p.id === id);
-            if (projectIndex !== -1) {
-                projects[projectIndex] = {
-                    ...projects[projectIndex],
-                    title: projectData.title,
-                    type: projectData.type,
-                    description: projectData.description,
-                    image: projectData.image || projects[projectIndex].image,
-                    link: projectData.link,
-                    technologies: projectData.technologies || '',
-                    status: projectData.status || 'completed',
-                    dateUpdated: new Date().toLocaleDateString('pt-BR')
-                };
+        // Header scroll effect
+        function initHeaderScrollEffect() {
+            let lastScrollY = window.scrollY;
+            
+            window.addEventListener('scroll', () => {
+                const currentScrollY = window.scrollY;
                 
-                loadProjects();
-                showNotification('Projeto atualizado com sucesso!', 'success');
-            }
-        }
-
-        // Função para exportar projetos como JSON
-        function exportProjects() {
-            const dataStr = JSON.stringify(projects, null, 2);
-            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
-            
-            const exportFileDefaultName = `natan_projects_backup_${new Date().toISOString().split('T')[0]}.json`;
-            
-            const linkElement = document.createElement('a');
-            linkElement.setAttribute('href', dataUri);
-            linkElement.setAttribute('download', exportFileDefaultName);
-            linkElement.click();
-            
-            showNotification('Backup exportado com sucesso!', 'success');
-        }
-
-        // Função para importar projetos
-        function importProjects() {
-            document.getElementById('importFile').click();
-        }
-
-        // Função para lidar com o arquivo de importação
-        function handleImportFile(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                try {
-                    const importedProjects = JSON.parse(e.target.result);
-                    
-                    if (confirm(`Importar ${importedProjects.length} projetos? Isso substituirá todos os projetos atuais.`)) {
-                        projects = importedProjects;
-                        loadProjects();
-                        showNotification('Projetos importados com sucesso!', 'success');
-                    }
-                } catch (error) {
-                    showNotification('Erro ao importar arquivo. Verifique se é um JSON válido.', 'error');
+                if (currentScrollY > 100) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
                 }
-            };
-            reader.readAsText(file);
+                
+                // Hide header on scroll down, show on scroll up
+                if (currentScrollY > lastScrollY && currentScrollY > 200) {
+                    header.style.transform = 'translateY(-100%)';
+                } else {
+                    header.style.transform = 'translateY(0)';
+                }
+                
+                lastScrollY = currentScrollY;
+            });
         }
 
-        // Função para mostrar notificações
-        function showNotification(message, type = 'info') {
-            const notification = document.createElement('div');
-            notification.style.cssText = `
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                background: ${type === 'success' ? 'var(--gradient-primary)' : 
-                           type === 'error' ? '#dc2626' : 'var(--bg-card)'};
-                color: white;
-                padding: 1rem 2rem;
-                border-radius: 12px;
-                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-                z-index: 3000;
-                font-weight: 500;
-                transform: translateX(400px);
-                transition: transform 0.3s ease;
-            `;
-            
-            notification.textContent = message;
-            document.body.appendChild(notification);
-            
-            setTimeout(() => {
-                notification.style.transform = 'translateX(0)';
-            }, 100);
-            
-            setTimeout(() => {
-                notification.style.transform = 'translateX(400px)';
-                setTimeout(() => {
-                    document.body.removeChild(notification);
-                }, 300);
-            }, 3000);
-        }
+        // Initialize everything when DOM is ready
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize Google Auth when the page loads
+            if (typeof google !== 'undefined') {
+                initGoogleAuth();
+            } else {
+                // Wait for Google script to load
+                const checkGoogle = setInterval(() => {
+                    if (typeof google !== 'undefined') {
+                        initGoogleAuth();
+                        clearInterval(checkGoogle);
+                    }
+                }, 100);
+            }
 
-        // Função para formatar tamanho do arquivo
-        function formatFileSize(bytes) {
-            if (bytes === 0) return '0 Bytes';
-            const k = 1024;
-            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-            const i = Math.floor(Math.log(bytes) / Math.log(k));
-            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-        }
+            initSmoothScrolling();
+            initAnimations();
+            initHeaderScrollEffect();
+            loadProjects();
 
-        // Função placeholder para download de arquivos
-        function downloadFile(filename) {
-            showNotification(`Download de ${filename} não implementado (seria necessário backend real)`, 'info');
-        }
+            // Event listeners
+            loginBtn.addEventListener('click', login);
+            logoutBtn.addEventListener('click', logout);
+            addProjectBtn.addEventListener('click', openAddProjectModal);
+            closeAdminBtn.addEventListener('click', closeAdminPanel);
+            mobileMenuBtn.addEventListener('click', toggleMobileNav);
 
-        // Adicionar animações aos elementos quando entram na viewport
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
+            // Project form submission
+            projectForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                const submitBtn = document.getElementById('submitBtnText');
+                const submitLoading = document.getElementById('submitLoading');
+                
+                submitBtn.classList.add('hidden');
+                submitLoading.classList.remove('hidden');
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.animationDelay = `${Math.random() * 0.3}s`;
-                    entry.target.classList.add('fade-in');
+                const projectData = {
+                    name: document.getElementById('projectName').value.trim(),
+                    tech: document.getElementById('projectTech').value.trim(),
+                    link: document.getElementById('projectLink').value.trim(),
+                    description: document.getElementById('projectDescription').value.trim(),
+                    category: document.getElementById('projectCategory').value.trim()
+                };
+
+                await saveProject(projectData);
+                
+                submitBtn.classList.remove('hidden');
+                submitLoading.classList.add('hidden');
+            });
+
+            // Close modal when clicking outside
+            projectModal.addEventListener('click', (e) => {
+                if (e.target === projectModal) {
+                    closeProjectModal();
                 }
             });
-        }, observerOptions);
 
-        // Observar elementos para animação
-        document.addEventListener('DOMContentLoaded', () => {
-            setTimeout(() => {
-                document.querySelectorAll('.project-card, .contact-item').forEach(el => {
-                    observer.observe(el);
-                });
-            }, 500);
+            // Close mobile nav when clicking outside
+            mobileNav.addEventListener('click', (e) => {
+                if (e.target === mobileNav) {
+                    closeMobileNav();
+                }
+            });
+
+            // Close admin panel when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!adminPanel.contains(e.target) && 
+                    !document.getElementById('adminBtn')?.contains(e.target)) {
+                    adminPanel.classList.remove('show');
+                }
+            });
+
+            // Keyboard navigation
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    if (mobileNav.classList.contains('show')) {
+                        closeMobileNav();
+                    } else if (projectModal.classList.contains('show')) {
+                        closeProjectModal();
+                    } else if (adminPanel.classList.contains('show')) {
+                        closeAdminPanel();
+                    }
+                }
+            });
         });
+
+        // Expose functions to global scope for inline event handlers
+        window.editProject = editProject;
+        window.deleteProject = deleteProject;
+        window.closeProjectModal = closeProjectModal;
+        window.closeMobileNav = closeMobileNav;
     </script>
 </body>
 </html>
