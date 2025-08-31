@@ -812,22 +812,31 @@
             const authBtn = document.getElementById('authBtn');
             const adminButton = document.getElementById('adminButton');
             
+            console.log('Updating auth UI, currentUser:', currentUser, 'isAdmin:', isAdmin);
+            
             if (currentUser) {
-                authBtn.innerHTML = `<img src="${currentUser.picture}" style="width: 24px; height: 24px; border-radius: 50%; margin-right: 0.5rem;">${currentUser.name}`;
-                authBtn.onclick = logout;
+                authBtn.innerHTML = `<img src="${currentUser.picture}" style="width: 24px; height: 24px; border-radius: 50%; margin-right: 0.5rem;">${currentUser.name.split(' ')[0]}`;
                 
                 if (isAdmin) {
                     adminButton.classList.remove('hidden');
+                    console.log('Admin button should be visible now');
+                } else {
+                    adminButton.classList.add('hidden');
                 }
             } else {
                 authBtn.textContent = 'Login';
-                authBtn.onclick = login;
                 adminButton.classList.add('hidden');
             }
         }
 
         function login() {
-            google.accounts.id.prompt();
+            console.log('Tentando fazer login...');
+            if (typeof google !== 'undefined' && google.accounts && google.accounts.id) {
+                google.accounts.id.prompt();
+            } else {
+                console.error('Google Sign-In não carregado');
+                showMessage('Erro: Google Sign-In não carregado. Recarregue a página.', 'error');
+            }
         }
 
         function logout() {
@@ -1002,6 +1011,8 @@
 
         // Event Listeners
         document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM carregado, inicializando app...');
+            
             // Initialize the app
             initializeApp();
             
@@ -1015,44 +1026,73 @@
             });
             
             // Admin button click
-            document.getElementById('adminButton').addEventListener('click', openAdminPanel);
+            const adminButton = document.getElementById('adminButton');
+            if (adminButton) {
+                adminButton.addEventListener('click', function() {
+                    console.log('Admin button clicked');
+                    openAdminPanel();
+                });
+            }
             
             // Cancel button click
-            document.getElementById('cancelBtn').addEventListener('click', closeAdminPanel);
+            const cancelBtn = document.getElementById('cancelBtn');
+            if (cancelBtn) {
+                cancelBtn.addEventListener('click', closeAdminPanel);
+            }
             
             // Close admin panel when clicking outside
-            document.getElementById('adminPanel').addEventListener('click', function(e) {
-                if (e.target === this) {
-                    closeAdminPanel();
-                }
-            });
+            const adminPanel = document.getElementById('adminPanel');
+            if (adminPanel) {
+                adminPanel.addEventListener('click', function(e) {
+                    if (e.target === this) {
+                        closeAdminPanel();
+                    }
+                });
+            }
             
             // Project form submission
-            document.getElementById('projectForm').addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                if (!isAdmin) {
-                    showMessage('Acesso negado. Apenas o administrador pode adicionar projetos.', 'error');
-                    return;
-                }
-                
-                const projectData = {
-                    name: document.getElementById('projectName').value.trim(),
-                    language: document.getElementById('projectLanguage').value.trim(),
-                    url: document.getElementById('projectUrl').value.trim(),
-                    github: document.getElementById('projectGithub').value.trim(),
-                    description: document.getElementById('projectDescription').value.trim(),
-                    features: document.getElementById('projectFeatures').value.trim()
-                };
-                
-                // Validation
-                if (!projectData.name || !projectData.language || !projectData.url || !projectData.description) {
-                    showMessage('Por favor, preencha todos os campos obrigatórios.', 'error');
-                    return;
-                }
-                
-                addProject(projectData);
-            });
+            const projectForm = document.getElementById('projectForm');
+            if (projectForm) {
+                projectForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    console.log('Form submitted, isAdmin:', isAdmin);
+                    
+                    if (!isAdmin) {
+                        showMessage('Acesso negado. Apenas o administrador pode adicionar projetos.', 'error');
+                        return;
+                    }
+                    
+                    const projectData = {
+                        name: document.getElementById('projectName').value.trim(),
+                        language: document.getElementById('projectLanguage').value.trim(),
+                        url: document.getElementById('projectUrl').value.trim(),
+                        github: document.getElementById('projectGithub').value.trim(),
+                        description: document.getElementById('projectDescription').value.trim(),
+                        features: document.getElementById('projectFeatures').value.trim()
+                    };
+                    
+                    // Validation
+                    if (!projectData.name || !projectData.language || !projectData.url || !projectData.description) {
+                        showMessage('Por favor, preencha todos os campos obrigatórios.', 'error');
+                        return;
+                    }
+                    
+                    addProject(projectData);
+                });
+            }
+            
+            // Auth button click handler
+            const authBtn = document.getElementById('authBtn');
+            if (authBtn) {
+                authBtn.addEventListener('click', function() {
+                    console.log('Auth button clicked, currentUser:', currentUser);
+                    if (currentUser) {
+                        logout();
+                    } else {
+                        login();
+                    }
+                });
+            }
         });
 
         // Add some sample projects for demonstration
