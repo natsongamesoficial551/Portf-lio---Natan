@@ -497,29 +497,30 @@
         }
 
         .admin-button {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: var(--gradient);
-            color: white;
-            border: none;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            font-size: 1.5rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: var(--shadow);
-            z-index: 1000;
+            position: fixed !important;
+            bottom: 20px !important;
+            right: 20px !important;
+            background: var(--gradient) !important;
+            color: white !important;
+            border: none !important;
+            width: 60px !important;
+            height: 60px !important;
+            border-radius: 50% !important;
+            font-size: 1.5rem !important;
+            cursor: pointer !important;
+            transition: all 0.3s ease !important;
+            box-shadow: var(--shadow) !important;
+            z-index: 9999 !important;
+            display: none !important;
         }
 
         .admin-button:hover {
-            transform: scale(1.1);
-            box-shadow: var(--shadow-hover);
+            transform: scale(1.1) !important;
+            box-shadow: var(--shadow-hover) !important;
         }
 
-        .admin-button.hidden {
-            display: none;
+        .admin-button.show {
+            display: block !important;
         }
 
         .success-message {
@@ -704,7 +705,7 @@
     </div>
 
     <!-- Admin Button (only visible for admin) -->
-    <button class="admin-button hidden" id="adminButton">
+    <button class="admin-button" id="adminButton" style="display: none;">
         <i class="fas fa-plus"></i>
     </button>
 
@@ -818,10 +819,10 @@
                 };
 
                 currentUser = userData;
-                isAdmin = currentUser.email === ADMIN_EMAIL;
+                isAdmin = checkAdminStatus(currentUser.email);
                 
                 console.log('Usuário logado:', userData);
-                console.log('É admin? (comparação):', currentUser.email, '===', ADMIN_EMAIL, '=', isAdmin);
+                console.log('STATUS FINAL - É admin?', isAdmin);
                 
                 // Save user session
                 LocalStorageManager.setCurrentUser(userData);
@@ -840,9 +841,23 @@
                 updateAuthUI();
                 
                 if (isAdmin) {
-                    showMessage(`Bem-vindo Admin ${userData.name}! Você pode adicionar projetos.`, 'success');
+                    showMessage(`🔥 BEM-VINDO ADMIN ${userData.name}! Você pode adicionar projetos usando o botão +`, 'success');
+                    
+                    // MÚLTIPLAS tentativas de mostrar o botão
+                    for (let i = 0; i < 5; i++) {
+                        setTimeout(() => {
+                            const adminButton = document.getElementById('adminButton');
+                            if (adminButton) {
+                                adminButton.style.display = 'block !important';
+                                adminButton.style.visibility = 'visible !important';
+                                adminButton.style.opacity = '1 !important';
+                                adminButton.classList.remove('hidden');
+                                console.log(`Tentativa ${i + 1}: Forçando botão admin visível`);
+                            }
+                        }, i * 200);
+                    }
                 } else {
-                    showMessage(`Bem-vindo ${userData.name}!`, 'success');
+                    showMessage(`Bem-vindo ${userData.name}! (Apenas borgesnatan09@gmail.com pode adicionar projetos)`, 'success');
                 }
                 
                 loadProjects();
@@ -857,22 +872,43 @@
             const authBtn = document.getElementById('authBtn');
             const adminButton = document.getElementById('adminButton');
             
-            console.log('Updating auth UI, currentUser:', currentUser, 'isAdmin:', isAdmin);
+            console.log('=== UPDATE AUTH UI ===');
+            console.log('currentUser:', currentUser);
+            console.log('isAdmin:', isAdmin);
+            console.log('adminButton encontrado?', !!adminButton);
             
             if (currentUser) {
                 const firstName = currentUser.name.split(' ')[0];
                 authBtn.innerHTML = `<img src="${currentUser.picture}" style="width: 24px; height: 24px; border-radius: 50%; margin-right: 0.5rem; object-fit: cover;">${firstName}`;
                 
-                if (isAdmin) {
+                // FORÇAR EXIBIÇÃO DO BOTÃO ADMIN
+                if (isAdmin && adminButton) {
+                    console.log('🔥 FORÇANDO BOTÃO ADMIN VISÍVEL');
+                    adminButton.style.display = 'block';
+                    adminButton.style.visibility = 'visible';
+                    adminButton.style.opacity = '1';
                     adminButton.classList.remove('hidden');
-                    console.log('Admin button mostrado');
+                    
+                    // Teste se o botão está realmente visível
+                    setTimeout(() => {
+                        const rect = adminButton.getBoundingClientRect();
+                        console.log('Posição do botão admin:', rect);
+                        console.log('Botão visível na tela?', rect.width > 0 && rect.height > 0);
+                    }, 100);
                 } else {
-                    adminButton.classList.add('hidden');
+                    console.log('❌ Ocultando botão admin');
+                    if (adminButton) {
+                        adminButton.style.display = 'none';
+                    }
                 }
             } else {
                 authBtn.innerHTML = '<i class="fas fa-user"></i> Login';
-                adminButton.classList.add('hidden');
+                if (adminButton) {
+                    adminButton.style.display = 'none';
+                }
+                console.log('Usuário não logado');
             }
+            console.log('=====================');
         }
 
         function login() {
@@ -1066,7 +1102,8 @@
             if (savedUser) {
                 console.log('Usuário salvo encontrado:', savedUser);
                 currentUser = savedUser;
-                isAdmin = currentUser.email === ADMIN_EMAIL;
+                isAdmin = checkAdminStatus(currentUser.email);
+                console.log('Admin status do usuário salvo:', isAdmin);
                 updateAuthUI();
             }
             
