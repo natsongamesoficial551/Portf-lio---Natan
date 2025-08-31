@@ -719,6 +719,25 @@
         let currentUser = null;
         let isAdmin = false;
 
+        // Debug function to check admin status
+        function checkAdminStatus(email) {
+            console.log('=== VERIFICAÇÃO ADMIN ===');
+            console.log('Email do usuário:', email);
+            console.log('Email admin configurado:', ADMIN_EMAIL);
+            console.log('São iguais?', email === ADMIN_EMAIL);
+            console.log('Tipo email usuário:', typeof email);
+            console.log('Tipo email admin:', typeof ADMIN_EMAIL);
+            console.log('Email usuário (trim):', email.trim());
+            console.log('Email admin (trim):', ADMIN_EMAIL.trim());
+            
+            // Comparação mais rigorosa
+            const isAdminUser = email.toLowerCase().trim() === ADMIN_EMAIL.toLowerCase().trim();
+            console.log('É admin (comparação rigorosa)?', isAdminUser);
+            console.log('=========================');
+            
+            return isAdminUser;
+        }
+
         // LocalStorage Management
         class LocalStorageManager {
             static getCurrentUser() {
