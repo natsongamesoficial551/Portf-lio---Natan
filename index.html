@@ -11,62 +11,6 @@
     <!-- Google OAuth -->
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     
-    <!-- Firebase v9 Modular SDK -->
-    <script type="module">
-        import { initializeApp } from "firebase/app";
-        import { getAnalytics } from "firebase/analytics";
-        import { getAuth, signInWithCredential, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, getDocs, getDoc, doc, updateDoc, deleteDoc, serverTimestamp, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-        // Firebase Configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyAFTm1jREhmW9ugkMroQEILSYBziI4dMYU",
-            authDomain: "portfolio-natandev.firebaseapp.com",
-            projectId: "portfolio-natandev",
-            storageBucket: "portfolio-natandev.firebasestorage.app",
-            messagingSenderId: "336415131312",
-            appId: "1:336415131312:web:fcc70ca38b4cd73dab5d75",
-            measurementId: "G-R1Z5NWFLMB"
-        };
-
-        // Initialize Firebase
-        let app, auth, db;
-        
-        try {
-            app = initializeApp(firebaseConfig);
-            auth = getAuth(app);
-            db = getFirestore(app);
-            
-            // Tornar Firebase disponível globalmente
-            window.firebaseAuth = auth;
-            window.firebaseDb = db;
-            window.firebaseAddDoc = addDoc;
-            window.firebaseGetDocs = getDocs;
-            window.firebaseCollection = collection;
-            window.firebaseDoc = doc;
-            window.firebaseUpdateDoc = updateDoc;
-            window.firebaseDeleteDoc = deleteDoc;
-            window.firebaseServerTimestamp = serverTimestamp;
-            window.firebaseQuery = query;
-            window.firebaseOrderBy = orderBy;
-            window.firebaseSignInWithCredential = signInWithCredential;
-            window.firebaseGoogleAuthProvider = GoogleAuthProvider;
-            window.firebaseSignOut = signOut;
-            window.firebaseOnAuthStateChanged = onAuthStateChanged;
-            
-            window.isFirebaseReady = true;
-            
-            console.log('✅ Firebase v9 inicializado com sucesso!');
-            
-            // Disparar evento customizado para notificar que Firebase está pronto
-            window.dispatchEvent(new CustomEvent('firebaseReady'));
-            
-        } catch (error) {
-            console.error('❌ Erro ao inicializar Firebase:', error);
-            window.isFirebaseReady = false;
-        }
-    </script>
-    
     <style>
         /* ===== RESET & BASE STYLES ===== */
         * {
@@ -1877,6 +1821,63 @@
         </div>
     </section>
 
+    <!-- Firebase Scripts -->
+    <script type="module">
+        // Import Firebase modules
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getAuth, signInWithCredential, GoogleAuthProvider, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+        import { getFirestore, collection, addDoc, getDocs, getDoc, doc, updateDoc, deleteDoc, serverTimestamp, query, orderBy } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyAFTm1jREhmW9ugkMroQEILSYBziI4dMYU",
+            authDomain: "portfolio-natandev.firebaseapp.com",
+            projectId: "portfolio-natandev",
+            storageBucket: "portfolio-natandev.firebasestorage.app",
+            messagingSenderId: "336415131312",
+            appId: "1:336415131312:web:fcc70ca38b4cd73dab5d75",
+            measurementId: "G-R1Z5NWFLMB"
+        };
+
+        // Initialize Firebase
+        let app, auth, db;
+        
+        try {
+            app = initializeApp(firebaseConfig);
+            auth = getAuth(app);
+            db = getFirestore(app);
+            
+            // Make Firebase available globally
+            window.firebaseAuth = auth;
+            window.firebaseDb = db;
+            window.firebaseAddDoc = addDoc;
+            window.firebaseGetDocs = getDocs;
+            window.firebaseGetDoc = getDoc;
+            window.firebaseCollection = collection;
+            window.firebaseDoc = doc;
+            window.firebaseUpdateDoc = updateDoc;
+            window.firebaseDeleteDoc = deleteDoc;
+            window.firebaseServerTimestamp = serverTimestamp;
+            window.firebaseQuery = query;
+            window.firebaseOrderBy = orderBy;
+            window.firebaseSignInWithCredential = signInWithCredential;
+            window.firebaseGoogleAuthProvider = GoogleAuthProvider;
+            window.firebaseSignOut = signOut;
+            window.firebaseOnAuthStateChanged = onAuthStateChanged;
+            
+            window.isFirebaseReady = true;
+            
+            console.log('✅ Firebase v9 inicializado com sucesso!');
+            
+            // Dispatch custom event to notify Firebase is ready
+            window.dispatchEvent(new CustomEvent('firebaseReady'));
+            
+        } catch (error) {
+            console.error('❌ Erro ao inicializar Firebase:', error);
+            window.isFirebaseReady = false;
+        }
+    </script>
+
     <script>
         // ===== GLOBAL VARIABLES =====
         let currentUser = null;
@@ -1979,8 +1980,8 @@
                 const userInfo = parseJwt(response.credential);
                 console.log('👤 Informações do usuário:', userInfo);
 
-                // Create Firebase credential
-                const credential = window.firebaseGoogleAuthProvider.credential(null, response.credential);
+                // Create Firebase credential  
+                const credential = window.firebaseGoogleAuthProvider.credential(response.credential);
                 
                 // Sign in with Firebase
                 const result = await window.firebaseSignInWithCredential(window.firebaseAuth, credential);
