@@ -11,6 +11,67 @@
     <!-- Google OAuth -->
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     
+    <!-- Firebase v9 Modular SDK -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+        import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+        import { getFirestore, collection, addDoc, getDocs, getDoc, doc, updateDoc, deleteDoc, serverTimestamp, query, orderBy } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyAFTm1jREhmW9ugkMroQEILSYBziI4dMYU",
+            authDomain: "portfolio-natandev.firebaseapp.com",
+            projectId: "portfolio-natandev",
+            storageBucket: "portfolio-natandev.firebasestorage.app",
+            messagingSenderId: "336415131312",
+            appId: "1:336415131312:web:fcc70ca38b4cd73dab5d75",
+            measurementId: "G-R1Z5NWFLMB"
+        };
+
+        // Initialize Firebase
+        let app, auth, db, provider;
+        
+        try {
+            app = initializeApp(firebaseConfig);
+            auth = getAuth(app);
+            db = getFirestore(app);
+            provider = new GoogleAuthProvider();
+            
+            // Configurar provedor Google
+            provider.addScope('email');
+            provider.addScope('profile');
+            
+            // Tornar Firebase disponível globalmente
+            window.firebaseAuth = auth;
+            window.firebaseDb = db;
+            window.firebaseAddDoc = addDoc;
+            window.firebaseGetDocs = getDocs;
+            window.firebaseGetDoc = getDoc;
+            window.firebaseCollection = collection;
+            window.firebaseDoc = doc;
+            window.firebaseUpdateDoc = updateDoc;
+            window.firebaseDeleteDoc = deleteDoc;
+            window.firebaseServerTimestamp = serverTimestamp;
+            window.firebaseQuery = query;
+            window.firebaseOrderBy = orderBy;
+            window.firebaseSignInWithPopup = signInWithPopup;
+            window.firebaseGoogleAuthProvider = provider;
+            window.firebaseSignOut = signOut;
+            window.firebaseOnAuthStateChanged = onAuthStateChanged;
+            
+            window.isFirebaseReady = true;
+            
+            console.log('✅ Firebase v9 inicializado com sucesso!');
+            
+            // Disparar evento customizado para notificar que Firebase está pronto
+            window.dispatchEvent(new CustomEvent('firebaseReady'));
+            
+        } catch (error) {
+            console.error('❌ Erro ao inicializar Firebase:', error);
+            window.isFirebaseReady = false;
+        }
+    </script>
+    
     <style>
         /* ===== RESET & BASE STYLES ===== */
         * {
@@ -603,156 +664,6 @@
             bottom: 20%;
             left: 20%;
             animation-delay: -4s;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(180deg); }
-        }
-
-        /* ===== SECTIONS ===== */
-        .section {
-            padding: var(--space-20) 0;
-        }
-
-        .section-title {
-            text-align: center;
-            font-size: var(--text-4xl);
-            font-weight: 800;
-            margin-bottom: var(--space-4);
-            background: var(--gradient-primary);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            letter-spacing: -0.025em;
-            line-height: 1.2;
-        }
-
-        .section-subtitle {
-            text-align: center;
-            color: var(--neutral-500);
-            margin-bottom: var(--space-16);
-            font-size: var(--text-lg);
-            max-width: 640px;
-            margin-left: auto;
-            margin-right: auto;
-            line-height: 1.6;
-        }
-
-        /* ===== ABOUT SECTION ===== */
-        .about {
-            background: 
-                linear-gradient(135deg, var(--primary-50) 0%, var(--secondary-50) 100%),
-                url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="rgba(99,102,241,0.1)"/><circle cx="80" cy="80" r="2" fill="rgba(6,182,212,0.1)"/></svg>');
-        }
-
-        .about-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: var(--space-16);
-            align-items: center;
-        }
-
-        .about-text h3 {
-            font-size: var(--text-2xl);
-            font-weight: 700;
-            margin-bottom: var(--space-6);
-            color: var(--neutral-800);
-            line-height: 1.3;
-        }
-
-        .about-text p {
-            margin-bottom: var(--space-6);
-            color: var(--neutral-600);
-            line-height: 1.8;
-            font-size: var(--text-base);
-        }
-
-        .about-image {
-            text-align: center;
-            position: relative;
-        }
-
-        .about-avatar {
-            width: 320px;
-            height: 320px;
-            border-radius: var(--radius-full);
-            background: var(--gradient-primary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 128px;
-            color: var(--neutral-0);
-            margin: 0 auto;
-            box-shadow: var(--shadow-2xl);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .about-avatar::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
-            animation: shimmer 3s infinite;
-        }
-
-        @keyframes shimmer {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* ===== SERVICES SECTION ===== */
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: var(--space-8);
-        }
-
-        .service-card {
-            text-align: center;
-            position: relative;
-        }
-
-        .service-icon {
-            width: 88px;
-            height: 88px;
-            margin: 0 auto var(--space-6);
-            background: var(--gradient-primary);
-            border-radius: var(--radius-2xl);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 36px;
-            color: var(--neutral-0);
-            box-shadow: var(--shadow-lg);
-            transition: all var(--transition-normal);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .service-icon::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.2), transparent);
-            transform: rotate(45deg);
-            transition: all var(--transition-slow);
-        }
-
-        .service-card:hover .service-icon {
-            transform: translateY(-4px) scale(1.1);
-            box-shadow: var(--shadow-xl);
-        }
-
-        .service-card:hover .service-icon::before {
-            animation: shine 0.8s ease-in-out;
         }
 
         @keyframes shine {
@@ -1821,63 +1732,6 @@
         </div>
     </section>
 
-    <!-- Firebase Scripts -->
-    <script type="module">
-        // Import Firebase modules
-        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-        import { getAuth, signInWithCredential, GoogleAuthProvider, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
-        import { getFirestore, collection, addDoc, getDocs, getDoc, doc, updateDoc, deleteDoc, serverTimestamp, query, orderBy } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
-
-        // Firebase Configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyAFTm1jREhmW9ugkMroQEILSYBziI4dMYU",
-            authDomain: "portfolio-natandev.firebaseapp.com",
-            projectId: "portfolio-natandev",
-            storageBucket: "portfolio-natandev.firebasestorage.app",
-            messagingSenderId: "336415131312",
-            appId: "1:336415131312:web:fcc70ca38b4cd73dab5d75",
-            measurementId: "G-R1Z5NWFLMB"
-        };
-
-        // Initialize Firebase
-        let app, auth, db;
-        
-        try {
-            app = initializeApp(firebaseConfig);
-            auth = getAuth(app);
-            db = getFirestore(app);
-            
-            // Make Firebase available globally
-            window.firebaseAuth = auth;
-            window.firebaseDb = db;
-            window.firebaseAddDoc = addDoc;
-            window.firebaseGetDocs = getDocs;
-            window.firebaseGetDoc = getDoc;
-            window.firebaseCollection = collection;
-            window.firebaseDoc = doc;
-            window.firebaseUpdateDoc = updateDoc;
-            window.firebaseDeleteDoc = deleteDoc;
-            window.firebaseServerTimestamp = serverTimestamp;
-            window.firebaseQuery = query;
-            window.firebaseOrderBy = orderBy;
-            window.firebaseSignInWithCredential = signInWithCredential;
-            window.firebaseGoogleAuthProvider = GoogleAuthProvider;
-            window.firebaseSignOut = signOut;
-            window.firebaseOnAuthStateChanged = onAuthStateChanged;
-            
-            window.isFirebaseReady = true;
-            
-            console.log('✅ Firebase v9 inicializado com sucesso!');
-            
-            // Dispatch custom event to notify Firebase is ready
-            window.dispatchEvent(new CustomEvent('firebaseReady'));
-            
-        } catch (error) {
-            console.error('❌ Erro ao inicializar Firebase:', error);
-            window.isFirebaseReady = false;
-        }
-    </script>
-
     <script>
         // ===== GLOBAL VARIABLES =====
         let currentUser = null;
@@ -1887,7 +1741,6 @@
 
         // Admin email configuration
         const ADMIN_EMAIL = 'borgesnatan09@gmail.com';
-        const GOOGLE_CLIENT_ID = '1088181975050-ki1pknaemctiac1gc80s8bt2nu5gub10.apps.googleusercontent.com';
 
         // DOM Elements
         const loginBtn = document.getElementById('loginBtn');
@@ -1942,80 +1795,6 @@
                 notification.classList.remove('show');
                 setTimeout(() => notification.remove(), 300);
             }, 5000);
-        }
-
-        // ===== GOOGLE OAUTH INTEGRATION =====
-        function initializeGoogleAuth() {
-            try {
-                if (typeof google !== 'undefined' && google.accounts) {
-                    google.accounts.id.initialize({
-                        client_id: GOOGLE_CLIENT_ID,
-                        callback: handleCredentialResponse,
-                        auto_select: false,
-                        cancel_on_tap_outside: true
-                    });
-                    
-                    console.log('✅ Google OAuth inicializado com sucesso!');
-                    return true;
-                } else {
-                    console.log('⏳ Google OAuth ainda não disponível...');
-                    return false;
-                }
-            } catch (error) {
-                console.error('❌ Erro ao inicializar Google OAuth:', error);
-                return false;
-            }
-        }
-
-        // Handle Google OAuth credential response
-        async function handleCredentialResponse(response) {
-            try {
-                console.log('🔑 Processando credencial Google...');
-                
-                if (!window.isFirebaseReady) {
-                    throw new Error('Firebase ainda não está pronto');
-                }
-                
-                // Decode JWT to get user info
-                const userInfo = parseJwt(response.credential);
-                console.log('👤 Informações do usuário:', userInfo);
-
-                // Create Firebase credential  
-                const credential = window.firebaseGoogleAuthProvider.credential(response.credential);
-                
-                // Sign in with Firebase
-                const result = await window.firebaseSignInWithCredential(window.firebaseAuth, credential);
-                console.log('✅ Login Firebase bem-sucedido:', result.user.email);
-                
-                showNotification(
-                    'Login realizado!', 
-                    `Bem-vindo, ${result.user.displayName}!`, 
-                    'success'
-                );
-
-            } catch (error) {
-                console.error('❌ Erro no processo de login:', error);
-                showNotification(
-                    'Erro no login', 
-                    `Falha na autenticação: ${error.message}`, 
-                    'error'
-                );
-            }
-        }
-
-        // Parse JWT token to get user info
-        function parseJwt(token) {
-            try {
-                const base64Url = token.split('.')[1];
-                const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-                const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
-                    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-                }).join(''));
-                return JSON.parse(jsonPayload);
-            } catch (error) {
-                console.error('Erro ao decodificar JWT:', error);
-                return {};
-            }
         }
 
         // ===== FIREBASE AUTH STATE MANAGEMENT =====
@@ -2075,29 +1854,41 @@
         }
 
         // ===== LOGIN/LOGOUT FUNCTIONS =====
-        function login() {
+        async function login() {
             try {
-                if (typeof google !== 'undefined' && google.accounts) {
-                    google.accounts.id.prompt((notification) => {
-                        if (notification.isNotDisplayed()) {
-                            console.log('❌ Popup de login foi bloqueado');
-                            showNotification(
-                                'Popup bloqueado', 
-                                'Por favor, permita popups para este site e tente novamente', 
-                                'error'
-                            );
-                        } else if (notification.isSkippedMoment()) {
-                            console.log('⏭️ Login cancelado pelo usuário');
-                        }
-                    });
-                } else {
-                    throw new Error('Google OAuth não está disponível');
+                if (!window.isFirebaseReady || !window.firebaseAuth || !window.firebaseGoogleAuthProvider) {
+                    throw new Error('Serviços de autenticação não disponíveis');
                 }
-            } catch (error) {
-                console.error('❌ Erro ao iniciar login:', error);
+
+                console.log('🔑 Iniciando login com Google...');
+                
+                const result = await window.firebaseSignInWithPopup(window.firebaseAuth, window.firebaseGoogleAuthProvider);
+                
+                console.log('✅ Login Firebase bem-sucedido:', result.user.email);
+                
                 showNotification(
-                    'Erro no sistema', 
-                    'Serviço de login indisponível. Tente recarregar a página.', 
+                    'Login realizado!', 
+                    `Bem-vindo, ${result.user.displayName}!`, 
+                    'success'
+                );
+
+            } catch (error) {
+                console.error('❌ Erro no processo de login:', error);
+                
+                let errorMessage = 'Falha na autenticação';
+                if (error.code === 'auth/popup-closed-by-user') {
+                    errorMessage = 'Login cancelado pelo usuário';
+                } else if (error.code === 'auth/popup-blocked') {
+                    errorMessage = 'Popup bloqueado. Permita popups para este site';
+                } else if (error.code === 'auth/configuration-not-found') {
+                    errorMessage = 'Configuração de autenticação não encontrada';
+                } else if (error.message) {
+                    errorMessage = error.message;
+                }
+                
+                showNotification(
+                    'Erro no login', 
+                    errorMessage, 
                     'error'
                 );
             }
@@ -2495,14 +2286,6 @@
                 );
             }
             
-            // Initialize Google Auth
-            attempts = 0;
-            while (!initializeGoogleAuth() && attempts < maxAttempts) {
-                console.log(`⏳ Aguardando Google OAuth... (${attempts + 1}/${maxAttempts})`);
-                await new Promise(resolve => setTimeout(resolve, 100));
-                attempts++;
-            }
-            
             // Initialize other components
             initSmoothScrolling();
             initAnimations();
@@ -2627,4 +2410,154 @@
         console.log('📋 Sistema de autenticação carregado!');
     </script>
 </body>
-</html>
+</html>frames float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        /* ===== SECTIONS ===== */
+        .section {
+            padding: var(--space-20) 0;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: var(--text-4xl);
+            font-weight: 800;
+            margin-bottom: var(--space-4);
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.025em;
+            line-height: 1.2;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--neutral-500);
+            margin-bottom: var(--space-16);
+            font-size: var(--text-lg);
+            max-width: 640px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+        }
+
+        /* ===== ABOUT SECTION ===== */
+        .about {
+            background: 
+                linear-gradient(135deg, var(--primary-50) 0%, var(--secondary-50) 100%),
+                url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="rgba(99,102,241,0.1)"/><circle cx="80" cy="80" r="2" fill="rgba(6,182,212,0.1)"/></svg>');
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-16);
+            align-items: center;
+        }
+
+        .about-text h3 {
+            font-size: var(--text-2xl);
+            font-weight: 700;
+            margin-bottom: var(--space-6);
+            color: var(--neutral-800);
+            line-height: 1.3;
+        }
+
+        .about-text p {
+            margin-bottom: var(--space-6);
+            color: var(--neutral-600);
+            line-height: 1.8;
+            font-size: var(--text-base);
+        }
+
+        .about-image {
+            text-align: center;
+            position: relative;
+        }
+
+        .about-avatar {
+            width: 320px;
+            height: 320px;
+            border-radius: var(--radius-full);
+            background: var(--gradient-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 128px;
+            color: var(--neutral-0);
+            margin: 0 auto;
+            box-shadow: var(--shadow-2xl);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .about-avatar::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* ===== SERVICES SECTION ===== */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: var(--space-8);
+        }
+
+        .service-card {
+            text-align: center;
+            position: relative;
+        }
+
+        .service-icon {
+            width: 88px;
+            height: 88px;
+            margin: 0 auto var(--space-6);
+            background: var(--gradient-primary);
+            border-radius: var(--radius-2xl);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            color: var(--neutral-0);
+            box-shadow: var(--shadow-lg);
+            transition: all var(--transition-normal);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-icon::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.2), transparent);
+            transform: rotate(45deg);
+            transition: all var(--transition-slow);
+        }
+
+        .service-card:hover .service-icon {
+            transform: translateY(-4px) scale(1.1);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .service-card:hover .service-icon::before {
+            animation: shine 0.8s ease-in-out;
+        }
+
+        @key
