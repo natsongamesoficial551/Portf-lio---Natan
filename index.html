@@ -3,44 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Natan Dev - Desenvolvedor Web</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>Natan Borges - Desenvolvedor Web & Integração IA</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    
+    <!-- Google OAuth -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+
     <style>
+        :root {
+            --primary-color: #6366f1;
+            --secondary-color: #8b5cf6;
+            --accent-color: #06b6d4;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --bg-card: #ffffff;
+            --border-color: #e5e7eb;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        :root {
-            --primary-color: #6366f1;
-            --secondary-color: #0f172a;
-            --accent-color: #f59e0b;
-            --text-light: #64748b;
-            --text-dark: #0f172a;
-            --bg-light: #f8fafc;
-            --bg-white: #ffffff;
-            --gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-            --shadow: 0 10px 25px rgba(99, 102, 241, 0.1);
-            --shadow-hover: 0 20px 40px rgba(99, 102, 241, 0.2);
-        }
-
         body {
             font-family: 'Inter', sans-serif;
             line-height: 1.6;
-            color: var(--text-dark);
+            color: var(--text-primary);
+            background: var(--bg-primary);
             overflow-x: hidden;
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
         /* Header */
-        header {
+        .header {
             position: fixed;
             top: 0;
             width: 100%;
@@ -48,22 +57,23 @@
             backdrop-filter: blur(10px);
             z-index: 1000;
             padding: 1rem 0;
-            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            border-bottom: 1px solid var(--border-color);
         }
 
-        nav {
+        .nav {
+            max-width: 1200px;
+            margin: 0 auto;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            padding: 0 2rem;
         }
 
         .logo {
             font-size: 1.5rem;
             font-weight: 700;
-            background: var(--gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            color: var(--primary-color);
+            text-decoration: none;
         }
 
         .nav-links {
@@ -74,7 +84,7 @@
 
         .nav-links a {
             text-decoration: none;
-            color: var(--text-dark);
+            color: var(--text-primary);
             font-weight: 500;
             transition: color 0.3s ease;
         }
@@ -83,25 +93,53 @@
             color: var(--primary-color);
         }
 
-        .auth-btn {
-            background: var(--gradient);
-            color: white;
-            border: none;
-            padding: 0.5rem 1.5rem;
-            border-radius: 50px;
-            cursor: pointer;
-            font-weight: 500;
-            transition: transform 0.3s ease;
+        .auth-section {
             display: flex;
             align-items: center;
-            max-width: 200px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
+            gap: 1rem;
         }
 
-        .auth-btn:hover {
+        .btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #4f46e5;
             transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        /* Mobile Menu */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
         }
 
         /* Hero Section */
@@ -109,8 +147,7 @@
             min-height: 100vh;
             display: flex;
             align-items: center;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
             position: relative;
             overflow: hidden;
         }
@@ -120,99 +157,130 @@
             position: absolute;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
-            opacity: 0.3;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="%23e5e7eb" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            opacity: 0.5;
         }
 
         .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
             position: relative;
-            z-index: 2;
-            text-align: center;
+            z-index: 1;
         }
 
-        .hero h1 {
-            font-size: clamp(2.5rem, 5vw, 4rem);
+        .hero-text h1 {
+            font-size: 3.5rem;
             font-weight: 700;
-            margin-bottom: 1rem;
-            animation: fadeInUp 1s ease;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
-        .hero p {
-            font-size: 1.2rem;
+        .hero-text p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
             margin-bottom: 2rem;
-            opacity: 0.9;
-            animation: fadeInUp 1s ease 0.2s both;
+            line-height: 1.6;
         }
 
-        .cta-buttons {
+        .hero-buttons {
             display: flex;
             gap: 1rem;
-            justify-content: center;
             flex-wrap: wrap;
-            animation: fadeInUp 1s ease 0.4s both;
         }
 
-        .btn {
-            padding: 1rem 2rem;
-            border: none;
-            border-radius: 50px;
-            font-weight: 600;
-            text-decoration: none;
-            display: inline-block;
-            transition: all 0.3s ease;
-            cursor: pointer;
+        .hero-visual {
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
-        .btn-primary {
-            background: var(--bg-white);
-            color: var(--primary-color);
+        .code-window {
+            background: #1e293b;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: var(--shadow-lg);
+            max-width: 400px;
+            width: 100%;
         }
 
-        .btn-secondary {
-            background: transparent;
-            color: white;
-            border: 2px solid white;
+        .code-header {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
         }
 
-        .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        .code-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
         }
+
+        .code-dot.red { background: #ef4444; }
+        .code-dot.yellow { background: #f59e0b; }
+        .code-dot.green { background: #10b981; }
+
+        .code-content {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            color: #e2e8f0;
+            line-height: 1.5;
+        }
+
+        .code-line {
+            margin-bottom: 0.5rem;
+        }
+
+        .keyword { color: #c084fc; }
+        .string { color: #34d399; }
+        .function { color: #60a5fa; }
+        .comment { color: #64748b; }
 
         /* Sections */
-        section {
+        .section {
             padding: 5rem 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
         }
 
         .section-title {
             text-align: center;
             font-size: 2.5rem;
             font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.125rem;
+            color: var(--text-secondary);
             margin-bottom: 3rem;
-            background: var(--gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         /* About Section */
-        .about {
-            background: var(--bg-light);
-        }
-
         .about-content {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr 2fr;
             gap: 4rem;
             align-items: center;
-        }
-
-        .about-text {
-            font-size: 1.1rem;
-            line-height: 1.8;
-            color: var(--text-light);
         }
 
         .about-image {
@@ -220,30 +288,101 @@
         }
 
         .profile-card {
-            background: var(--bg-white);
+            background: var(--bg-card);
+            border-radius: 1rem;
             padding: 2rem;
-            border-radius: 20px;
             box-shadow: var(--shadow);
-            display: inline-block;
-            transform: rotate(-5deg);
-            transition: transform 0.3s ease;
-        }
-
-        .profile-card:hover {
-            transform: rotate(0deg);
+            border: 1px solid var(--border-color);
         }
 
         .profile-avatar {
             width: 150px;
             height: 150px;
             border-radius: 50%;
-            background: var(--gradient);
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             display: flex;
             align-items: center;
             justify-content: center;
+            margin: 0 auto 1rem;
             font-size: 3rem;
             color: white;
-            margin: 0 auto 1rem;
+        }
+
+        .about-text h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .about-text p {
+            margin-bottom: 1.5rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        .skills-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .skill-tag {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            border: 1px solid var(--border-color);
+        }
+
+        /* Services Section */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .service-card {
+            background: var(--bg-card);
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .service-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+            margin-bottom: 1.5rem;
+        }
+
+        .service-card h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .service-card p {
+            color: var(--text-secondary);
+            line-height: 1.6;
         }
 
         /* Projects Section */
@@ -251,49 +390,58 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
             gap: 2rem;
-            margin-top: 2rem;
+            margin-top: 3rem;
         }
 
         .project-card {
-            background: var(--bg-white);
-            border-radius: 15px;
-            padding: 1.5rem;
+            background: var(--bg-card);
+            border-radius: 1rem;
+            overflow: hidden;
             box-shadow: var(--shadow);
-            transition: all 0.3s ease;
-            border: 2px solid transparent;
+            border: 1px solid var(--border-color);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
         .project-card:hover {
-            transform: translateY(-10px);
-            box-shadow: var(--shadow-hover);
-            border-color: var(--primary-color);
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
         }
 
-        .project-header {
+        .project-image {
+            height: 200px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            margin-bottom: 1rem;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+        }
+
+        .project-content {
+            padding: 1.5rem;
         }
 
         .project-title {
-            font-size: 1.3rem;
+            font-size: 1.25rem;
             font-weight: 600;
-            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
         }
 
-        .project-language {
-            background: var(--gradient);
-            color: white;
-            padding: 0.3rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
+        .project-tech {
+            display: inline-block;
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
             font-weight: 500;
+            margin-bottom: 1rem;
         }
 
         .project-description {
-            color: var(--text-light);
-            margin-bottom: 1rem;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
             line-height: 1.6;
         }
 
@@ -304,101 +452,150 @@
 
         .project-link {
             padding: 0.5rem 1rem;
-            border-radius: 25px;
+            border-radius: 0.5rem;
             text-decoration: none;
             font-weight: 500;
             transition: all 0.3s ease;
-            display: flex;
+            display: inline-flex;
             align-items: center;
             gap: 0.5rem;
         }
 
-        .project-link.demo {
+        .project-link.primary {
             background: var(--primary-color);
             color: white;
         }
 
-        .project-link.code {
-            background: var(--bg-light);
-            color: var(--text-dark);
+        .project-link.primary:hover {
+            background: #4f46e5;
         }
 
-        .project-link:hover {
-            transform: translateY(-2px);
+        .project-link.secondary {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+            border: 1px solid var(--border-color);
+        }
+
+        .project-link.secondary:hover {
+            background: var(--primary-color);
+            color: white;
         }
 
         /* Contact Section */
-        .contact {
-            background: var(--secondary-color);
-            color: white;
+        .contact-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: start;
         }
 
-        .contact-content {
-            text-align: center;
+        .contact-info h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .contact-info p {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            line-height: 1.7;
+        }
+
+        .contact-methods {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .contact-method {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: var(--bg-card);
+            border-radius: 0.5rem;
+            border: 1px solid var(--border-color);
+            text-decoration: none;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+
+        .contact-method:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .contact-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-color);
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.125rem;
+        }
+
+        .contact-method:hover .contact-icon {
+            background: white;
+            color: var(--primary-color);
         }
 
         .whatsapp-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 1rem;
             background: #25d366;
             color: white;
             padding: 1rem 2rem;
-            border-radius: 50px;
+            border-radius: 0.5rem;
             text-decoration: none;
             font-weight: 600;
-            font-size: 1.1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
             transition: all 0.3s ease;
-            margin-top: 2rem;
+            margin-top: 1rem;
         }
 
         .whatsapp-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(37, 211, 102, 0.3);
+            background: #128c7e;
+            transform: translateY(-2px);
         }
 
         /* Admin Panel */
         .admin-panel {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.9);
-            z-index: 2000;
-            display: none;
-            align-items: center;
-            justify-content: center;
+            background: var(--bg-card);
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+            margin-top: 2rem;
         }
 
-        .admin-modal {
-            background: var(--bg-white);
-            padding: 2rem;
-            border-radius: 15px;
-            width: 90%;
-            max-width: 600px;
-            max-height: 80vh;
-            overflow-y: auto;
+        .admin-form {
+            display: grid;
+            gap: 1rem;
         }
 
         .form-group {
-            margin-bottom: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
         }
 
         .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-            color: var(--text-dark);
+            font-weight: 500;
+            color: var(--text-primary);
         }
 
         .form-group input,
         .form-group textarea {
-            width: 100%;
-            padding: 0.8rem;
-            border: 2px solid #e2e8f0;
-            border-radius: 8px;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
             font-family: inherit;
+            font-size: 1rem;
             transition: border-color 0.3s ease;
         }
 
@@ -413,11 +610,98 @@
             min-height: 100px;
         }
 
-        .modal-actions {
+        /* Footer */
+        .footer {
+            background: var(--text-primary);
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+        }
+
+        .footer p {
+            margin-bottom: 1rem;
+        }
+
+        .social-links {
             display: flex;
+            justify-content: center;
             gap: 1rem;
-            justify-content: flex-end;
-            margin-top: 2rem;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .hero-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 2rem;
+            }
+
+            .hero-text h1 {
+                font-size: 2.5rem;
+            }
+
+            .about-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .contact-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .hero-buttons {
+                justify-content: center;
+            }
+
+            .services-grid,
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav {
+                padding: 0 1rem;
+            }
+
+            .container {
+                padding: 0 1rem;
+            }
+
+            .hero-text h1 {
+                font-size: 2rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
         }
 
         /* Animations */
@@ -432,48 +716,8 @@
             }
         }
 
-        .fade-in {
-            animation: fadeInUp 0.8s ease;
-        }
-
-        /* Mobile Responsiveness */
-        @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-            }
-
-            .about-content {
-                grid-template-columns: 1fr;
-                text-align: center;
-            }
-
-            .projects-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .cta-buttons {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-
-            .container {
-                padding: 0 15px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .admin-modal {
-                padding: 1rem;
-                margin: 1rem;
-            }
-
-            .modal-actions {
-                flex-direction: column;
-            }
+        .fade-in-up {
+            animation: fadeInUp 0.6s ease-out;
         }
 
         /* Loading States */
@@ -496,825 +740,544 @@
             display: none !important;
         }
 
-        .admin-button {
-            position: fixed !important;
-            bottom: 20px !important;
-            right: 20px !important;
-            background: var(--gradient) !important;
-            color: white !important;
-            border: none !important;
-            width: 60px !important;
-            height: 60px !important;
-            border-radius: 50% !important;
-            font-size: 1.5rem !important;
-            cursor: pointer !important;
-            transition: all 0.3s ease !important;
-            box-shadow: var(--shadow) !important;
-            z-index: 9999 !important;
-            display: none !important;
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
         }
 
-        .admin-button:hover {
-            transform: scale(1.1) !important;
-            box-shadow: var(--shadow-hover) !important;
-        }
-
-        .admin-button.show {
-            display: block !important;
-        }
-
-        .success-message {
-            background: #10b981;
-            color: white;
-            padding: 1rem;
-            border-radius: 8px;
-            margin-bottom: 1rem;
-            text-align: center;
-        }
-
-        .error-message {
-            background: #ef4444;
-            color: white;
-            padding: 1rem;
-            border-radius: 8px;
-            margin-bottom: 1rem;
-            text-align: center;
-        }
-
-        .skills-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 1rem;
-            margin-top: 2rem;
-        }
-
-        .skill-item {
-            background: var(--bg-white);
-            padding: 1.5rem;
-            border-radius: 10px;
-            text-align: center;
-            box-shadow: var(--shadow);
-            transition: transform 0.3s ease;
-        }
-
-        .skill-item:hover {
-            transform: translateY(-5px);
-        }
-
-        .skill-icon {
-            font-size: 2rem;
-            color: var(--primary-color);
-            margin-bottom: 0.5rem;
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
         }
     </style>
 </head>
 <body>
     <!-- Header -->
-    <header>
-        <nav class="container">
-            <div class="logo">NatanDev</div>
+    <header class="header">
+        <nav class="nav">
+            <a href="#" class="logo">Natan Borges</a>
             <ul class="nav-links">
                 <li><a href="#home">Início</a></li>
                 <li><a href="#about">Sobre</a></li>
+                <li><a href="#services">Serviços</a></li>
                 <li><a href="#projects">Projetos</a></li>
                 <li><a href="#contact">Contato</a></li>
             </ul>
-            <button class="auth-btn" id="authBtn">Login</button>
+            <div class="auth-section">
+                <div id="user-info" class="user-info hidden"></div>
+                <button id="login-btn" class="btn btn-outline">
+                    <i class="fab fa-google"></i>
+                    Login
+                </button>
+                <button id="logout-btn" class="btn btn-primary hidden">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Sair
+                </button>
+            </div>
+            <button class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
         </nav>
     </header>
 
     <!-- Hero Section -->
     <section id="home" class="hero">
-        <div class="container">
-            <div class="hero-content">
-                <h1>Natan Silva</h1>
-                <p>Desenvolvedor Web em Formação | Criando o Futuro com Código</p>
-                <div class="cta-buttons">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1>Desenvolvedor Web & Especialista em IA</h1>
+                <p>Olá! Sou Natan, um entusiasta de programação de 15 anos que começou recentemente a programar com auxílio de IA. Crio sites modernos e integro APIs de inteligência artificial para transformar suas ideias em realidade digital.</p>
+                <div class="hero-buttons">
                     <a href="#projects" class="btn btn-primary">Ver Projetos</a>
-                    <a href="#contact" class="btn btn-secondary">Entre em Contato</a>
+                    <a href="#contact" class="btn btn-outline">Entre em Contato</a>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="code-window">
+                    <div class="code-header">
+                        <div class="code-dot red"></div>
+                        <div class="code-dot yellow"></div>
+                        <div class="code-dot green"></div>
+                    </div>
+                    <div class="code-content">
+                        <div class="code-line"><span class="keyword">const</span> <span class="function">developer</span> = {</div>
+                        <div class="code-line">  <span class="string">name</span>: <span class="string">'Natan Borges'</span>,</div>
+                        <div class="code-line">  <span class="string">age</span>: <span class="string">15</span>,</div>
+                        <div class="code-line">  <span class="string">skills</span>: [<span class="string">'HTML'</span>, <span class="string">'CSS'</span>, <span class="string">'JS'</span>],</div>
+                        <div class="code-line">  <span class="string">passion</span>: <span class="string">'AI Integration'</span></div>
+                        <div class="code-line">};</div>
+                        <div class="code-line"><span class="comment">// Transformando ideias em código</span></div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- About Section -->
-    <section id="about" class="about">
+    <section id="about" class="section">
         <div class="container">
             <h2 class="section-title">Sobre Mim</h2>
+            <p class="section-subtitle">Conheça minha jornada no mundo da programação</p>
+            
             <div class="about-content">
-                <div class="about-text">
-                    <p>Olá! Sou Natan, tenho 15 anos e sou apaixonado por tecnologia e programação. Comecei minha jornada no desenvolvimento web há pouco tempo, mas com muito entusiasmo e dedicação.</p>
-                    <p>Utilizo ferramentas de Inteligência Artificial para acelerar meu aprendizado e criar projetos inovadores. Minha especialidade é desenvolvimento web, criando sites modernos e funcionais.</p>
-                    <p>Estou sempre em busca de novos desafios e oportunidades para crescer como desenvolvedor. Cada projeto é uma nova aventura de aprendizado!</p>
-                    
-                    <div class="skills-grid">
-                        <div class="skill-item">
-                            <div class="skill-icon"><i class="fab fa-html5"></i></div>
-                            <h4>HTML5</h4>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-icon"><i class="fab fa-css3-alt"></i></div>
-                            <h4>CSS3</h4>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-icon"><i class="fab fa-js"></i></div>
-                            <h4>JavaScript</h4>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-icon"><i class="fas fa-robot"></i></div>
-                            <h4>IA APIs</h4>
-                        </div>
-                    </div>
-                </div>
                 <div class="about-image">
                     <div class="profile-card">
                         <div class="profile-avatar">
                             <i class="fas fa-code"></i>
                         </div>
-                        <h3>Natan Silva</h3>
+                        <h3>Natan Borges</h3>
                         <p>Desenvolvedor Web</p>
                     </div>
+                </div>
+                
+                <div class="about-text">
+                    <h3>Minha História</h3>
+                    <p>Aos 15 anos, descobri minha paixão pela programação e comecei uma jornada fascinante no mundo do desenvolvimento web. Com o auxílio da inteligência artificial, consegui acelerar meu aprendizado e criar projetos incríveis em pouco tempo.</p>
+                    
+                    <p>Minha abordagem única combina criatividade juvenil com as mais modernas ferramentas de IA, permitindo que eu desenvolva soluções inovadoras e eficientes para meus clientes.</p>
+                    
+                    <p>Especializo-me em criar sites responsivos e integrar APIs de inteligência artificial, sempre focando na experiência do usuário e na funcionalidade.</p>
+                    
+                    <div class="skills-list">
+                        <span class="skill-tag">HTML5</span>
+                        <span class="skill-tag">CSS3</span>
+                        <span class="skill-tag">JavaScript</span>
+                        <span class="skill-tag">Integração IA</span>
+                        <span class="skill-tag">APIs</span>
+                        <span class="skill-tag">Design Responsivo</span>
+                        <span class="skill-tag">Firebase</span>
+                        <span class="skill-tag">Google OAuth</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="section" style="background: var(--bg-secondary);">
+        <div class="container">
+            <h2 class="section-title">Meus Serviços</h2>
+            <p class="section-subtitle">Soluções completas para sua presença digital</p>
+            
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <h3>Desenvolvimento de Sites</h3>
+                    <p>Criação de sites modernos, responsivos e otimizados para todos os dispositivos. Desde landing pages até sistemas complexos, sempre com foco na experiência do usuário.</p>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3>Integração com APIs de IA</h3>
+                    <p>Integro APIs de inteligência artificial em seus projetos, incluindo chatbots, análise de dados, processamento de linguagem natural e muito mais. Não crio IAs, mas integro as melhores soluções disponíveis.</p>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h3>Design Responsivo</h3>
+                    <p>Todos os meus projetos são desenvolvidos com design responsivo, garantindo uma experiência perfeita em smartphones, tablets e desktops.</p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Projects Section -->
-    <section id="projects">
+    <section id="projects" class="section">
         <div class="container">
             <h2 class="section-title">Meus Projetos</h2>
-            <div class="projects-grid" id="projectsGrid">
-                <!-- Projects will be loaded here -->
+            <p class="section-subtitle">Confira alguns dos meus trabalhos mais recentes</p>
+            
+            <!-- Admin Panel (only visible to admin) -->
+            <div id="admin-panel" class="admin-panel hidden">
+                <h3>Painel Administrativo</h3>
+                <form id="project-form" class="admin-form">
+                    <div class="form-group">
+                        <label for="project-name">Nome do Projeto</label>
+                        <input type="text" id="project-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="project-language">Linguagem de Programação</label>
+                        <input type="text" id="project-language" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="project-link">Link do Site/Arquivo</label>
+                        <input type="url" id="project-link" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="project-description">Descrição</label>
+                        <textarea id="project-description" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="project-image">URL da Imagem (opcional)</label>
+                        <input type="url" id="project-image">
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-plus"></i>
+                        Adicionar Projeto
+                    </button>
+                </form>
+            </div>
+            
+            <div id="projects-grid" class="projects-grid">
+                <!-- Projects will be loaded here dynamically -->
             </div>
         </div>
     </section>
 
     <!-- Contact Section -->
-    <section id="contact" class="contact">
+    <section id="contact" class="section" style="background: var(--bg-secondary);">
         <div class="container">
+            <h2 class="section-title">Entre em Contato</h2>
+            <p class="section-subtitle">Vamos transformar sua ideia em realidade</p>
+            
             <div class="contact-content">
-                <h2 class="section-title" style="color: white;">Vamos Trabalhar Juntos?</h2>
-                <p style="font-size: 1.2rem; margin-bottom: 2rem; opacity: 0.9;">
-                    Estou disponível para criar seu site profissional e integrar APIs de IA
-                </p>
-                <a href="https://wa.me/5521992826074?text=Olá%20Natan,%20Quero%20fazer%20meu%20site" 
-                   class="whatsapp-btn" target="_blank">
-                    <i class="fab fa-whatsapp"></i>
-                    Fale Comigo no WhatsApp
-                </a>
+                <div class="contact-info">
+                    <h3>Vamos Conversar!</h3>
+                    <p>Estou sempre disponível para discutir novos projetos e oportunidades. Entre em contato comigo através do WhatsApp para uma conversa rápida e direta.</p>
+                    
+                    <div class="contact-methods">
+                        <a href="mailto:borgesnatan09@gmail.com" class="contact-method">
+                            <div class="contact-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div>
+                                <strong>Email</strong>
+                                <p>borgesnatan09@gmail.com</p>
+                            </div>
+                        </a>
+                        
+                        <a href="https://wa.me/5521992826074?text=Olá%20Natan,%20Quero%20fazer%20meu%20site" class="contact-method" target="_blank">
+                            <div class="contact-icon">
+                                <i class="fab fa-whatsapp"></i>
+                            </div>
+                            <div>
+                                <strong>WhatsApp</strong>
+                                <p>+55 (21) 99282-6074</p>
+                            </div>
+                        </a>
+                    </div>
+                    
+                    <a href="https://wa.me/5521992826074?text=Olá%20Natan,%20Quero%20fazer%20meu%20site" class="whatsapp-btn" target="_blank">
+                        <i class="fab fa-whatsapp"></i>
+                        Falar no WhatsApp
+                    </a>
+                </div>
+                
+                <div class="contact-visual">
+                    <div class="code-window">
+                        <div class="code-header">
+                            <div class="code-dot red"></div>
+                            <div class="code-dot yellow"></div>
+                            <div class="code-dot green"></div>
+                        </div>
+                        <div class="code-content">
+                            <div class="code-line"><span class="keyword">function</span> <span class="function">criarSeuSite</span>() {</div>
+                            <div class="code-line">  <span class="keyword">const</span> <span class="string">contato</span> = <span class="string">'WhatsApp'</span>;</div>
+                            <div class="code-line">  <span class="keyword">const</span> <span class="string">mensagem</span> = <span class="string">'Olá Natan!'</span>;</div>
+                            <div class="code-line">  </div>
+                            <div class="code-line">  <span class="keyword">return</span> <span class="string">'Projeto Incrível!'</span>;</div>
+                            <div class="code-line">}</div>
+                            <div class="code-line"></div>
+                            <div class="code-line"><span class="comment">// Vamos começar?</span></div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- Admin Panel -->
-    <div class="admin-panel" id="adminPanel">
-        <div class="admin-modal">
-            <h3>Adicionar Novo Projeto</h3>
-            <div id="adminMessage"></div>
-            <form id="projectForm">
-                <div class="form-group">
-                    <label for="projectName">Nome do Projeto</label>
-                    <input type="text" id="projectName" required>
-                </div>
-                <div class="form-group">
-                    <label for="projectLanguage">Linguagem/Tecnologia</label>
-                    <input type="text" id="projectLanguage" required>
-                </div>
-                <div class="form-group">
-                    <label for="projectUrl">Site/Arquivo URL</label>
-                    <input type="url" id="projectUrl" required>
-                </div>
-                <div class="form-group">
-                    <label for="projectGithub">GitHub URL (opcional)</label>
-                    <input type="url" id="projectGithub">
-                </div>
-                <div class="form-group">
-                    <label for="projectDescription">Descrição</label>
-                    <textarea id="projectDescription" required></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="projectFeatures">Principais Recursos</label>
-                    <input type="text" id="projectFeatures" placeholder="Ex: Responsivo, API Integration, Dark Mode">
-                </div>
-                <div class="modal-actions">
-                    <button type="button" class="btn btn-secondary" id="cancelBtn">Cancelar</button>
-                    <button type="submit" class="btn btn-primary" id="submitBtn">Adicionar Projeto</button>
-                </div>
-            </form>
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Natan Borges. Todos os direitos reservados.</p>
+            <p>Desenvolvido com ❤️ e IA</p>
+            <div class="social-links">
+                <a href="mailto:borgesnatan09@gmail.com" class="social-link">
+                    <i class="fas fa-envelope"></i>
+                </a>
+                <a href="https://wa.me/5521992826074" class="social-link" target="_blank">
+                    <i class="fab fa-whatsapp"></i>
+                </a>
+            </div>
         </div>
-    </div>
-
-    <!-- Admin Button (only visible for admin) -->
-    <button class="admin-button" id="adminButton" style="display: none;">
-        <i class="fas fa-plus"></i>
-    </button>
-
-    <!-- Google Sign-In -->
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    </footer>
 
     <script>
-        // Google OAuth Configuration
-        const GOOGLE_CLIENT_ID = "1088181975050-ki1pknaemctiac1gc80s8bt2nu5gub10.apps.googleusercontent.com";
-        const ADMIN_EMAIL = "borgesnatan09@gmail.com";
+        // Firebase Configuration
+        const firebaseConfig = {
+            // You need to replace these with your actual Firebase config
+            apiKey: "your-api-key",
+            authDomain: "your-project.firebaseapp.com",
+            projectId: "your-project-id",
+            storageBucket: "your-project.appspot.com",
+            messagingSenderId: "123456789",
+            appId: "your-app-id"
+        };
 
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        // Google OAuth Configuration
+        const GOOGLE_CLIENT_ID = '1088181975050-ki1pknaemctiac1gc80s8bt2nu5gub10.apps.googleusercontent.com';
+        const ADMIN_EMAIL = 'borgesnatan09@gmail.com';
+
+        // DOM Elements
+        const loginBtn = document.getElementById('login-btn');
+        const logoutBtn = document.getElementById('logout-btn');
+        const userInfo = document.getElementById('user-info');
+        const adminPanel = document.getElementById('admin-panel');
+        const projectForm = document.getElementById('project-form');
+        const projectsGrid = document.getElementById('projects-grid');
+
+        // Authentication State
         let currentUser = null;
         let isAdmin = false;
 
-        // Debug function to check admin status
-        function checkAdminStatus(email) {
-            console.log('=== VERIFICAÇÃO ADMIN ===');
-            console.log('Email do usuário:', email);
-            console.log('Email admin configurado:', ADMIN_EMAIL);
-            console.log('São iguais?', email === ADMIN_EMAIL);
-            console.log('Tipo email usuário:', typeof email);
-            console.log('Tipo email admin:', typeof ADMIN_EMAIL);
-            console.log('Email usuário (trim):', email.trim());
-            console.log('Email admin (trim):', ADMIN_EMAIL.trim());
-            
-            // Comparação mais rigorosa
-            const isAdminUser = email.toLowerCase().trim() === ADMIN_EMAIL.toLowerCase().trim();
-            console.log('É admin (comparação rigorosa)?', isAdminUser);
-            console.log('=========================');
-            
-            return isAdminUser;
-        }
-
-        // LocalStorage Management
-        class LocalStorageManager {
-            static getCurrentUser() {
-                const userData = localStorage.getItem('currentUser');
-                return userData ? JSON.parse(userData) : null;
-            }
-
-            static setCurrentUser(user) {
-                localStorage.setItem('currentUser', JSON.stringify(user));
-            }
-
-            static clearCurrentUser() {
-                localStorage.removeItem('currentUser');
-            }
-
-            static getUserProjects(email) {
-                const projects = localStorage.getItem(`projects_${email}`);
-                return projects ? JSON.parse(projects) : [];
-            }
-
-            static saveUserProjects(email, projects) {
-                localStorage.setItem(`projects_${email}`, JSON.stringify(projects));
-            }
-
-            static addProject(email, project) {
-                const projects = this.getUserProjects(email);
-                project.id = Date.now().toString();
-                project.createdAt = new Date().toISOString();
-                projects.unshift(project);
-                this.saveUserProjects(email, projects);
-                return project;
-            }
-
-            static getUserProfile(email) {
-                const profile = localStorage.getItem(`profile_${email}`);
-                return profile ? JSON.parse(profile) : null;
-            }
-
-            static saveUserProfile(email, profile) {
-                localStorage.setItem(`profile_${email}`, JSON.stringify(profile));
-            }
-
-            static getAllProjects() {
-                // For public view, show admin's projects
-                return this.getUserProjects(ADMIN_EMAIL);
-            }
-        }
-
         // Initialize Google Sign-In
         function initializeGoogleSignIn() {
-            try {
-                google.accounts.id.initialize({
-                    client_id: GOOGLE_CLIENT_ID,
-                    callback: handleCredentialResponse,
-                    auto_select: false,
-                    cancel_on_tap_outside: true
-                });
-                console.log('Google Sign-In inicializado com sucesso');
-            } catch (error) {
-                console.error('Erro ao inicializar Google Sign-In:', error);
-            }
+            google.accounts.id.initialize({
+                client_id: GOOGLE_CLIENT_ID,
+                callback: handleGoogleSignIn
+            });
         }
 
-        // Handle Google Sign-In Response
-        function handleCredentialResponse(response) {
-            try {
-                console.log('Resposta recebida do Google:', response);
-                const payload = JSON.parse(atob(response.credential.split('.')[1]));
-                console.log('Payload decodificado:', payload);
-                console.log('Email do usuário:', payload.email);
-                console.log('Email admin configurado:', ADMIN_EMAIL);
-                
-                const userData = {
-                    email: payload.email,
-                    name: payload.name,
-                    picture: payload.picture,
-                    sub: payload.sub
-                };
+        // Handle Google Sign-In
+        function handleGoogleSignIn(response) {
+            const credential = firebase.auth.GoogleAuthProvider.credential(response.credential);
+            
+            auth.signInWithCredential(credential)
+                .then((result) => {
+                    console.log('User signed in:', result.user);
+                })
+                .catch((error) => {
+                    console.error('Sign-in error:', error);
+                    alert('Erro ao fazer login. Tente novamente.');
+                });
+        }
 
-                currentUser = userData;
-                isAdmin = checkAdminStatus(currentUser.email);
+        // Auth State Observer
+        auth.onAuthStateChanged((user) => {
+            currentUser = user;
+            
+            if (user) {
+                // User is signed in
+                isAdmin = user.email === ADMIN_EMAIL;
                 
-                console.log('Usuário logado:', userData);
-                console.log('STATUS FINAL - É admin?', isAdmin);
+                userInfo.innerHTML = `
+                    <img src="${user.photoURL}" alt="Avatar" class="user-avatar">
+                    <span>${user.displayName}</span>
+                `;
                 
-                // Save user session
-                LocalStorageManager.setCurrentUser(userData);
-                
-                // Create user profile if doesn't exist
-                if (!LocalStorageManager.getUserProfile(userData.email)) {
-                    LocalStorageManager.saveUserProfile(userData.email, {
-                        name: userData.name,
-                        picture: userData.picture,
-                        bio: '',
-                        skills: [],
-                        joinedAt: new Date().toISOString()
-                    });
-                }
-                
-                updateAuthUI();
+                loginBtn.classList.add('hidden');
+                logoutBtn.classList.remove('hidden');
+                userInfo.classList.remove('hidden');
                 
                 if (isAdmin) {
-                    showMessage(`🔥 BEM-VINDO ADMIN ${userData.name}! Você pode adicionar projetos usando o botão +`, 'success');
-                    
-                    // MÚLTIPLAS tentativas de mostrar o botão
-                    for (let i = 0; i < 5; i++) {
-                        setTimeout(() => {
-                            const adminButton = document.getElementById('adminButton');
-                            if (adminButton) {
-                                adminButton.style.display = 'block !important';
-                                adminButton.style.visibility = 'visible !important';
-                                adminButton.style.opacity = '1 !important';
-                                adminButton.classList.remove('hidden');
-                                console.log(`Tentativa ${i + 1}: Forçando botão admin visível`);
-                            }
-                        }, i * 200);
-                    }
-                } else {
-                    showMessage(`Bem-vindo ${userData.name}! (Apenas borgesnatan09@gmail.com pode adicionar projetos)`, 'success');
+                    adminPanel.classList.remove('hidden');
                 }
                 
-                loadProjects();
-            } catch (error) {
-                console.error('Erro no login:', error);
-                showMessage('Erro no login. Tente novamente.', 'error');
-            }
-        }
-
-        // Auth State Management
-        function updateAuthUI() {
-            const authBtn = document.getElementById('authBtn');
-            const adminButton = document.getElementById('adminButton');
-            
-            console.log('=== UPDATE AUTH UI ===');
-            console.log('currentUser:', currentUser);
-            console.log('isAdmin:', isAdmin);
-            console.log('adminButton encontrado?', !!adminButton);
-            
-            if (currentUser) {
-                const firstName = currentUser.name.split(' ')[0];
-                authBtn.innerHTML = `<img src="${currentUser.picture}" style="width: 24px; height: 24px; border-radius: 50%; margin-right: 0.5rem; object-fit: cover;">${firstName}`;
+            } else {
+                // User is signed out
+                isAdmin = false;
                 
-                // FORÇAR EXIBIÇÃO DO BOTÃO ADMIN
-                if (isAdmin && adminButton) {
-                    console.log('🔥 FORÇANDO BOTÃO ADMIN VISÍVEL');
-                    adminButton.style.display = 'block';
-                    adminButton.style.visibility = 'visible';
-                    adminButton.style.opacity = '1';
-                    adminButton.classList.remove('hidden');
-                    
-                    // Teste se o botão está realmente visível
-                    setTimeout(() => {
-                        const rect = adminButton.getBoundingClientRect();
-                        console.log('Posição do botão admin:', rect);
-                        console.log('Botão visível na tela?', rect.width > 0 && rect.height > 0);
-                    }, 100);
-                } else {
-                    console.log('❌ Ocultando botão admin');
-                    if (adminButton) {
-                        adminButton.style.display = 'none';
-                    }
-                }
-            } else {
-                authBtn.innerHTML = '<i class="fas fa-user"></i> Login';
-                if (adminButton) {
-                    adminButton.style.display = 'none';
-                }
-                console.log('Usuário não logado');
+                loginBtn.classList.remove('hidden');
+                logoutBtn.classList.add('hidden');
+                userInfo.classList.add('hidden');
+                adminPanel.classList.add('hidden');
             }
-            console.log('=====================');
-        }
-
-        function login() {
-            console.log('Função login chamada');
-            console.log('Google disponível?', typeof google !== 'undefined');
             
-            if (typeof google !== 'undefined' && google.accounts && google.accounts.id) {
-                try {
-                    console.log('Chamando Google prompt...');
-                    google.accounts.id.prompt((notification) => {
-                        console.log('Notificação do prompt:', notification);
-                        if (notification.isNotDisplayed()) {
-                            console.log('Prompt não exibido, tentando renderizar botão...');
-                            showGoogleButton();
-                        }
-                    });
-                } catch (error) {
-                    console.error('Erro ao chamar prompt:', error);
-                    showGoogleButton();
-                }
-            } else {
-                console.error('Google Sign-In não está disponível');
-                setTimeout(() => {
-                    showMessage('Google Sign-In ainda carregando... Tente novamente em alguns segundos.', 'error');
-                }, 100);
+            loadProjects();
+        });
+
+        // Login Button Click
+        loginBtn.addEventListener('click', () => {
+            google.accounts.id.prompt();
+        });
+
+        // Logout Button Click
+        logoutBtn.addEventListener('click', () => {
+            auth.signOut().then(() => {
+                console.log('User signed out');
+            }).catch((error) => {
+                console.error('Sign-out error:', error);
+            });
+        });
+
+        // Project Form Submit
+        projectForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            if (!isAdmin) {
+                alert('Acesso negado. Apenas administradores podem adicionar projetos.');
+                return;
             }
-        }
-
-        function showGoogleButton() {
-            // Fallback: render Google button directly
-            const authBtn = document.getElementById('authBtn');
-            authBtn.innerHTML = 'Carregando...';
             
-            google.accounts.id.renderButton(
-                authBtn,
-                {
-                    theme: "outline",
-                    size: "medium",
-                    type: "standard",
-                    text: "signin_with",
-                    shape: "pill"
-                }
-            );
-        }
-
-        function logout() {
-            currentUser = null;
-            isAdmin = false;
-            LocalStorageManager.clearCurrentUser();
-            updateAuthUI();
-            showMessage('Logout realizado com sucesso!', 'success');
-            loadProjects(); // Reload to show public projects
-        }
-
-        // Project Management
-        function loadProjects() {
-            const projectsGrid = document.getElementById('projectsGrid');
+            const projectData = {
+                name: document.getElementById('project-name').value,
+                language: document.getElementById('project-language').value,
+                link: document.getElementById('project-link').value,
+                description: document.getElementById('project-description').value,
+                image: document.getElementById('project-image').value || null,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                createdBy: currentUser.uid
+            };
             
             try {
-                // Always show admin's projects for public view
-                const projects = LocalStorageManager.getAllProjects();
+                await db.collection('projects').add(projectData);
+                alert('Projeto adicionado com sucesso!');
+                projectForm.reset();
+                loadProjects();
+            } catch (error) {
+                console.error('Error adding project:', error);
+                alert('Erro ao adicionar projeto. Tente novamente.');
+            }
+        });
+
+        // Load Projects
+        async function loadProjects() {
+            try {
+                const snapshot = await db.collection('projects')
+                    .orderBy('createdAt', 'desc')
+                    .get();
                 
                 projectsGrid.innerHTML = '';
                 
-                if (projects.length === 0) {
-                    projectsGrid.innerHTML = `
-                        <div style="grid-column: 1/-1; text-align: center; padding: 3rem;">
-                            <h3>Projetos em breve...</h3>
-                            <p>Estou trabalhando em projetos incríveis que estarão aqui em breve!</p>
-                        </div>
-                    `;
+                if (snapshot.empty) {
+                    // Show default projects if no projects in database
+                    showDefaultProjects();
                     return;
                 }
                 
-                projects.forEach((project) => {
-                    const projectCard = createProjectCard(project);
+                snapshot.forEach((doc) => {
+                    const project = doc.data();
+                    const projectCard = createProjectCard(project, doc.id);
                     projectsGrid.appendChild(projectCard);
                 });
                 
-                // Animate cards
-                setTimeout(() => {
-                    document.querySelectorAll('.project-card').forEach((card, index) => {
-                        setTimeout(() => {
-                            card.classList.add('visible');
-                        }, index * 100);
-                    });
-                }, 100);
-                
             } catch (error) {
-                console.error('Erro ao carregar projetos:', error);
-                projectsGrid.innerHTML = `
-                    <div style="grid-column: 1/-1; text-align: center; padding: 3rem;">
-                        <h3>Erro ao carregar projetos</h3>
-                        <p>Tente recarregar a página.</p>
-                    </div>
-                `;
+                console.error('Error loading projects:', error);
+                showDefaultProjects();
             }
         }
 
-        function createProjectCard(project) {
+        // Create Project Card
+        function createProjectCard(project, id) {
             const card = document.createElement('div');
-            card.className = 'project-card fade-in';
+            card.className = 'project-card fade-in-up';
             
-            const features = project.features ? 
-                `<p><strong>Recursos:</strong> ${project.features}</p>` : '';
-            
-            const githubLink = project.github ? 
-                `<a href="${project.github}" class="project-link code" target="_blank">
-                    <i class="fab fa-github"></i> Código
-                </a>` : '';
+            const imageContent = project.image 
+                ? `<img src="${project.image}" alt="${project.name}" style="width: 100%; height: 100%; object-fit: cover;">`
+                : `<i class="fas fa-code"></i>`;
             
             card.innerHTML = `
-                <div class="project-header">
-                    <h3 class="project-title">${project.name}</h3>
-                    <span class="project-language">${project.language}</span>
+                <div class="project-image">
+                    ${imageContent}
                 </div>
-                <p class="project-description">${project.description}</p>
-                ${features}
-                <div class="project-links">
-                    <a href="${project.url}" class="project-link demo" target="_blank">
-                        <i class="fas fa-external-link-alt"></i> Ver Projeto
-                    </a>
-                    ${githubLink}
+                <div class="project-content">
+                    <h3 class="project-title">${project.name}</h3>
+                    <span class="project-tech">${project.language}</span>
+                    <p class="project-description">${project.description}</p>
+                    <div class="project-links">
+                        <a href="${project.link}" target="_blank" class="project-link primary">
+                            <i class="fas fa-external-link-alt"></i>
+                            Ver Projeto
+                        </a>
+                        ${isAdmin ? `<button onclick="deleteProject('${id}')" class="project-link secondary">
+                            <i class="fas fa-trash"></i>
+                            Excluir
+                        </button>` : ''}
+                    </div>
                 </div>
             `;
             
             return card;
         }
 
-        // Admin Functions
-        function openAdminPanel() {
-            console.log('Tentando abrir painel admin. isAdmin:', isAdmin, 'currentUser:', currentUser);
-            
+        // Delete Project (Admin only)
+        async function deleteProject(id) {
             if (!isAdmin) {
-                showMessage('Acesso negado. Apenas o administrador (borgesnatan09@gmail.com) pode adicionar projetos.', 'error');
+                alert('Acesso negado.');
                 return;
             }
             
-            console.log('Abrindo painel admin...');
-            document.getElementById('adminPanel').style.display = 'flex';
-        }
-
-        function closeAdminPanel() {
-            document.getElementById('adminPanel').style.display = 'none';
-            document.getElementById('projectForm').reset();
-            clearMessage();
-        }
-
-        function addProject(projectData) {
-            console.log('Adicionando projeto. isAdmin:', isAdmin, 'currentUser:', currentUser);
-            
-            if (!isAdmin) {
-                showMessage('Acesso negado. Apenas o administrador pode adicionar projetos.', 'error');
-                return;
-            }
-            
-            const submitBtn = document.getElementById('submitBtn');
-            submitBtn.innerHTML = '<span class="loading"></span> Adicionando...';
-            submitBtn.disabled = true;
-            
-            try {
-                // Add project to admin's account (visible to all)
-                const project = LocalStorageManager.addProject(ADMIN_EMAIL, {
-                    ...projectData,
-                    createdBy: currentUser.email
-                });
-                
-                console.log('Projeto adicionado:', project);
-                showMessage('Projeto adicionado com sucesso!', 'success');
-                loadProjects();
-                
-                setTimeout(() => {
-                    closeAdminPanel();
-                }, 1500);
-                
-            } catch (error) {
-                console.error('Erro ao adicionar projeto:', error);
-                showMessage('Erro ao adicionar projeto. Tente novamente.', 'error');
-            } finally {
-                submitBtn.innerHTML = 'Adicionar Projeto';
-                submitBtn.disabled = false;
-            }
-        }
-
-        // Initialize app and check for saved session
-        function initializeApp() {
-            console.log('Inicializando aplicação...');
-            
-            // Check for saved user session first
-            const savedUser = LocalStorageManager.getCurrentUser();
-            if (savedUser) {
-                console.log('Usuário salvo encontrado:', savedUser);
-                currentUser = savedUser;
-                isAdmin = checkAdminStatus(currentUser.email);
-                console.log('Admin status do usuário salvo:', isAdmin);
-                updateAuthUI();
-            }
-            
-            // Initialize Google Sign-In with multiple attempts
-            let attempts = 0;
-            function tryInitGoogle() {
-                attempts++;
-                console.log(`Tentativa ${attempts} de inicializar Google Sign-In...`);
-                
-                if (typeof google !== 'undefined' && google.accounts && google.accounts.id) {
-                    console.log('Google Sign-In disponível, inicializando...');
-                    initializeGoogleSignIn();
-                    return;
-                }
-                
-                if (attempts < 10) {
-                    setTimeout(tryInitGoogle, 1000);
-                } else {
-                    console.error('Falha ao carregar Google Sign-In após 10 tentativas');
-                    const authBtn = document.getElementById('authBtn');
-                    if (!currentUser) {
-                        authBtn.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Erro no Login';
-                        authBtn.disabled = true;
-                    }
+            if (confirm('Tem certeza que deseja excluir este projeto?')) {
+                try {
+                    await db.collection('projects').doc(id).delete();
+                    alert('Projeto excluído com sucesso!');
+                    loadProjects();
+                } catch (error) {
+                    console.error('Error deleting project:', error);
+                    alert('Erro ao excluir projeto.');
                 }
             }
-            
-            // Start trying to init Google
-            setTimeout(tryInitGoogle, 500);
-            
-            // Load projects
-            loadProjects();
-            
-            // Add sample projects for admin if none exist
-            setTimeout(() => {
-                if (LocalStorageManager.getUserProjects(ADMIN_EMAIL).length === 0) {
-                    addSampleProjects();
-                    loadProjects(); // Reload to show sample projects
-                }
-            }, 1000);
         }
 
-        // Google Sign-In script loading check
-        function waitForGoogleScript() {
-            return new Promise((resolve) => {
-                if (typeof google !== 'undefined') {
-                    resolve();
-                    return;
-                }
-                
-                const checkGoogle = setInterval(() => {
-                    if (typeof google !== 'undefined') {
-                        clearInterval(checkGoogle);
-                        resolve();
-                    }
-                }, 100);
-                
-                // Timeout after 10 seconds
-                setTimeout(() => {
-                    clearInterval(checkGoogle);
-                    resolve();
-                }, 10000);
-            });
-        }
-
-        // Utility Functions
-        function showMessage(message, type) {
-            const messageDiv = document.getElementById('adminMessage');
-            messageDiv.className = type === 'success' ? 'success-message' : 'error-message';
-            messageDiv.textContent = message;
-            messageDiv.style.display = 'block';
-        }
-
-        function clearMessage() {
-            const messageDiv = document.getElementById('adminMessage');
-            messageDiv.style.display = 'none';
-        }
-
-        // Smooth Scrolling
-        function smoothScroll(target) {
-            document.querySelector(target).scrollIntoView({
-                behavior: 'smooth'
-            });
-        }
-
-        // Event Listeners
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('DOM carregado, inicializando app...');
-            
-            // Initialize the app
-            initializeApp();
-            
-            // Smooth scrolling for navigation links
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    const target = this.getAttribute('href');
-                    smoothScroll(target);
-                });
-            });
-            
-            // Admin button click
-            const adminButton = document.getElementById('adminButton');
-            if (adminButton) {
-                adminButton.addEventListener('click', function() {
-                    console.log('Admin button clicked');
-                    openAdminPanel();
-                });
-            }
-            
-            // Cancel button click
-            const cancelBtn = document.getElementById('cancelBtn');
-            if (cancelBtn) {
-                cancelBtn.addEventListener('click', closeAdminPanel);
-            }
-            
-            // Close admin panel when clicking outside
-            const adminPanel = document.getElementById('adminPanel');
-            if (adminPanel) {
-                adminPanel.addEventListener('click', function(e) {
-                    if (e.target === this) {
-                        closeAdminPanel();
-                    }
-                });
-            }
-            
-            // Project form submission
-            const projectForm = document.getElementById('projectForm');
-            if (projectForm) {
-                projectForm.addEventListener('submit', function(e) {
-                    e.preventDefault();
-                    console.log('Form submitted, isAdmin:', isAdmin);
-                    
-                    if (!isAdmin) {
-                        showMessage('Acesso negado. Apenas o administrador pode adicionar projetos.', 'error');
-                        return;
-                    }
-                    
-                    const projectData = {
-                        name: document.getElementById('projectName').value.trim(),
-                        language: document.getElementById('projectLanguage').value.trim(),
-                        url: document.getElementById('projectUrl').value.trim(),
-                        github: document.getElementById('projectGithub').value.trim(),
-                        description: document.getElementById('projectDescription').value.trim(),
-                        features: document.getElementById('projectFeatures').value.trim()
-                    };
-                    
-                    // Validation
-                    if (!projectData.name || !projectData.language || !projectData.url || !projectData.description) {
-                        showMessage('Por favor, preencha todos os campos obrigatórios.', 'error');
-                        return;
-                    }
-                    
-                    addProject(projectData);
-                });
-            }
-            
-            // Auth button click handler
-            const authBtn = document.getElementById('authBtn');
-            if (authBtn) {
-                authBtn.addEventListener('click', function() {
-                    console.log('Auth button clicked, currentUser:', currentUser);
-                    if (currentUser) {
-                        logout();
-                    } else {
-                        login();
-                    }
-                });
-            }
-        });
-
-        // Add some sample projects for demonstration
-        function addSampleProjects() {
-            const sampleProjects = [
+        // Show Default Projects
+        function showDefaultProjects() {
+            const defaultProjects = [
                 {
                     name: "Portfolio Pessoal",
                     language: "HTML/CSS/JS",
-                    url: "#",
-                    github: "#",
-                    description: "Meu primeiro portfólio criado com HTML, CSS e JavaScript puro. Design responsivo e moderno.",
-                    features: "Responsivo, Animações CSS, Firebase Auth"
+                    link: "#",
+                    description: "Meu primeiro projeto: um portfólio pessoal responsivo com integração Firebase e Google OAuth.",
+                    image: null
                 },
                 {
-                    name: "Landing Page Empresa",
+                    name: "Chatbot com IA",
+                    language: "JavaScript",
+                    link: "#",
+                    description: "Integração de chatbot inteligente usando APIs de IA para atendimento automatizado.",
+                    image: null
+                },
+                {
+                    name: "Landing Page Responsiva",
                     language: "HTML/CSS",
-                    url: "#",
-                    description: "Landing page profissional para empresa local com design moderno e otimizada para conversões.",
-                    features: "SEO Otimizado, Mobile First, Formulário de Contato"
+                    link: "#",
+                    description: "Landing page moderna e responsiva para empresa de tecnologia, otimizada para conversão.",
+                    image: null
                 }
             ];
-
-            // Only add sample projects if none exist
-            db.collection('projects').get().then((snapshot) => {
-                if (snapshot.empty) {
-                    sampleProjects.forEach(project => {
-                        db.collection('projects').add({
-                            ...project,
-                            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                            createdBy: 'system'
-                        });
-                    });
-                }
+            
+            projectsGrid.innerHTML = '';
+            defaultProjects.forEach(project => {
+                const projectCard = createProjectCard(project, 'default');
+                projectsGrid.appendChild(projectCard);
             });
         }
 
-        // Call this after a delay to ensure Firebase is ready
-        setTimeout(() => {
-            addSampleProjects();
-        }, 2000);
+        // Smooth Scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
 
-        // Intersection Observer for animations
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const navLinks = document.querySelector('.nav-links');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
+        });
+
+        // Intersection Observer for Animations
         const observerOptions = {
             threshold: 0.1,
             rootMargin: '0px 0px -50px 0px'
@@ -1323,177 +1286,32 @@
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
+                    entry.target.classList.add('fade-in-up');
                 }
             });
         }, observerOptions);
 
         // Observe elements for animation
-        setTimeout(() => {
-            document.querySelectorAll('.project-card, .skill-item').forEach(el => {
-                el.style.opacity = '0';
-                el.style.transform = 'translateY(30px)';
-                el.style.transition = 'all 0.6s ease';
-                observer.observe(el);
-            });
-        }, 100);
-
-        // Add some sample projects for demonstration
-        function addSampleProjects() {
-            const sampleProjects = [
-                {
-                    name: "Portfolio Pessoal",
-                    language: "HTML/CSS/JS",
-                    url: "#",
-                    github: "#",
-                    description: "Meu primeiro portfólio criado com HTML, CSS e JavaScript puro. Design responsivo e moderno.",
-                    features: "Responsivo, Animações CSS, Firebase Auth"
-                },
-                {
-                    name: "Landing Page Empresa",
-                    language: "HTML/CSS",
-                    url: "#",
-                    description: "Landing page profissional para empresa local com design moderno e otimizada para conversões.",
-                    features: "SEO Otimizado, Mobile First, Formulário de Contato"
-                }
-            ];
-
-            // Only add sample projects if none exist
-            db.collection('projects').get().then((snapshot) => {
-                if (snapshot.empty) {
-                    sampleProjects.forEach(project => {
-                        db.collection('projects').add({
-                            ...project,
-                            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                            createdBy: 'system'
-                        });
-                    });
-                }
-            });
-        }
-
-        // Call this after a delay to ensure Firebase is ready
-        setTimeout(() => {
-            addSampleProjects();
-        }, 2000);
-
-        // Mobile menu toggle (if needed later)
-        function toggleMobileMenu() {
-            const navLinks = document.querySelector('.nav-links');
-            navLinks.classList.toggle('active');
-        }
-
-        // Add loading state to auth button
-        function setAuthLoading(loading) {
-            const authBtn = document.getElementById('authBtn');
-            if (loading) {
-                authBtn.innerHTML = '<span class="loading"></span>';
-                authBtn.disabled = true;
-            } else {
-                authBtn.disabled = false;
-                updateAuthUI();
-            }
-        }
-
-        // Enhanced error handling
-        window.addEventListener('error', function(e) {
-            console.error('Erro na aplicação:', e.error);
+        document.addEventListener('DOMContentLoaded', () => {
+            const animatedElements = document.querySelectorAll('.service-card, .project-card, .about-content, .contact-content');
+            animatedElements.forEach(el => observer.observe(el));
         });
 
-        // Service worker registration (for future PWA features)
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', function() {
-                // Future PWA implementation
-            });
-        }
+        // Initialize when page loads
+        window.addEventListener('load', () => {
+            initializeGoogleSignIn();
+            loadProjects();
+        });
+
+        // Header scroll effect
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('.header');
+            if (window.scrollY > 100) {
+                header.style.background = 'rgba(255, 255, 255, 0.98)';
+            } else {
+                header.style.background = 'rgba(255, 255, 255, 0.95)';
+            }
+        });
     </script>
-
-    <style>
-        /* Additional responsive styles */
-        @media (max-width: 1024px) {
-            .about-content {
-                gap: 2rem;
-            }
-            
-            .skills-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (max-width: 640px) {
-            .skills-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .project-links {
-                flex-direction: column;
-            }
-            
-            .hero {
-                padding: 2rem 0;
-            }
-            
-            section {
-                padding: 3rem 0;
-            }
-        }
-
-        /* Enhanced animations */
-        .project-card {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.6s ease;
-        }
-
-        .project-card.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* Improved focus states for accessibility */
-        .btn:focus,
-        .auth-btn:focus,
-        input:focus,
-        textarea:focus {
-            outline: 2px solid var(--primary-color);
-            outline-offset: 2px;
-        }
-
-        /* Loading skeleton for projects */
-        .project-skeleton {
-            background: var(--bg-white);
-            border-radius: 15px;
-            padding: 1.5rem;
-            box-shadow: var(--shadow);
-            animation: pulse 1.5s ease-in-out infinite alternate;
-        }
-
-        @keyframes pulse {
-            0% { opacity: 1; }
-            100% { opacity: 0.7; }
-        }
-
-        .skeleton-line {
-            height: 1rem;
-            background: #e2e8f0;
-            border-radius: 4px;
-            margin-bottom: 0.5rem;
-        }
-
-        .skeleton-line.short {
-            width: 60%;
-        }
-
-        .skeleton-line.medium {
-            width: 80%;
-        }
-
-        /* Dark mode support (future enhancement) */
-        @media (prefers-color-scheme: dark) {
-            /* Dark mode styles can be added here */
-        }
-    </style>
-</head>
 </body>
 </html>
