@@ -8,12 +8,12 @@ export const About: React.FC = () => {
     {
       icon: <Code2 className="w-6 h-6" />,
       title: "Front-end",
-      description: "Especialização principal em React, TypeScript e design responsivo"
+      description: "Estudante principal em React, TypeScript e design responsivo"
     },
     {
       icon: <Database className="w-6 h-6" />,
       title: "Back-end",
-      description: "Conhecimentos básicos em Node.js e integração de APIs"
+      description: "Conhecimentos básicos em HTML, Python, Node.js, CSS e integração de APIs"
     },
     {
       icon: <Brain className="w-6 h-6" />,
@@ -57,7 +57,7 @@ export const About: React.FC = () => {
             </p>
 
             <p className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
-              Meu diferencial está na capacidade de integrar <strong className="text-purple-600 dark:text-purple-400">APIs avançadas</strong>, trabalhar com bancos de dados e utilizar IA para otimizar o processo de desenvolvimento, criando soluções profissionais mesmo em pouco tempo.
+              Meu diferencial está na capacidade de Criar <strong className="text-purple-600 dark:text-purple-400">Sites</strong>, trabalhar com bancos de dados e utilizar IA para otimizar o processo de desenvolvimento, criando soluções profissionais mesmo em pouco tempo.
             </p>
 
             <div className="grid sm:grid-cols-2 gap-4 mt-8">

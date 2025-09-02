@@ -15,12 +15,12 @@ export const Hero: React.FC = () => {
         </div>
         
         <p className="text-xl sm:text-2xl text-gray-600 dark:text-gray-300 mb-4 max-w-3xl mx-auto leading-relaxed">
-          Desenvolvedor Full-Stack de 15 anos apaixonado por programação
+          Desenvolvedor Full-Stack Iniciante de 15 anos apaixonado por programação
         </p>
         
         <div className="flex items-center justify-center space-x-2 text-lg text-gray-500 dark:text-gray-400 mb-8">
           <Sparkles className="w-5 h-5 text-blue-500" />
-          <span>Especialista em Front-end • IA • APIs</span>
+          <span>Iniciante em Front-end • IA • APIs</span>
           <Sparkles className="w-5 h-5 text-purple-500" />
         </div>
 
