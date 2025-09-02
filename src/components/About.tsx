@@ -57,7 +57,7 @@ export const About: React.FC = () => {
             </p>
 
             <p className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
-              Meu diferencial está na capacidade de Criar <strong className="text-purple-600 dark:text-purple-400">Sites</strong>, trabalhar com bancos de dados e utilizar IA para otimizar o processo de desenvolvimento, criando soluções profissionais mesmo em pouco tempo.
+              Meu diferencial está na capacidade de Criar <strong className="text-purple-600 dark:text-purple-400">IA Básica</strong>, trabalhar com bancos de dados e utilizar IA para otimizar o processo de desenvolvimento, criando soluções profissionais mesmo em pouco tempo.
             </p>
 
             <div className="grid sm:grid-cols-2 gap-4 mt-8">
