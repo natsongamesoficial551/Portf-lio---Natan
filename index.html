@@ -36,6 +36,7 @@
                 <a href="#home" class="nav-link active">Home</a>
                 <a href="#about" class="nav-link">Sobre</a>
                 <a href="#projects" class="nav-link">Projetos</a>
+                <a href="#certificates" class="nav-link">Certificados</a>
                 <a href="#contact" class="nav-link">Contato</a>
             </div>
             <div class="nav-toggle">
@@ -223,12 +224,29 @@
         </div>
     </section>
 
+    <!-- Certificates Section -->
+    <section id="certificates" class="certificates-section">
+        <div class="container">
+            <div class="section-header">
+                <h1 class="section-title">
+                    <span class="title-number">03</span>
+                    CERTIFICADOS
+                    <div class="title-underline"></div>
+                </h1>
+            </div>
+
+            <div id="certificates-grid" class="certificates-grid">
+                <!-- Certificates will be loaded dynamically -->
+            </div>
+        </div>
+    </section>
+
     <!-- Contact Section -->
     <section id="contact" class="contact-section">
         <div class="container">
             <div class="section-header">
                 <h1 class="section-title">
-                    <span class="title-number">03</span>
+                    <span class="title-number">04</span>
                     CONTATO
                     <div class="title-underline"></div>
                 </h1>
@@ -528,9 +546,85 @@
             });
         }, observerOptions);
 
-        document.querySelectorAll('.project-card, .contact-card, .showcase-item').forEach(el => {
+        document.querySelectorAll('.project-card, .contact-card, .showcase-item, .certificate-card').forEach(el => {
             observer.observe(el);
         });
+
+        // Load certificates dynamically
+        async function loadCertificates() {
+            const certificatesGrid = document.getElementById('certificates-grid');
+            if (!certificatesGrid) return;
+
+            try {
+                const { getCertificates } = await import('./certificates-loader.js');
+                const certificates = getCertificates();
+
+                if (certificates.length === 0) {
+                    certificatesGrid.innerHTML = '<p style="color: rgba(255, 255, 255, 0.7); text-align: center; font-size: 1.2rem; grid-column: 1 / -1;">Nenhum certificado encontrado. Adicione imagens na pasta assets2/certf/</p>';
+                    return;
+                }
+
+                certificates.forEach((cert, index) => {
+                    const card = document.createElement('div');
+                    card.className = 'certificate-card';
+                    card.setAttribute('data-tilt', '');
+
+                    card.innerHTML = `
+                        <div class="certificate-number">${String(index + 1).padStart(2, '0')}</div>
+                        <div class="certificate-image-container">
+                            <img src="${cert.path}" alt="Certificado ${cert.displayName}" class="certificate-image" loading="lazy">
+                            <div class="image-overlay">
+                                <div class="overlay-content">
+                                    <span class="view-certificate">Ver Certificado</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="certificate-title">
+                            <h3>${cert.displayName}</h3>
+                        </div>
+                    `;
+
+                    certificatesGrid.appendChild(card);
+
+                    // Add tilt effect
+                    card.addEventListener('mousemove', (e) => {
+                        const rect = card.getBoundingClientRect();
+                        const x = e.clientX - rect.left;
+                        const y = e.clientY - rect.top;
+
+                        const centerX = rect.width / 2;
+                        const centerY = rect.height / 2;
+
+                        const rotateX = (y - centerY) / 10;
+                        const rotateY = (centerX - x) / 10;
+
+                        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.05, 1.05, 1.05)`;
+                    });
+
+                    card.addEventListener('mouseleave', () => {
+                        card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+                    });
+
+                    // Click to open image in new tab
+                    card.addEventListener('click', () => {
+                        window.open(cert.path, '_blank');
+                    });
+
+                    // Observer for animation
+                    observer.observe(card);
+                });
+            } catch (error) {
+                console.error('Erro ao carregar certificados:', error);
+                certificatesGrid.innerHTML = '<p style="color: rgba(255, 255, 255, 0.7); text-align: center; font-size: 1.2rem; grid-column: 1 / -1;">Adicione certificados na pasta assets2/certf/</p>';
+            }
+        }
+
+        // Load certificates when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', loadCertificates);
+        } else {
+            loadCertificates();
+        }
     </script>
 </body>
 </html>
