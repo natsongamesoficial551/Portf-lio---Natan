@@ -556,11 +556,16 @@
             if (!certificatesGrid) return;
 
             try {
-                const { getCertificates } = await import('./certificates-loader.js');
-                const certificates = getCertificates();
+                const { getCertificates, getCertificatesFromPublic } = await import('./certificates-loader.js');
+                let certificates = getCertificates();
+
+                // If no certificates from assets2, try public folder
+                if (certificates.length === 0) {
+                    certificates = await getCertificatesFromPublic();
+                }
 
                 if (certificates.length === 0) {
-                    certificatesGrid.innerHTML = '<p style="color: rgba(255, 255, 255, 0.7); text-align: center; font-size: 1.2rem; grid-column: 1 / -1;">Nenhum certificado encontrado. Adicione imagens na pasta assets2/certf/</p>';
+                    certificatesGrid.innerHTML = '<p style="color: rgba(255, 255, 255, 0.7); text-align: center; font-size: 1.2rem; grid-column: 1 / -1;">Nenhum certificado encontrado. Adicione imagens na pasta public/certificates/</p>';
                     return;
                 }
 

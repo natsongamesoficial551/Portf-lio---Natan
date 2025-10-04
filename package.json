@@ -5,9 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "node generate-certificates-manifest.js && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "generate-certs": "node generate-certificates-manifest.js"
   },
   "dependencies": {
     "lucide-react": "^0.344.0",
