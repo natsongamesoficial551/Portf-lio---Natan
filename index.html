@@ -559,9 +559,13 @@
                 const { getCertificates, getCertificatesFromPublic } = await import('./certificates-loader.js');
                 let certificates = getCertificates();
 
+                console.log('Certificates from assets2:', certificates.length);
+
                 // If no certificates from assets2, try public folder
                 if (certificates.length === 0) {
+                    console.log('Loading from public folder...');
                     certificates = await getCertificatesFromPublic();
+                    console.log('Certificates from public:', certificates);
                 }
 
                 if (certificates.length === 0) {
@@ -569,7 +573,11 @@
                     return;
                 }
 
+                console.log('Total certificates to display:', certificates.length);
+
                 certificates.forEach((cert, index) => {
+                    console.log(`Loading certificate ${index + 1}:`, cert.path);
+
                     const card = document.createElement('div');
                     card.className = 'certificate-card';
                     card.setAttribute('data-tilt', '');
@@ -577,7 +585,7 @@
                     card.innerHTML = `
                         <div class="certificate-number">${String(index + 1).padStart(2, '0')}</div>
                         <div class="certificate-image-container">
-                            <img src="${cert.path}" alt="Certificado ${cert.displayName}" class="certificate-image" loading="lazy">
+                            <img src="${cert.path}" alt="Certificado ${cert.displayName}" class="certificate-image" loading="lazy" onerror="console.error('Failed to load image:', '${cert.path}'); this.style.border='2px solid red';">
                             <div class="image-overlay">
                                 <div class="overlay-content">
                                     <span class="view-certificate">Ver Certificado</span>

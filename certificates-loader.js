@@ -12,11 +12,12 @@ export function getCertificates() {
 
         if (Object.keys(modulesAssets).length > 0) {
             return Object.entries(modulesAssets).map(([path, url]) => {
-                const fileName = path.split('/').pop().split('.')[0];
+                const fileName = path.split('/').pop();
+                const displayName = fileName.split('.')[0].replace(/-|_/g, ' ');
                 return {
                     path: url,
                     fileName: fileName,
-                    displayName: fileName.replace(/-|_/g, ' ')
+                    displayName: displayName
                 };
             });
         }
@@ -28,25 +29,30 @@ export function getCertificates() {
     return [];
 }
 
-// Function to fetch certificates list from public folder
+// Function to fetch certificates list from public folder (for production)
 export async function getCertificatesFromPublic() {
     try {
-        // List of certificate files (you need to update this when adding new certificates)
-        // Or fetch from a manifest.json file
+        // Fetch manifest with all certificate file names
         const response = await fetch('/certificates-manifest.json');
         if (response.ok) {
             const data = await response.json();
-            return data.certificates.map(fileName => ({
-                path: `/certificates/${fileName}`,
-                fileName: fileName.split('.')[0],
-                displayName: fileName.split('.')[0].replace(/-|_/g, ' ')
-            }));
+            return data.certificates.map(fileName => {
+                // Properly encode the file name for URL (handles spaces and special characters)
+                const encodedFileName = encodeURIComponent(fileName);
+                const displayName = fileName.split('.')[0].replace(/-|_/g, ' ');
+
+                return {
+                    path: `/certificates/${encodedFileName}`,
+                    fileName: fileName,
+                    displayName: displayName
+                };
+            });
         }
     } catch (error) {
-        console.log('No manifest found, using static list');
+        console.error('Error fetching manifest:', error);
     }
 
-    // Static fallback list - update this when you add new certificates
+    // Final fallback: static list with properly encoded URLs
     const knownCertificates = [
         'Alura IA certificado.png',
         'Daxus Certificado.png',
@@ -54,9 +60,14 @@ export async function getCertificatesFromPublic() {
         'Engenharias de Prompt Rocketseat Certificado.png'
     ];
 
-    return knownCertificates.map(fileName => ({
-        path: `/certificates/${fileName}`,
-        fileName: fileName.split('.')[0],
-        displayName: fileName.split('.')[0].replace(/-|_/g, ' ')
-    }));
+    return knownCertificates.map(fileName => {
+        const encodedFileName = encodeURIComponent(fileName);
+        const displayName = fileName.split('.')[0].replace(/-|_/g, ' ');
+
+        return {
+            path: `/certificates/${encodedFileName}`,
+            fileName: fileName,
+            displayName: displayName
+        };
+    });
 }
