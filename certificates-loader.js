@@ -52,22 +52,6 @@ export async function getCertificatesFromPublic() {
         console.error('Error fetching manifest:', error);
     }
 
-    // Final fallback: static list with properly encoded URLs
-    const knownCertificates = [
-        'Alura IA certificado.png',
-        'Daxus Certificado.png',
-        'Discover Certificado Rocketseat.png',
-        'Engenharias de Prompt Rocketseat Certificado.png'
-    ];
-
-    return knownCertificates.map(fileName => {
-        const encodedFileName = encodeURIComponent(fileName);
-        const displayName = fileName.split('.')[0].replace(/-|_/g, ' ');
-
-        return {
-            path: `/certificates/${encodedFileName}`,
-            fileName: fileName,
-            displayName: displayName
-        };
-    });
+    // No certificates available - return empty array
+    return [];
 }

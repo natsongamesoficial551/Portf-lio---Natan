@@ -16,7 +16,23 @@ function getCertificateFiles(dir) {
             return [];
         }
         const files = fs.readdirSync(dir);
-        return files.filter(file => /\.(jpg|jpeg|png|gif|webp)$/i.test(file));
+        // Filter image files and exclude .gitkeep
+        const imageFiles = files.filter(file => {
+            if (file === '.gitkeep') return false;
+            return /\.(jpg|jpeg|png|gif|webp)$/i.test(file);
+        });
+
+        // Verify files are actual images (not dummy files)
+        return imageFiles.filter(file => {
+            const filePath = path.join(dir, file);
+            const stats = fs.statSync(filePath);
+            // Filter out files smaller than 1KB (likely dummy files)
+            if (stats.size < 1024) {
+                console.log(`⚠️  Skipping ${file} (${stats.size} bytes - too small, likely a dummy file)`);
+                return false;
+            }
+            return true;
+        });
     } catch (error) {
         console.error(`Error reading directory ${dir}:`, error);
         return [];

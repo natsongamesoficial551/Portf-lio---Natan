@@ -1,5 +1,7 @@
 # 🎓 Sistema de Certificados - Guia Completo
 
+> ⚠️ **ATENÇÃO:** Se você está vendo "Certificados em Breve" no seu site, leia o arquivo **[ADICIONAR-CERTIFICADOS.md](./ADICIONAR-CERTIFICADOS.md)** para instruções detalhadas!
+
 ## 📋 Como Funciona
 
 O sistema carrega certificados automaticamente de duas formas:
@@ -10,12 +12,15 @@ O sistema carrega certificados automaticamente de duas formas:
 
 ### 1. Adicione suas imagens de certificado
 
-Coloque todas as suas imagens (PNG, JPG, etc.) na pasta:
+Coloque todas as suas imagens **REAIS** (PNG, JPG, etc.) na pasta:
 ```
 public/certificates/
 ```
 
-**IMPORTANTE**: As imagens REAIS devem estar nesta pasta antes do deploy!
+**IMPORTANTE:**
+- ✅ As imagens devem ser arquivos REAIS (> 1KB)
+- ❌ NÃO use placeholders ou arquivos dummy de 20 bytes
+- ✅ Verifique com: `ls -lh public/certificates/`
 
 ### 2. Build automático
 
